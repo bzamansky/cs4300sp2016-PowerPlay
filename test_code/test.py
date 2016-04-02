@@ -3,6 +3,7 @@ import re
 import urllib3
 import time
 import os
+import json
 
 #This is the scraping data!
 
@@ -53,6 +54,7 @@ transcripts = []
 
 for file in os.listdir('debates'):
   transcript_filename = os.path.join('debates',file)
+  transcript = {"file":transcript_filename}
   with open(transcript_filename) as f:
     bsoup = bs4.BeautifulSoup(f)
 
@@ -64,12 +66,15 @@ for file in os.listdir('debates'):
 
   for x in pars:
     t = re.sub('\[.*\]','',x.text) # line to cut out [applause] lines
-    #t = x.text
+    t = re.sub(ur'\u2014','-',t,re.UNICODE)
     if x.b:
       speaker = re.sub('\[.*\]','',x.b.text)
       parsed.append({'speaker':speaker.strip(":"),'speech':[t]})
     else:
       parsed[-1]['speech'].append(t)
 
+  transcript['tran'] = parsed
+  transcripts.append(transcript)
 
-
+with open('debate_data.json', 'w') as outfile:
+    json.dump(transcripts, outfile, sort_keys=True, indent=4, separators=(',', ': '))
