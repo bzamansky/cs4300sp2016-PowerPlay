@@ -43,7 +43,9 @@ import json
 #   file = bs4.BeautifulSoup(r.data)
 #   file_name = file.find_all('span',{'class':'paperstitle'})[0].text
 #   name_spl = file_name.split()
-#   name = os.path.join('debates',(name_spl[0] + "_" + name_spl[-2] + "_" + name_spl[-1] + ".html"))
+#   spl = name_spl.index('in')
+#   place = "_".join(name_spl[spl:])
+#   name = os.path.join('debates',(name_spl[0] + "_" + place + ".html"))
 #   fo = open(name,"wb")
 #   fo.write(r.data)
 #   fo.close()
@@ -64,6 +66,9 @@ for file in os.listdir('debates'):
   date = bsoup.find_all('span',{'class':'docdate'})
   transcript['date'] = date[0].text
   date = date[0].text
+  debate = file.strip(".html")
+  party = debate.split("_")[0]
+  loc = " ".join(debate.split("_")[2:])
 
   pars = tran[0].find_all('p')
 
@@ -84,7 +89,7 @@ for file in os.listdir('debates'):
         tmp_speaker = str(speaker.encode('utf8').lower()).strip(":")
         if tmp_speaker in moderators:
           mod = True
-      parsed.append({'speaker':speaker.strip(":"),'speech':[t], 'date':date, 'moderator':mod})
+      parsed.append({'speaker':speaker.strip(":"),'speech':[t], 'date':date, 'moderator':mod,'party':party,'location':loc})
     else:
       parsed[-1]['speech'].append(t)
 
