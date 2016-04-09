@@ -33,23 +33,22 @@ import json
 #   link = debate_links['href']
 #   all_debates.append({'date':date,'debate':debate.text,'link':link})
 
-
-# transcript_files = []
-# for d in all_debates:
-#   http = urllib3.PoolManager()
-#   r = http.request('GET', d['link'])
-#   if r.status != 200:
-#     break
-#   file = bs4.BeautifulSoup(r.data)
-#   file_name = file.find_all('span',{'class':'paperstitle'})[0].text
-#   name_spl = file_name.split()
-#   spl = name_spl.index('in')
-#   place = "_".join(name_spl[spl:])
-#   name = os.path.join('debates',(name_spl[0] + "_" + place + ".html"))
-#   fo = open(name,"wb")
-#   fo.write(r.data)
-#   fo.close()
-#   time.sleep(5)
+transcript_files = []
+for d in all_debates:
+  http = urllib3.PoolManager()
+  r = http.request('GET', d['link'])
+  if r.status != 200:
+    break
+  file = bs4.BeautifulSoup(r.data)
+  file_name = file.find_all('span',{'class':'paperstitle'})[0].text
+  name_spl = file_name.split()
+  spl = name_spl.index('in')
+  place = "_".join(name_spl[spl:])
+  name = os.path.join('debates',("_".join(name_spl) + ".html"))
+  fo = open(name,"wb")
+  fo.write(r.data)
+  fo.close()
+  time.sleep(5)
 
 transcripts = []
 moderators = []
@@ -114,9 +113,9 @@ for file in os.listdir('debates'):
           moderators.append(tmp_speaker)
       elif tmp_speaker not in candidates and tmp_speaker not in moderators:
         candidates.append(tmp_speaker)
-      parsed.append({'speaker':speaker.strip(":"),'speech':[t], 'date':date, 'moderator':mod,'party':party,'location':loc})
+      parsed.append({'speaker':speaker.strip(":"),'speech':t, 'date':date, 'moderator':mod,'party':party,'location':loc})
     else:
-      parsed[-1]['speech'].append(t)
+      parsed[-1]['speech'] = parsed[-1]['speech'] + t
 
   transcript['tran'] = parsed
   transcripts.append(transcript)
@@ -130,6 +129,3 @@ for x in transcripts:
 
 with open('all_debate_list.json','w') as outfile:
   json.dump(all_debate_list, outfile, indent=4, separators=(',', ': '))
-
-print(moderators)
-print(candidates)
