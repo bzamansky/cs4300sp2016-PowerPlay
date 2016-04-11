@@ -16,6 +16,8 @@ statements = [
   "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=115&campaign=2016TRUMP&doctype=5001"  
 ]
 
+statement_pages = []
+
 transcript_files = []
 for d in campaign_speeches:
   http = urllib3.PoolManager()
@@ -47,8 +49,67 @@ for d in campaign_speech_pages:
   title = file.find_all('span',{'class':'paperstitle'})[0].text
   text = file.find_all("span",{"class":"displaytext"})[0]
 
+
   all_lines = text.contents
-  for line in all_lines:
-    print(line.b)
-    print(line.i)
-  
+  all_lines[:2] = []
+  for line in all_lines: 
+    if type(line) is bs4.element.NavigableString:
+      continue
+    if line.b:
+      speaker = re.sub('\[.*\]','',line.b.text)
+    elif line.i:
+      speaker = re.sub('\[.*\]','',line.i.text)
+    speaker = speaker.lower()
+    speaker = speaker.strip(":")
+    try:
+      line.text
+    except Exception, e:
+      line = re.sub('\[.*\]','',line)
+    else:
+      line = re.sub('\[.*\]','',line.text)     
+    # if speaker in candidate_data:
+    #   candidate_data[speaker].append(line)
+    # else:
+    #   candidate_data[speaker] = [line]
+    candidate_data[candidate].append(line)
+
+
+for d in statements:
+  http = urllib3.PoolManager()
+  r = http.request('GET', d)
+  if r.status != 200:
+    break
+  file = bs4.BeautifulSoup(r.data)
+  file_table = file.find_all("td",{'class':"listdate"})
+  candidate = file_table[0].text.split(" ")[1].lower()
+  speech_links = [x.find_all("a")[0]['href'] for x in file_table if len(x.find_all("a")) > 0]
+  speech_links = [x.strip("..") for x in speech_links]
+  speech_links = [("http://www.presidency.ucsb.edu" + x, candidate) for x in speech_links]
+  statement_pages.extend(speech_links)
+
+for d in statement_pages:
+  candidate = d[1]
+  http = urllib3.PoolManager()
+  r = http.request('GET', d[0])
+  if r.status != 200:
+    break
+  file = bs4.BeautifulSoup(r.data)
+  date = file.find_all('span',{'class':'docdate'})[0].text
+  title = file.find_all('span',{'class':'paperstitle'})[0].text
+  text = file.find_all("span",{"class":"displaytext"})[0]
+
+  all_lines = text.contents
+  all_lines[:2] = []
+  for i,line in enumerate(all_lines):   
+    try:
+      line.text
+    except Exception, e:
+      line = re.sub('\[.*\]','',line)
+    else:
+      line = re.sub('\[.*\]','',line.text)
+    candidate_data[candidate].append(line)
+
+print(candidate_data.keys())
+
+with open('candidate_statements.json','w') as outfile:
+  json.dump(candidate_data, outfile, sort_keys=True, indent=4,separators=(',', ': '))
