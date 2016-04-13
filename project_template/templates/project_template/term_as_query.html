@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Power of Speech - Term Query</title>
+	<!-- d3 for visuals -->
+	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+<body>
+	<!-- from index.html, user has selected TERM -->
+	<h3>Enter a term or topic</h3>
+	<div name="term_input_form">
+        <input id="input_term" type="text" name="search_term" placeholder="TERM or TOPIC QUERY">
+        <button type="submit" onclick="renderPage()">Go!</button>
+    </div>
+
+    <hr> <!-- horizontal line break -->
+    <!-- <button type="submit" class="btn btn-info"> Go! </button> -->
+
+    <!-- html skeleton for visuals -->
+    <div id="visual-wrapper">
+    	<!-- set this to be input -->
+    	<!-- <h1 id="result_title"></h1>
+    	<div id="mentions_by_debate">
+    		<h3>Total Mentions by Debate</h3>
+    	</div>
+    	<div id="mentions_by_candidate">
+    		<h3>Total Mentions by Candidate</h3>
+    	</div>
+    	<div id="arguments">
+    		<h3>Arguments</h3>
+    	</div> -->
+    </div>
+
+    <!-- d3 for visual elements -->
+    <script>
+    	var wrapper = d3.select("#visual-wrapper");
+    	
+    	/*
+    		establishes the visuals for a query result page
+    		when the user clicks Go!
+    	*/
+    	function renderPage(event) {
+    		// clear previous results on click
+    		wrapper.selectAll("*").html("");
+
+    		// RENDER PAGE FOR A QUERY
+    		// store query
+    		var query = document.getElementById("input_term").value;
+    		// alert user if empty query
+    		if (query == "") {
+    			wrapper.append("h3").text("enter a query".toUpperCase());
+    		}
+    		// set title of page to query text
+    		wrapper.append("h3").text(query.toUpperCase());
+    		// headers for visuals
+    		var debate_mentions = wrapper.append("div").attr("id", "mentions_by_debate");
+    		debate_mentions.append("h3").text("Total Mentions by Debate");
+    		var candidate_mentions = wrapper.append("div").attr("id", "mentions_by_candidate");
+    		candidate_mentions.append("h3").text("Total Mentions by Candidate");
+    		var arguments = wrapper.append("div").attr("id", "arguments");
+    		arguments.append("h3").text("Arguments and Interactions");
+
+    	}
+    	
+    	/*
+    		parameters: query
+    		pulls data for the query
+    	*/
+    	function searchResults(q) {
+    		var query = d3.select("#input_term").text();
+    		console.log(query);
+    		// search for input in data
+    		// return RESULT ITEMS
+    			// input
+    			// times mentioned by debate
+    			// times mentioned by candidate
+    			// arguments
+    	}
+
+    </script>
+
+</body>
+</html>
