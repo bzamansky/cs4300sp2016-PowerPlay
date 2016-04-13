@@ -110,8 +110,10 @@ for file in os.listdir('debates'):
 
   parsed = []
 
+  curr_speaker = ''
   #Parsing each line in the debate
-  for x in pars:
+  for i,x in enumerate(pars):
+    prev = ''
     t = re.sub('\[.*\]','',x.text) # line to cut out [applause] lines
     t = re.sub(ur'\u2014','-',t,re.UNICODE) #line to make em-dashes into single dashes
     t = re.sub(ur'\u00e1','a',t,re.UNICODE) #take out accented a
@@ -131,7 +133,12 @@ for file in os.listdir('debates'):
           moderators.append(tmp_speaker)
       elif tmp_speaker not in candidates and tmp_speaker not in moderators:
         candidates.append(tmp_speaker)
-      parsed.append({'speaker':speaker.strip(":"),'speech':t, 'date':date, 'moderator':mod,'party':party,'location':loc})
+      speaker = speaker.strip(":")
+      if curr_speaker != speaker:
+        if not mod and speaker not in moderators:
+          prev = curr_speaker
+        curr_speaker = speaker
+      parsed.append({'speaker':speaker,'speech':t, 'date':date, 'moderator':mod,'party':party,'location':loc, 'prev':prev})
     else:
       #Add the text to the speaker
       parsed[-1]['speech'] = parsed[-1]['speech'] + t
