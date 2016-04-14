@@ -25,4 +25,5 @@ def index(request):
     return render_to_response('project_template/index.html', 
                           {'output': output,
                            'magic_url': request.get_full_path(),
+                           'temp':'I am a blob'
                            })

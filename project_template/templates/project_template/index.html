@@ -34,7 +34,11 @@
             {% for line in output %}
                 {{line}}<br>
             {% endfor %}
-            
+            <script type="text/javascript">
+                var a = "{{temp}}";
+                console.log(a);
+            </script>
+
             <div class="pagination">
                 <span class="step-links">
                     {% if output.has_previous %}
