@@ -133,7 +133,7 @@ for file in os.listdir('debates'):
           moderators.append(tmp_speaker)
       elif tmp_speaker not in candidates and tmp_speaker not in moderators:
         candidates.append(tmp_speaker)
-      speaker = speaker.strip(":")
+      speaker = speaker.strip(":").lower()
       if curr_speaker != speaker:
         if not mod and speaker not in moderators:
           prev = curr_speaker
