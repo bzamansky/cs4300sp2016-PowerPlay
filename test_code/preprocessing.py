@@ -89,8 +89,10 @@ d_terms = d_vectorizer.get_feature_names()
 debate_term_matrix = d_vectorizer.transform(debates)
 
 
+
+
+
 print(d_terms.index('immigration'))
 print(d_terms[62800])
 print(debate_names)
 print(debate_term_matrix.toarray()[:,62800])
-print(debates_list[6]['file'])

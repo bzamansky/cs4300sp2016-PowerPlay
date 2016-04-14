@@ -2,6 +2,7 @@
     <head>
         <link rel="stylesheet" href="/static/bootstrap.min.css">
         <link rel="stylesheet" href="/static/main.css">
+        <script src="//d3js.org/d3.v3.min.js"></script>
     </head>
     
     <body>
@@ -34,10 +35,8 @@
             {% for line in output %}
                 {{line}}<br>
             {% endfor %}
-            <script type="text/javascript">
-                var a = "{{temp}}";
-                console.log(a);
-            </script>
+
+            <h3 id="fill_me"></h3>
 
             <div class="pagination">
                 <span class="step-links">
@@ -56,5 +55,8 @@
                 </span>
             </div>
         </div>
+        <script type="text/javascript">
+            document.getElementById('fill_me').innerHTML = "{{temp}}";
+        </script>
     </body>
 </html>
