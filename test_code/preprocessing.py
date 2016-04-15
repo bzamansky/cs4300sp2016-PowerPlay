@@ -117,3 +117,8 @@ def word_spoken_most_by_candidate(word,n=10):
   for x in top:
     top_candidates.append((candidates[x],cand_array[x,word_ind]))
   return top_candidates
+
+print(word_spoken_most_by_candidate('health care'))
+
+print(candidates)
+print(candidate_term_matrix.toarray()[:,c_terms.index('health care')])
