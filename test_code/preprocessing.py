@@ -88,7 +88,6 @@ d_vectorizer.fit(debates)
 d_terms = d_vectorizer.get_feature_names()
 debate_term_matrix = d_vectorizer.transform(debates)
 
-
 def most_spoken_words_by_candidate(candidate,n=10):
   cand_array = candidate_term_matrix.toarray()
   can_row = candidates_to_index[candidate]
@@ -99,5 +98,14 @@ def most_spoken_words_by_candidate(candidate,n=10):
     top_words.append((c_terms[x],cand_array[can_row,x]))
   return top_words
 
-print(most_spoken_words_by_candidate('clinton'))
-print(most_spoken_words_by_candidate('trump',4))
+def most_spoken_words_by_debate(debate,n=10):
+  deb_array = debate_term_matrix.toarray()
+  deb_row = debates_to_index[debate]
+  words = deb_array[deb_row]
+  top = sorted(range(len(words)), key=lambda i: words[i], reverse=True)[:n]
+  top_words = []
+  for x in top:
+    top_words.append((d_terms[x],deb_array[deb_row,x]))
+  return top_words
+
+print(most_spoken_words_by_debate('debates/Republican_Candidates_"Undercard"_Debate_in_Simi_Valley,_California.html'))
