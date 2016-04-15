@@ -108,4 +108,12 @@ def most_spoken_words_by_debate(debate,n=10):
     top_words.append((d_terms[x],deb_array[deb_row,x]))
   return top_words
 
-print(most_spoken_words_by_debate('debates/Republican_Candidates_"Undercard"_Debate_in_Simi_Valley,_California.html'))
+def word_spoken_most_by_candidate(word,n=10):
+  cand_array = candidate_term_matrix.toarray()
+  word_ind = c_terms.index(word)
+  word_col = cand_array[:,word_ind]
+  top = sorted(range(len(word_col)), key=lambda i: word_col[i], reverse=True)[:n]
+  top_candidates = []
+  for x in top:
+    top_candidates.append((candidates[x],cand_array[x,word_ind]))
+  return top_candidates
