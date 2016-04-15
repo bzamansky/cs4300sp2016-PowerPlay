@@ -121,6 +121,9 @@ for file in os.listdir('debates'):
     mod = False #Automatically saying the speaker is not a moderator
     if x.b:
       speaker = re.sub('\[.*\]','',x.b.text) #take out [applause] and other things in brackets
+      #Removing the speaker from the beginning of the line
+      if t.startswith(speaker):
+        t = t[len(speaker):]
       speaker = re.sub(ur'\u00ed','i',speaker,re.UNICODE) #take out accented I #take out accented A
       speaker = re.sub(ur'\u00c1','A',speaker,re.UNICODE) #take out accented A
 

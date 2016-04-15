@@ -37,7 +37,7 @@ with open("all_debate_list.json", "r") as f:
 speeches = [x['speech'] for x in transcripts]
 
 ## getting term-doc matrix
-vectorizer = CountVectorizer(ngram_range=(1, 2),strip_accents='unicode')  # for  unigrams only use ngram_range=(1, 1)
+vectorizer = CountVectorizer(ngram_range=(1, 2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words="english")  # for  unigrams only use ngram_range=(1, 1)
 vectorizer.fit(speeches)
 
 terms = vectorizer.get_feature_names()
@@ -61,8 +61,8 @@ for speech in transcripts:
     index = candidates_to_index[sp]
     speeches_by_candidate[index] += speech['speech']
 
-
-c_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True)
+#play with the max_df and min_df to get something we like.
+c_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words="english")
 c_vectorizer.fit(speeches_by_candidate)
 c_terms = c_vectorizer.get_feature_names()
 candidate_term_matrix = c_vectorizer.transform(speeches_by_candidate)
@@ -83,16 +83,21 @@ for i,d in enumerate(debates_list):
     tran += x['speech']
   debates.append(tran)
 
-d_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True)
+d_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words="english")
 d_vectorizer.fit(debates)
 d_terms = d_vectorizer.get_feature_names()
 debate_term_matrix = d_vectorizer.transform(debates)
 
 
+def most_spoken_words_by_candidate(candidate,n=10):
+  cand_array = candidate_term_matrix.toarray()
+  can_row = candidates_to_index[candidate]
+  words = cand_array[can_row]
+  top = sorted(range(len(words)), key=lambda i: words[i], reverse=True)[:n]
+  top_words = []
+  for x in top:
+    top_words.append((c_terms[x],cand_array[can_row,x]))
+  return top_words
 
-
-
-print(d_terms.index('immigration'))
-print(d_terms[62800])
-print(debate_names)
-print(debate_term_matrix.toarray()[:,62800])
+print(most_spoken_words_by_candidate('clinton'))
+print(most_spoken_words_by_candidate('trump',4))
