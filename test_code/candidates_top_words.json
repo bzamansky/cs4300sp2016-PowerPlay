@@ -1,0 +1,884 @@
+{
+    "bush": [
+        [
+            "serious",
+            31
+        ],
+        [
+            "florida",
+            27
+        ],
+        [
+            "growth",
+            25
+        ],
+        [
+            "strategy",
+            23
+        ],
+        [
+            "created",
+            21
+        ],
+        [
+            "destroy",
+            20
+        ],
+        [
+            "ought",
+            20
+        ],
+        [
+            "ought to",
+            20
+        ],
+        [
+            "proven",
+            20
+        ],
+        [
+            "simple",
+            20
+        ]
+    ],
+    "carson": [
+        [
+            "first of",
+            24
+        ],
+        [
+            "well first",
+            19
+        ],
+        [
+            "recognize",
+            16
+        ],
+        [
+            "situation",
+            16
+        ],
+        [
+            "fact of",
+            15
+        ],
+        [
+            "matter is",
+            15
+        ],
+        [
+            "the matter",
+            15
+        ],
+        [
+            "get rid",
+            14
+        ],
+        [
+            "rid",
+            14
+        ],
+        [
+            "rid of",
+            14
+        ]
+    ],
+    "chafee": [
+        [
+            "gun",
+            5
+        ],
+        [
+            "lobby",
+            5
+        ],
+        [
+            "proud",
+            5
+        ],
+        [
+            "the issues",
+            5
+        ],
+        [
+            "wars",
+            5
+        ],
+        [
+            "because did",
+            4
+        ],
+        [
+            "changed",
+            4
+        ],
+        [
+            "decision",
+            4
+        ],
+        [
+            "first vote",
+            4
+        ],
+        [
+            "island",
+            4
+        ]
+    ],
+    "christie": [
+        [
+            "jersey",
+            51
+        ],
+        [
+            "new jersey",
+            51
+        ],
+        [
+            "fact is",
+            38
+        ],
+        [
+            "tell you",
+            38
+        ],
+        [
+            "in new",
+            33
+        ],
+        [
+            "folks",
+            25
+        ],
+        [
+            "enforcement",
+            22
+        ],
+        [
+            "law enforcement",
+            22
+        ],
+        [
+            "this president",
+            22
+        ],
+        [
+            "listen",
+            21
+        ]
+    ],
+    "clinton": [
+        [
+            "to try",
+            65
+        ],
+        [
+            "about what",
+            47
+        ],
+        [
+            "street",
+            45
+        ],
+        [
+            "wall",
+            45
+        ],
+        [
+            "affordable",
+            42
+        ],
+        [
+            "comprehensive",
+            41
+        ],
+        [
+            "health care",
+            41
+        ],
+        [
+            "voted",
+            41
+        ],
+        [
+            "wall street",
+            41
+        ],
+        [
+            "campaign",
+            40
+        ]
+    ],
+    "cruz": [
+        [
+            "amnesty",
+            43
+        ],
+        [
+            "tell you",
+            38
+        ],
+        [
+            "everyone",
+            36
+        ],
+        [
+            "flat",
+            36
+        ],
+        [
+            "business",
+            35
+        ],
+        [
+            "chief",
+            34
+        ],
+        [
+            "commander",
+            32
+        ],
+        [
+            "commander in",
+            32
+        ],
+        [
+            "in chief",
+            32
+        ],
+        [
+            "flat tax",
+            30
+        ]
+    ],
+    "fiorina": [
+        [
+            "this nation",
+            23
+        ],
+        [
+            "we must",
+            23
+        ],
+        [
+            "dollar",
+            22
+        ],
+        [
+            "take our",
+            22
+        ],
+        [
+            "technology",
+            20
+        ],
+        [
+            "class",
+            17
+        ],
+        [
+            "business",
+            16
+        ],
+        [
+            "every single",
+            16
+        ],
+        [
+            "powerful",
+            16
+        ],
+        [
+            "tough",
+            16
+        ]
+    ],
+    "graham": [
+        [
+            "chief",
+            31
+        ],
+        [
+            "commander",
+            31
+        ],
+        [
+            "commander in",
+            30
+        ],
+        [
+            "in chief",
+            30
+        ],
+        [
+            "destroy",
+            27
+        ],
+        [
+            "isil",
+            27
+        ],
+        [
+            "ground",
+            26
+        ],
+        [
+            "this war",
+            22
+        ],
+        [
+            "to win",
+            19
+        ],
+        [
+            "you don",
+            17
+        ]
+    ],
+    "huckabee": [
+        [
+            "ought",
+            18
+        ],
+        [
+            "ought to",
+            18
+        ],
+        [
+            "social security",
+            18
+        ],
+        [
+            "because they",
+            14
+        ],
+        [
+            "make it",
+            13
+        ],
+        [
+            "do you",
+            12
+        ],
+        [
+            "guy",
+            12
+        ],
+        [
+            "elected",
+            11
+        ],
+        [
+            "kill",
+            11
+        ],
+        [
+            "medicare",
+            11
+        ]
+    ],
+    "jindal": [
+        [
+            "obamacare",
+            21
+        ],
+        [
+            "louisiana",
+            20
+        ],
+        [
+            "rid",
+            19
+        ],
+        [
+            "rid of",
+            19
+        ],
+        [
+            "conservative",
+            16
+        ],
+        [
+            "get rid",
+            16
+        ],
+        [
+            "folks",
+            15
+        ],
+        [
+            "government spending",
+            15
+        ],
+        [
+            "in louisiana",
+            15
+        ],
+        [
+            "choice",
+            14
+        ]
+    ],
+    "kasich": [
+        [
+            "ohio",
+            69
+        ],
+        [
+            "tell you",
+            53
+        ],
+        [
+            "in ohio",
+            37
+        ],
+        [
+            "balanced",
+            33
+        ],
+        [
+            "growth",
+            33
+        ],
+        [
+            "in washington",
+            30
+        ],
+        [
+            "first of",
+            26
+        ],
+        [
+            "the budget",
+            25
+        ],
+        [
+            "done it",
+            22
+        ],
+        [
+            "community",
+            21
+        ]
+    ],
+    "o'malley": [
+        [
+            "secretary",
+            30
+        ],
+        [
+            "college",
+            25
+        ],
+        [
+            "street",
+            25
+        ],
+        [
+            "anderson",
+            21
+        ],
+        [
+            "lives",
+            21
+        ],
+        [
+            "wall",
+            20
+        ],
+        [
+            "wall street",
+            20
+        ],
+        [
+            "comprehensive",
+            17
+        ],
+        [
+            "gun",
+            16
+        ],
+        [
+            "sort",
+            16
+        ]
+    ],
+    "pataki": [
+        [
+            "new york",
+            21
+        ],
+        [
+            "york",
+            21
+        ],
+        [
+            "in washington",
+            13
+        ],
+        [
+            "destroy",
+            12
+        ],
+        [
+            "freedom",
+            11
+        ],
+        [
+            "fly",
+            10
+        ],
+        [
+            "fly zone",
+            10
+        ],
+        [
+            "no fly",
+            10
+        ],
+        [
+            "of new",
+            10
+        ],
+        [
+            "to destroy",
+            10
+        ]
+    ],
+    "paul": [
+        [
+            "conservative",
+            27
+        ],
+        [
+            "respond",
+            13
+        ],
+        [
+            "debt",
+            12
+        ],
+        [
+            "is it",
+            12
+        ],
+        [
+            "mistake",
+            12
+        ],
+        [
+            "the question",
+            12
+        ],
+        [
+            "the thing",
+            12
+        ],
+        [
+            "jail",
+            11
+        ],
+        [
+            "the bill",
+            11
+        ],
+        [
+            "defend",
+            10
+        ]
+    ],
+    "perry": [
+        [
+            "texas",
+            9
+        ],
+        [
+            "negotiation",
+            4
+        ],
+        [
+            "that border",
+            4
+        ],
+        [
+            "12th",
+            3
+        ],
+        [
+            "12th largest",
+            3
+        ],
+        [
+            "americans are",
+            3
+        ],
+        [
+            "are in",
+            3
+        ],
+        [
+            "be on",
+            3
+        ],
+        [
+            "border we",
+            3
+        ],
+        [
+            "celebrity",
+            3
+        ]
+    ],
+    "rubio": [
+        [
+            "century",
+            30
+        ],
+        [
+            "group",
+            29
+        ],
+        [
+            "future",
+            28
+        ],
+        [
+            "will not",
+            28
+        ],
+        [
+            "this election",
+            26
+        ],
+        [
+            "answer",
+            25
+        ],
+        [
+            "when president",
+            25
+        ],
+        [
+            "control",
+            24
+        ],
+        [
+            "first of",
+            24
+        ],
+        [
+            "of america",
+            24
+        ]
+    ],
+    "sanders": [
+        [
+            "secretary",
+            171
+        ],
+        [
+            "street",
+            121
+        ],
+        [
+            "wall",
+            115
+        ],
+        [
+            "wall street",
+            114
+        ],
+        [
+            "campaign",
+            96
+        ],
+        [
+            "major",
+            75
+        ],
+        [
+            "the secretary",
+            67
+        ],
+        [
+            "class",
+            62
+        ],
+        [
+            "health care",
+            56
+        ],
+        [
+            "middle class",
+            51
+        ]
+    ],
+    "santorum": [
+        [
+            "manufacturing",
+            28
+        ],
+        [
+            "caliphate",
+            21
+        ],
+        [
+            "workers",
+            20
+        ],
+        [
+            "answer",
+            16
+        ],
+        [
+            "in washington",
+            15
+        ],
+        [
+            "number one",
+            15
+        ],
+        [
+            "field",
+            14
+        ],
+        [
+            "folks",
+            14
+        ],
+        [
+            "in fact",
+            14
+        ],
+        [
+            "pro",
+            14
+        ]
+    ],
+    "trump": [
+        [
+            "tell you",
+            85
+        ],
+        [
+            "trade",
+            48
+        ],
+        [
+            "wall",
+            46
+        ],
+        [
+            "me just",
+            42
+        ],
+        [
+            "ok",
+            42
+        ],
+        [
+            "excuse",
+            39
+        ],
+        [
+            "excuse me",
+            39
+        ],
+        [
+            "nobody",
+            39
+        ],
+        [
+            "tremendous",
+            38
+        ],
+        [
+            "very very",
+            36
+        ]
+    ],
+    "walker": [
+        [
+            "jake",
+            12
+        ],
+        [
+            "back down",
+            7
+        ],
+        [
+            "education",
+            6
+        ],
+        [
+            "in place",
+            6
+        ],
+        [
+            "put in",
+            6
+        ],
+        [
+            "day one",
+            5
+        ],
+        [
+            "didn back",
+            5
+        ],
+        [
+            "jake jake",
+            5
+        ],
+        [
+            "my state",
+            5
+        ],
+        [
+            "on day",
+            5
+        ]
+    ],
+    "webb": [
+        [
+            "justice",
+            8
+        ],
+        [
+            "criminal",
+            7
+        ],
+        [
+            "criminal justice",
+            6
+        ],
+        [
+            "marine",
+            6
+        ],
+        [
+            "reform",
+            6
+        ],
+        [
+            "vietnam",
+            6
+        ],
+        [
+            "administration",
+            5
+        ],
+        [
+            "discussion",
+            5
+        ],
+        [
+            "fought",
+            5
+        ],
+        [
+            "information",
+            5
+        ]
+    ]
+}

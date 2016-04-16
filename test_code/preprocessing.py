@@ -31,6 +31,86 @@ candidates = [
   'perry'
 ]
 
+names = [
+  'barack',
+  'obama',
+  'barak obama'
+  'hillary',
+  'clinton',
+  'hillary clinton',
+  'secretary clinton',
+  'bernie',
+  'sanders',
+  'bernie sanders',
+  'senator sanders',
+  'martin',
+  "o'malley",
+  "martin o'malley",
+  #'lincoln',
+  'chafee',
+  'lincoln chafee',
+  'jim',
+  'webb',
+  'jim webb',
+  'ted',
+  'cruz',
+  'ted cruz',
+  'senator cruz',
+  'john',
+  'kasich',
+  'john kasich',
+  'governor kasich',
+  'donald',
+  'trump',
+  'donald trump',
+  'marco',
+  'rubio',
+  'marco rubio',
+  'senator rubio',
+  'ben',
+  'carson',
+  'ben carson',
+  'jeb',
+  'bush',
+  'jeb bush',
+  'chris',
+  'christie',
+  'chris christie',
+  'governor christie',
+  'carly',
+  'fiorina',
+  'carly fiorina',
+  'rick',
+  'santorum',
+  'rick santorum',
+  'rand',
+  'paul',
+  'rand paul',
+  'senator paul',
+  'mike',
+  'huckabee',
+  'mike huckabee',
+  'senator huckabee',
+  'george',
+  'pataki',
+  'george pataki',
+  'lindsey',
+  'graham',
+  'lindsey graham',
+  'senator graham',
+  'bobby',
+  'jindal',
+  'bobby jindal',
+  'governor jindal',
+  'scott',
+  'walker',
+  'scot walker',
+  'governor walker',
+  'rick',
+  'perry',
+  'rick perry'
+]
+
 with open("all_debate_list.json", "r") as f:
     transcripts = json.load(f)
 
@@ -62,7 +142,7 @@ for speech in transcripts:
     speeches_by_candidate[index] += speech['speech']
 
 #play with the max_df and min_df to get something we like.
-c_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words="english")
+c_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words=names, max_df=0.8)
 c_vectorizer.fit(speeches_by_candidate)
 c_terms = c_vectorizer.get_feature_names()
 candidate_term_matrix = c_vectorizer.transform(speeches_by_candidate)
@@ -83,7 +163,7 @@ for i,d in enumerate(debates_list):
     tran += x['speech']
   debates.append(tran)
 
-d_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words="english")
+d_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words=names, max_df=0.8)
 d_vectorizer.fit(debates)
 d_terms = d_vectorizer.get_feature_names()
 debate_term_matrix = d_vectorizer.transform(debates)
@@ -118,7 +198,17 @@ def word_spoken_most_by_candidate(word,n=10):
     top_candidates.append((candidates[x],cand_array[x,word_ind]))
   return top_candidates
 
-print(word_spoken_most_by_candidate('health care'))
 
-print(candidates)
-print(candidate_term_matrix.toarray()[:,c_terms.index('health care')])
+candidates_top_words = {}
+for c in candidates:
+  candidates_top_words[c] = most_spoken_words_by_candidate(c)
+
+# with open('candidates_top_words.json','w') as outfile:
+#   json.dump(candidates_top_words, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+
+debates_top_words = {}
+for d in debate_names:
+  debates_top_words[d] = most_spoken_words_by_debate(d)
+
+with open('debates_top_words.json','w') as outfile:
+  json.dump(debates_top_words, outfile, sort_keys=True, indent=4, separators=(',', ': '))
