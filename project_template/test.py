@@ -40,17 +40,27 @@ def find_similar_advanced(query, option):
 
 # PUT THIS IN PREPROCESSING SO DON'T NEED TO DO IT EVERY TIME
 # debate data, so available throughout this script
-# debate_data_file = open("../test_code/debate_data.json")
-# debate_data = json.load(debate_data_file)
+debate_data_file = open("./test_code/debate_data.json") # this data is organized by date (so debate)
+debate_data = json.load(debate_data_file)
 
 # TODO: GET ALL WORDS BY DEBATE, store as debate --> all words in that debate
+all_words_debate = {} # dictionary with date as key and words spoken as value
+for debate in debate_data:
+	debate_words = ""
+	for line in debate['tran']:
+		debate_words = debate_words + line['speech']
+	all_words_debate[debate['date']] = debate_words
 
-def search_matrix(query, option):
+def search_results(query, option):
 	# if option is term
 	if option == 'term':
 		# get Total Mentions by Debate
 		# debate is key and term count is value
 		total_mentions_debate = {}
+		for key,value in enumerate(all_words_debate):
+			words = value.split(" ")
+			term_count = words.count(query)
+			total_mentions_debate[key] = term_count
 		# get Total Mentions by Candidate
 		# candidate is key and term count is value
 		total_mentions_candidate = {}
