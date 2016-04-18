@@ -22,3 +22,18 @@ def find_similar(q):
 			result.append(((_edit(q, m)), m))
 
 	return sorted(result, key=lambda tup: tup[0])
+
+# JACKIE'S NEW CODE
+# query is a... query
+# option is either 'term' or 'candidate', from the radio button selection
+def find_similar_advanced(query, option):
+	if option == 'term':
+		transcripts = read_file(1) # read the TERM json file
+	elif option == 'candidate':
+		transcripts = read_file(1) # read the CANDIDATE json file
+	for transcript in transcripts:
+		for item in transcript:
+			m = item['text']
+			result.append(((_edit(q, m)), m))
+
+	return sorted(result, key=lambda tup: tup[0])
