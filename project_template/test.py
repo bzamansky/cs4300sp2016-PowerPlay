@@ -37,3 +37,36 @@ def find_similar_advanced(query, option):
 			result.append(((_edit(q, m)), m))
 
 	return sorted(result, key=lambda tup: tup[0])
+
+# PUT THIS IN PREPROCESSING SO DON'T NEED TO DO IT EVERY TIME
+# debate data, so available throughout this script
+# debate_data_file = open("../test_code/debate_data.json")
+# debate_data = json.load(debate_data_file)
+
+# TODO: GET ALL WORDS BY DEBATE, store as debate --> all words in that debate
+
+def search_matrix(query, option):
+	# if option is term
+	if option == 'term':
+		# get Total Mentions by Debate
+		# debate is key and term count is value
+		total_mentions_debate = {}
+		# get Total Mentions by Candidate
+		# candidate is key and term count is value
+		total_mentions_candidate = {}
+		# get Arguments and Interactions
+		interactions = {}
+		return (total_mentions_debate, total_mentions_candidate, interactions)
+	# if option is candidate
+	elif option == 'candidate':
+		pass
+
+
+
+
+
+
+
+
+
+	
