@@ -51,9 +51,13 @@ for debate in debate_data:
 		debate_words = debate_words + line['speech']
 	all_words_debate[debate['date']] = debate_words
 
-def search_results(query, option):
+# option_1 is T/F for candidate, option_2 is T/F for term
+def search_results(query, option_1, option_2):
+	# if option is candidate
+	if option_1 == True:
+		pass
 	# if option is term
-	if option == 'term':
+	if option_2 == True:
 		# get Total Mentions by Debate
 		# debate is key and term count is value
 		total_mentions_debate = {}
@@ -67,12 +71,7 @@ def search_results(query, option):
 		# get Arguments and Interactions
 		interactions = {}
 		return (total_mentions_debate, total_mentions_candidate, interactions)
-	# if option is candidate
-	elif option == 'candidate':
-		pass
-
-
-
+	
 
 
 

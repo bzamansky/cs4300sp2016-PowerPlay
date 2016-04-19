@@ -27,28 +27,33 @@
             <div class="form-group">
                 <input id="input" type="text" name="search" class="form-control" placeholder="Your Input">
                 <!-- JACKIE'S NEW CODE -->
-                <input type="radio" name="search_option" value="candidate"> Search by Candidate
-                <input type="radio" name="search_option" value="term"> Search by Term
+                <input type="radio" name="search_option_1" value="candidate"> Search by Candidate
+                <input type="radio" name="search_option_2" value="term"> Search by Term
             </div>
             <button type="submit" class="btn btn-info"> Go! </button>
         </form>
         
         <div class="form-inline global-search">
             <h4>Output</h4><br>
+            <!-- OUTPUT IS A STRING -->
+            {{output}}
+
+            <!-- THIS WORKS IF USING PAGINATOR, OR IF OUTPUT IS A LIST -->
             {% for line in output %}
                 {{line}}<br>
             {% endfor %}
 
             <h3 id="fill_me"></h3>
 
-            <div class="pagination">
+            <!-- REMEMBER TO UNCOMMENT THIS IF NEED PAGINATOR -->
+            <!-- <div class="pagination">
                 <span class="step-links">
                     {% if output.has_previous %}
                     <a href= "{{magic_url}}&page={{ output.previous_page_number }}">previous</a>
-                    {% endif %}
+                    {% endif %} -->
                     
                     <!-- Showing the page numbers in Html Page -->
-                    <span class="current">
+                    <!-- <span class="current">
                     Page _{{ output.number }}_ of _{{ output.paginator.num_pages }}_
                     </span>
                     
@@ -56,7 +61,7 @@
                     <a href= "{{magic_url}}&page={{ output.next_page_number }}">next</a>
                     {% endif %}
                 </span>
-            </div>
+            </div> -->
         </div>
         <script type="text/javascript">
             document.getElementById('fill_me').innerHTML = "{{temp}}";
