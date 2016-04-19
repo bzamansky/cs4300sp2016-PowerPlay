@@ -17,6 +17,7 @@ import json
 def index(request):
     output_list = ''
     output=''
+    cand_nums = []
     if request.GET.get('search'):
         search = request.GET.get('search')
         cand = request.GET.get('search_option_1')
@@ -31,12 +32,10 @@ def index(request):
         #http://stackoverflow.com/questions/30531990/matplotlib-into-a-django-template
 
         candidates = total_mentions_candidate.keys()
-        cand_nums = []
         for i,k in enumerate(total_mentions_candidate.keys()):
             cand_nums.append(total_mentions_candidate[k])
-
-        with open('project_template/cand_hist_data.json','w') as outfile:
-            json.dump(cand_nums, outfile)
+        # with open('project_template/cand_hist_data.json','w') as outfile:
+        #     json.dump(cand_nums, outfile)
         
         # paginator = Paginator(output_list, 10)
         # page = request.GET.get('page')
@@ -48,6 +47,6 @@ def index(request):
         #     output = paginator.page(paginator.num_pages)
     return render_to_response('project_template/index.html', 
                           {'output': output,
-                          'plot':'project_template/cand_hist_data.json',
+                          'plot': cand_nums,
                            'magic_url': request.get_full_path()
                            })
