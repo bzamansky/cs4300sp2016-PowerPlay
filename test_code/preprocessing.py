@@ -201,16 +201,25 @@ def word_spoken_most_by_candidate(word,n=10):
   return top_candidates
 
 
-candidates_top_words = {}
-for c in candidates:
-  candidates_top_words[c] = most_spoken_words_by_candidate(c)
+# candidates_top_words = {}
+# for c in candidates:
+#   candidates_top_words[c] = most_spoken_words_by_candidate(c)
 
-with open('candidates_top_words.json','w') as outfile:
-  json.dump(candidates_top_words, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+# with open('candidates_top_words.json','w') as outfile:
+#   json.dump(candidates_top_words, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
-debates_top_words = {}
-for d in debate_names:
-  debates_top_words[d] = most_spoken_words_by_debate(d)
+# debates_top_words = {}
+# for d in debate_names:
+#   debates_top_words[d] = most_spoken_words_by_debate(d)
 
-with open('debates_top_words.json','w') as outfile:
-  json.dump(debates_top_words, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+# with open('debates_top_words.json','w') as outfile:
+#   json.dump(debates_top_words, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+
+
+vectorizer = TfidfVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words = 'english')
+my_matrix = vectorizer.fit_transform([x for x in speeches_by_candidate]).transpose()
+from scipy.sparse.linalg import svds
+u, s, v_trans = svds(my_matrix, k=100)
+print(u.shape)
+print(s.shape)
+print(v_trans.shape)

@@ -48,6 +48,6 @@ def index(request):
         #     output = paginator.page(paginator.num_pages)
     return render_to_response('project_template/index.html', 
                           {'output': output,
-                          'plot':'cand_hist_data.json',
+                          'plot':'project_template/cand_hist_data.json',
                            'magic_url': request.get_full_path()
                            })
