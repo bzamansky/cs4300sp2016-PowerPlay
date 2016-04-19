@@ -43,7 +43,6 @@
                 {{line}}<br>
             {% endfor %}
 
-            <img src="./candidates_plot.png">
             <h3 id="fill_me"></h3>
 
             <!-- REMEMBER TO UNCOMMENT THIS IF NEED PAGINATOR -->
@@ -65,7 +64,9 @@
             </div> -->
         </div>
         <script type="text/javascript">
-            document.getElementById('fill_me').innerHTML = "{{temp}}";
+            d3.json("{{plot}}")
+            document.getElementById('fill_me').innerHTML = "{{plot}}";
+
         </script>
     </body>
 </html>
