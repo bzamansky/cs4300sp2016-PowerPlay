@@ -104,7 +104,7 @@ names = [
   'governor jindal',
   'scott',
   'walker',
-  'scot walker',
+  'scott walker',
   'governor walker',
   'rick',
   'perry',
@@ -142,7 +142,7 @@ for speech in transcripts:
     speeches_by_candidate[index] += speech['speech']
 
 #play with the max_df and min_df to get something we like.
-c_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words=names, max_df=0.8)
+c_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words='english')
 c_vectorizer.fit(speeches_by_candidate)
 c_terms = c_vectorizer.get_feature_names()
 candidate_term_matrix = c_vectorizer.transform(speeches_by_candidate)
@@ -163,7 +163,7 @@ for i,d in enumerate(debates_list):
     tran += x['speech']
   debates.append(tran)
 
-d_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words=names, max_df=0.8)
+d_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words='english')
 d_vectorizer.fit(debates)
 d_terms = d_vectorizer.get_feature_names()
 debate_term_matrix = d_vectorizer.transform(debates)
@@ -172,20 +172,22 @@ def most_spoken_words_by_candidate(candidate,n=10):
   cand_array = candidate_term_matrix.toarray()
   can_row = candidates_to_index[candidate]
   words = cand_array[can_row]
-  top = sorted(range(len(words)), key=lambda i: words[i], reverse=True)[:n]
-  top_words = []
+  top = sorted(range(len(words)), key=lambda i: words[i], reverse=True)
+  top_words = {}
   for x in top:
-    top_words.append((c_terms[x],cand_array[can_row,x]))
+    top_words[c_terms[x]] = cand_array[can_row,x]
+    #top_words.append((c_terms[x],cand_array[can_row,x]))
   return top_words
 
 def most_spoken_words_by_debate(debate,n=10):
   deb_array = debate_term_matrix.toarray()
   deb_row = debates_to_index[debate]
   words = deb_array[deb_row]
-  top = sorted(range(len(words)), key=lambda i: words[i], reverse=True)[:n]
-  top_words = []
+  top = sorted(range(len(words)), key=lambda i: words[i], reverse=True)
+  top_words = {}
   for x in top:
-    top_words.append((d_terms[x],deb_array[deb_row,x]))
+    top_words[d_terms[x]] = deb_array[deb_row,x]
+    #top_words.append((d_terms[x],deb_array[deb_row,x]))
   return top_words
 
 def word_spoken_most_by_candidate(word,n=10):
@@ -203,8 +205,8 @@ candidates_top_words = {}
 for c in candidates:
   candidates_top_words[c] = most_spoken_words_by_candidate(c)
 
-# with open('candidates_top_words.json','w') as outfile:
-#   json.dump(candidates_top_words, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+with open('candidates_top_words.json','w') as outfile:
+  json.dump(candidates_top_words, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
 debates_top_words = {}
 for d in debate_names:
