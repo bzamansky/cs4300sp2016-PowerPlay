@@ -215,11 +215,3 @@ def word_spoken_most_by_candidate(word,n=10):
 # with open('debates_top_words.json','w') as outfile:
 #   json.dump(debates_top_words, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
-
-vectorizer = TfidfVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words = 'english')
-my_matrix = vectorizer.fit_transform([x for x in speeches_by_candidate]).transpose()
-from scipy.sparse.linalg import svds
-u, s, v_trans = svds(my_matrix, k=100)
-print(u.shape)
-print(s.shape)
-print(v_trans.shape)
