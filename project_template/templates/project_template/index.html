@@ -3,9 +3,9 @@
         <link rel="stylesheet" href="/static/bootstrap.min.css">
         <link rel="stylesheet" href="/static/main.css">
         <script src="//d3js.org/d3.v3.min.js"></script>
-
         <script type="text/javascript">
-            var file_path = "../../" + "{{new_data_path}}";
+            var file_path = "{{new_data_path}}"
+            //var file_path = "./../../" + "{{new_data_path}}";
             console.log(file_path);
             d3.json(file_path, function(d){
                 console.log(d);
@@ -53,7 +53,15 @@
             {% endfor %} -->
 
             JSON DATA HOPEFULLY:<br>
-            
+            <h5>Searched: {{searched}}</h5>
+            <br/>
+            {% for value in plot %}
+                {% for part in value %}
+                {{part}}
+                {% endfor %}
+                <br/>
+            {% endfor %}
+
             {% comment %}
             {% for key,val in output.items %}
                 {{key}} {{val}}<br>

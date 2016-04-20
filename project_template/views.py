@@ -22,12 +22,11 @@ def index(request):
     new_file_path = ''
     if request.GET.get('search'):
         search = request.GET.get('search')
-        cand = request.GET.get('search_option_1')
-        term = request.GET.get('search_option_2')
+        search_option = request.GET.get('search_option')
         opt1 = False
         opt2 = False
-        if cand: opt1 = True
-        if term: opt2 = True
+        if search_option=="candidate": opt1 = True
+        if search_option=="term": opt2 = True
         (total_mentions_debate, total_mentions_candidate, interactions) = search_results(search,opt1,opt2)
         output = total_mentions_candidate
         # print(type(output)) # make sure it's a dict for JsonResponse
@@ -36,7 +35,8 @@ def index(request):
         # THIS IS BATYA'S MOSTLY WORKING CODE
         candidates = total_mentions_candidate.keys()
         for i,k in enumerate(total_mentions_candidate.keys()):
-            cand_nums.append(total_mentions_candidate[k])
+            cand_nums.append([k, total_mentions_candidate[k]])
+        cand_nums.sort(key=lambda x: x[1], reverse=True)
         # with open('project_template/cand_hist_data.json','w') as outfile:
         #     json.dump(cand_nums, outfile)
         
@@ -63,6 +63,7 @@ def index(request):
                           {'output': output,
                           # THIS IS BATYA'S MOSTLY WORKING CODE
                           'plot': cand_nums,
+                          'searched': search,
                           # 'new_data_path': new_file_path,
                            'magic_url': request.get_full_path()
                            })

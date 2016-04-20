@@ -73,6 +73,7 @@ def search_results(query, option_1, option_2):
 		# get Arguments and Interactions
 		interactions = {}
 		return (total_mentions_debate, total_mentions_candidate, interactions)
+	return ({'nothing here':'hi'},{'nope':'nope'},{})
 	
 
 
