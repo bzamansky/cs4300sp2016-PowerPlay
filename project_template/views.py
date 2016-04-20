@@ -7,6 +7,7 @@ from .form import QueryForm
 from .test import find_similar
 from .test import search_results
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.staticfiles.templatetags.staticfiles import static
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
@@ -17,7 +18,8 @@ import json
 def index(request):
     output_list = ''
     output=''
-    cand_nums = []
+    cand_nums=[]
+    new_file_path = ''
     if request.GET.get('search'):
         search = request.GET.get('search')
         cand = request.GET.get('search_option_1')
@@ -31,6 +33,7 @@ def index(request):
         # print(type(output)) # make sure it's a dict for JsonResponse
         #http://stackoverflow.com/questions/30531990/matplotlib-into-a-django-template
 
+        # THIS IS BATYA'S MOSTLY WORKING CODE
         candidates = total_mentions_candidate.keys()
         for i,k in enumerate(total_mentions_candidate.keys()):
             cand_nums.append(total_mentions_candidate[k])
@@ -49,16 +52,18 @@ def index(request):
 
         # https://docs.djangoproject.com/en/dev/ref/request-response/#jsonresponse-objects
         # save json data to file, open this file using javascript in index.html
-        new_file_path = 'output_data_file.json'
-        data = str(output)
-        with open(new_file_path,'w') as outfile:
-            json.dump(data, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+        # new_file_path = static('output_data_file.json')
+        # print("hi"+new_file_path)
+        # data = str(output)
+        # with open(new_file_path,'w') as outfile:
+        #     json.dump(data, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
 
     return render_to_response('project_template/index.html', 
                           {'output': output,
+                          # THIS IS BATYA'S MOSTLY WORKING CODE
                           'plot': cand_nums,
-                          'new_data_path': new_file_path,
+                          # 'new_data_path': new_file_path,
                            'magic_url': request.get_full_path()
                            })
     
