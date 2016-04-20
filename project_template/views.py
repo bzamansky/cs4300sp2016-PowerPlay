@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import Docs
 from django.template import loader
 from .form import QueryForm
@@ -28,7 +28,7 @@ def index(request):
         if term: opt2 = True
         (total_mentions_debate, total_mentions_candidate, interactions) = search_results(search,opt1,opt2)
         output = total_mentions_candidate
-
+        # print(type(output)) # make sure it's a dict for JsonResponse
         #http://stackoverflow.com/questions/30531990/matplotlib-into-a-django-template
 
         candidates = total_mentions_candidate.keys()
@@ -45,8 +45,20 @@ def index(request):
         #     output = paginator.page(1)
         # except EmptyPage:
         #     output = paginator.page(paginator.num_pages)
+
+
+        # https://docs.djangoproject.com/en/dev/ref/request-response/#jsonresponse-objects
+        # save json data to file, open this file using javascript in index.html
+        new_file_path = 'output_data_file.json'
+        data = str(output)
+        with open(new_file_path,'w') as outfile:
+            json.dump(data, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+
+
     return render_to_response('project_template/index.html', 
                           {'output': output,
                           'plot': cand_nums,
+                          'new_data_path': new_file_path,
                            'magic_url': request.get_full_path()
                            })
+    
