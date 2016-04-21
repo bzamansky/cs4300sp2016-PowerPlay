@@ -91,17 +91,19 @@
             </div> -->
         </div>
         <script type="text/javascript">
-            var candidate_names = "{{candidate_names}}".replace(/&quot;/g,"\"");
-            var mentions = "{{mentions}}".replace(/&quot;/g,"\"");
+            var candidate_names = {{candidate_names|safe}};
+            var mentions = {{mentions}};
             var x_values = []; // names
             var y_values = []; // # times word mentioned for each name
             for (i=0; i<candidate_names.length; i++) {
-                x_values.append(candidate_names[i]);
-                y_values.append(mentions[i]);
+                x_values.push(candidate_names[i]);
+                y_values.push(mentions[i]);
             }
             console.log(x_values);
-
+            
             // MAKE HISTOGRAM
+            var formatCount = d3.format(",.0f"); // line copied from https://bl.ocks.org/mbostock/3048450
+            
             var margin = {top: 10, right: 30, bottom: 30, left: 30},
                 width = 960 - margin.left - margin.right,
                 height = 500 - margin.top - margin.bottom;
@@ -109,7 +111,12 @@
             var x = d3.scale.linear()
                 .domain([0, 1])
                 .range([0, width]);
-
+            
+            // line copied from https://bl.ocks.org/mbostock/3048450
+            var data = d3.layout.histogram()
+                .bins(x.ticks(20))
+                (y_values);
+            
             var y = d3.scale.linear()
                 .domain([0, d3.max(y_values)])
                 .range([height, 0]);

@@ -71,7 +71,7 @@ def index(request):
                           # 'new_data_path': new_file_path,
                            'magic_url': request.get_full_path(),
                            # JACKIE CODE
-                           'candidate_names': candidates,
+                           'candidate_names': json.dumps(candidates),
                            'mentions': values
                            })
     
