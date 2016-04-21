@@ -112,29 +112,30 @@
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         
-            var barWidth = width / x_values.length;
+            var barWidth = (width - margin.left)/ x_values.length;
 
-            // var data = {};
-            // for (var i = 0; i < x_values.length; i++) {
-            //     data[x_values[i]] = y_values[i];
-            // }
+            var data = []
+            for (var i = 0; i < x_values.length; i++) {
+                data.push({'name':x_values[i],'value':y_values[i]});
+            }
 
             var bar = chart.selectAll("g")
-                .data(y_values)
+                .data(data)
                 .enter().append("g")
                 .attr("class","bar")
-                .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; });
+                .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",-20)"; });
 
             bar.append("rect")
-                .attr("y", function(d) { return y(d); })
-                .attr("height", function(d) { return height - y(d); })
+                .attr("y", function(d) { return y(d.value); })
+                .attr("height", function(d) { return height - y(d.value); })
                 .attr("width", barWidth - 1);
 
             bar.append("text")
-                .attr("x", barWidth / 2)
-                .attr("y", function(d) { return y(d) + 3; })
+                //.attr("x", barWidth / 2)
+                .attr("y", function(d) { return y(d.value) - 30; })
                 .attr("dy", ".75em")
-                .text(function(d) { return d; });
+                .attr("fill",'red')
+                .text(function(d) { return d.name; });
 
             function type(d) {
                 d.value = +d.value; // coerce to number
