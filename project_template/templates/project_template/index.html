@@ -52,7 +52,6 @@
                 {{line}}<br>
             {% endfor %} -->
 
-            JSON DATA HOPEFULLY:<br>
             <h5>Searched: {{searched}}</h5>
             <br/>
             {% for value in plot %}
@@ -61,6 +60,17 @@
                 {% endfor %}
                 <br/>
             {% endfor %}
+            <script type="text/javascript">
+                var candidate_names = "{{candidate_names".replace(/&quot;/g,"\"");
+                var mentions = "{{mentions}}".replace(/&quot;/g,"\"");
+                var x_values = []; // names
+                var y_values = []; // # times word mentioned for each name
+                for (i=0; i<candidate_names.length; i++) {
+                    x_values.append(candidate_names[i]);
+                    y_values.append(mentions[i]);
+                }
+                console.log(x_values);
+            </script>
 
             {% comment %}
             {% for key,val in output.items %}

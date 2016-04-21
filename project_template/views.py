@@ -18,6 +18,7 @@ import json
 def index(request):
     output_list = ''
     output=''
+    search = ''
     cand_nums=[]
     new_file_path = ''
     if request.GET.get('search'):
@@ -58,6 +59,7 @@ def index(request):
         # with open(new_file_path,'w') as outfile:
         #     json.dump(data, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
+        values = total_mentions_candidate.values()
 
     return render_to_response('project_template/index.html', 
                           {'output': output,
@@ -65,6 +67,9 @@ def index(request):
                           'plot': cand_nums,
                           'searched': search,
                           # 'new_data_path': new_file_path,
-                           'magic_url': request.get_full_path()
+                           'magic_url': request.get_full_path(),
+                           # JACKIE CODE
+                           'candidate_names': candidates,
+                           'mentions': values
                            })
     
