@@ -21,6 +21,8 @@ def index(request):
     search = ''
     cand_nums=[]
     new_file_path = ''
+    candidates = None
+    values = None
     if request.GET.get('search'):
         search = request.GET.get('search')
         search_option = request.GET.get('search_option')
