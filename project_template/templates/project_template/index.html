@@ -3,14 +3,6 @@
         <link rel="stylesheet" href="/static/bootstrap.min.css">
         <link rel="stylesheet" href="/static/main.css">
         <script src="//d3js.org/d3.v3.min.js"></script>
-        <script type="text/javascript">
-            var file_path = "{{new_data_path}}"
-            //var file_path = "./../../" + "{{new_data_path}}";
-            console.log(file_path);
-            d3.json(file_path, function(d){
-                console.log(d);
-            });
-        </script>
     </head>
     
     <body>
@@ -100,65 +92,100 @@
                 y_values.push(mentions[i]);
             }
             console.log(x_values);
+            console.log(y_values);
             
             // MAKE HISTOGRAM
             var formatCount = d3.format(",.0f"); // line copied from https://bl.ocks.org/mbostock/3048450
             
             var margin = {top: 10, right: 30, bottom: 30, left: 30},
-                width = 960 - margin.left - margin.right,
+                width = 1000 - margin.left - margin.right,
                 height = 500 - margin.top - margin.bottom;
 
-            var x = d3.scale.linear()
-                .domain([0, 1])
-                .range([0, width]);
-            
-            // line copied from https://bl.ocks.org/mbostock/3048450
-            var data = d3.layout.histogram()
-                .bins(x.ticks(20))
-                (y_values);
-            
             var y = d3.scale.linear()
                 .domain([0, d3.max(y_values)])
                 .range([height, 0]);
 
-            var xAxis = d3.svg.axis()
-                .scale(x)
-                .orient("bottom");
-
-            var svg = d3.select("body").append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-              .append("g")
+            var chart = d3.select("body").append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            var bar = svg.selectAll(".bar")
-                .data(data)
-              .enter().append("g")
-                .attr("class", "bar")
-                .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+        
+            var barWidth = width / x_values.length;
+
+            // var data = {};
+            // for (var i = 0; i < x_values.length; i++) {
+            //     data[x_values[i]] = y_values[i];
+            // }
+
+            var bar = chart.selectAll("g")
+                .data(y_values)
+                .enter().append("g")
+                .attr("class","bar")
+                .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; });
 
             bar.append("rect")
-                .attr("x", 1)
-                .attr("width", x(data[0].dx) - 1)
-                .attr("height", function(d) { return height - y(d.y); });
+                .attr("y", function(d) { return y(d); })
+                .attr("height", function(d) { return height - y(d); })
+                .attr("width", barWidth - 1);
 
             bar.append("text")
+                .attr("x", barWidth / 2)
+                .attr("y", function(d) { return y(d) + 3; })
                 .attr("dy", ".75em")
-                .attr("y", 6)
-                .attr("x", x(data[0].dx) / 2)
-                .attr("text-anchor", "middle")
-                .text(function(d) { return formatCount(d.y); });
+                .text(function(d) { return d; });
 
-            svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
+            function type(d) {
+                d.value = +d.value; // coerce to number
+                return d;
+            }
+            // var x = d3.scale.linear()
+            //     .domain([0, 1])
+            //     .range([0, width]);
+            
+            // // line copied from https://bl.ocks.org/mbostock/3048450
+            // var data = d3.layout.histogram()
+            //     .bins(x.ticks(20))
+            //     (y_values);
+            
+            // var y = d3.scale.linear()
+            //     .domain([0, d3.max(y_values)])
+            //     .range([height, 0]);
+
+            // var xAxis = d3.svg.axis()
+            //     .scale(x)
+            //     .orient("bottom");
+
+            // var svg = d3.select("body").append("svg")
+            //     .attr("width", width + margin.left + margin.right)
+            //     .attr("height", height + margin.top + margin.bottom)
+            //   .append("g")
+            //     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            // var bar = svg.selectAll(".bar")
+            //     .data(data)
+            //   .enter().append("g")
+            //     .attr("class", "bar")
+            //     .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+
+            // bar.append("rect")
+            //     .attr("x", 1)
+            //     .attr("width", x(data[0].dx) - 1)
+            //     .attr("height", function(d) { return height - y(d.y); });
+
+            // bar.append("text")
+            //     .attr("dy", ".75em")
+            //     .attr("y", 6)
+            //     .attr("x", x(data[0].dx) / 2)
+            //     .attr("text-anchor", "middle")
+            //     .text(function(d) { return formatCount(d.y); });
+
+            // svg.append("g")
+            //     .attr("class", "x axis")
+            //     .attr("transform", "translate(0," + height + ")")
+            //     .call(xAxis);
                 
-        </script>
-        <script type="text/javascript">
-            // d3.json("{{plot}}");
-            // document.getElementById('fill_me').innerHTML = "{{plot}}"; // plot is an array of values corresponding to each candidate
-
         </script>
     </body>
 </html>
