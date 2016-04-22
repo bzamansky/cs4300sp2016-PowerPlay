@@ -25,19 +25,6 @@ def find_similar(q):
 	return sorted(result, key=lambda tup: tup[0])
 
 # JACKIE'S NEW CODE
-# query is a... query
-# option is either 'term' or 'candidate', from the radio button selection
-def find_similar_advanced(query, option):
-	if option == 'term':
-		transcripts = read_file(1) # read the TERM json file
-	elif option == 'candidate':
-		transcripts = read_file(1) # read the CANDIDATE json file
-	for transcript in transcripts:
-		for item in transcript:
-			m = item['text']
-			result.append(((_edit(q, m)), m))
-
-	return sorted(result, key=lambda tup: tup[0])
 
 # PUT THIS IN PREPROCESSING SO DON'T NEED TO DO IT EVERY TIME
 # debate data, so available throughout this script
@@ -50,23 +37,73 @@ debate_data_r = json.load(debate_data_file_rep)
 debate_data_r_u = json.load(debate_data_file_rep_under)
 candidate_data_file = open("./test_code/candidates_top_words.json")
 candidate_data = json.load(candidate_data_file)
+candidate_top_words_file = open("./test_code/candidates_top_ten_words.json")
+candidate_top_ten_data = json.load(candidate_top_words_file)
+candidate_response_file = open("./test_code/candidate_responses.json")
+candidate_responses = json.load(candidate_response_file)
 
-# option_1 is T/F for candidate, option_2 is T/F for term
+# COME BACK TO THIS
+# # option_1 is T/F for candidate, option_2 is T/F for term
+# def search_results_candidate(query, option_1, option_2):
+# 	# if option is candidate
+# 	if option_1 == True:
+# 		# query is the key
+# 		# pull the dictionary of words for that candidate
+# 		top_ten_words = candidate_top_ten_data[query]
+
+# 		# candidate responses
+# 		responses = candidate_responses[query]
+
+# 		return (top_ten_words, responses)
+
+# def search_results_term(query, option_1, option_2):
+# 	# if option is term
+# 	if option_2 == True:
+# 		# get Total Mentions by Debate
+# 		# debate date, location is key and term count is value
+# 		total_mentions_debate = {}
+# 		for key in debate_data_d.keys():
+# 			total_mentions_debate[key] = debate_data_d[key][query]
+# 		for key in debate_data_r.keys():
+# 			total_mentions_debate[key] = debate_data_r[key][query]
+# 		for key in debate_data_r_u.keys(): 
+# 			total_mentions_debate[key] = debate_data_r_u[key][query]
+
+# 		# get Total Mentions by Candidate
+# 		# candidate is key and term count is value
+# 		total_mentions_candidate = {}
+# 		for key in candidate_data.keys():
+# 			total_mentions_candidate[key] = candidate_data[key][query]
+		
+# 		# get Arguments and Interactions
+# 		interactions = {}
+# 		return (total_mentions_debate, total_mentions_candidate, interactions)
+	
+# 	return ({'nothing here':'hi'},{'nope':'nope'},{})
+
 def search_results(query, option_1, option_2):
 	# if option is candidate
 	if option_1 == True:
-		pass
+		# query is the key
+		# pull the dictionary of words for that candidate
+		top_ten_words = candidate_top_ten_data[query]
+
+		# candidate responses
+		responses = candidate_responses[query]
+
+		return (top_ten_words, responses, {}) # {} is a dummy
+
 	# if option is term
 	if option_2 == True:
 		# get Total Mentions by Debate
-		# debate is key and term count is value
-		total_mentions_debate = defaultdict()
+		# debate date, location is key and term count is value
+		total_mentions_debate = {}
 		for key in debate_data_d.keys():
-			total_mentions_debate[key] += debate_data_d[key][query]
+			total_mentions_debate[key] = debate_data_d[key][query]
 		for key in debate_data_r.keys():
-			total_mentions_debate[key] += debate_data_r[key][query]
+			total_mentions_debate[key] = debate_data_r[key][query]
 		for key in debate_data_r_u.keys(): 
-			total_mentions_debate[key] += debate_data_r_u[key][query]
+			total_mentions_debate[key] = debate_data_r_u[key][query]
 
 		# get Total Mentions by Candidate
 		# candidate is key and term count is value

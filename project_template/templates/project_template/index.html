@@ -2,40 +2,45 @@
     <head>
         <link rel="stylesheet" href="/static/bootstrap.min.css">
         <link rel="stylesheet" href="/static/main.css">
-        <script src="//d3js.org/d3.v3.min.js"></script>
+        <script src="//d3js.org/d3.v3.min.js"></script> <!-- d3 -->
+        <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> <!-- d3.tip --> 
+		<script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script>
+        <link rel='shortcut icon' href='/static/Images/favicon.ico' type='image/x-icon'/ >
     </head>
     
     <body>
-        <!-- TODO: Please change lines 10 and 11 according to your actual project name and student names-->
-        <div class="topcorner">
-            <p>Power Of Speech</p>
+       <div class="topcorner">
             <p>Rebecca Mozdy (rlm393), Daniel Rong (ddr42), Jacqueline Viola (jlv78), Batya Zamansky (bz82)</p>
+			<p>Power Of Speech</p>
         </div>
-        
+	<br> <br>        
         <form class="form-inline global-search" method='GET'>
-            <h1 style="font-size: 55px; font-family:Futura; color: #4285F4">
-                C
-                <font color=#EA4335>S</font>
-                <font color=#FBBC05>4</font>
-                3
-                <font color=#34A853>0</font>
-                <font color=#EA4335>0</font>
+            <h1 style="font-size: 55px; font-family:Futura; color: #4DCB6D">
+                Power of Speech
+
             </h1>
             
             <br><br>
             
             <div class="form-group">
-                <input id="input" type="text" name="search" class="form-control" placeholder="Your Input">
+                <input id="input" type="text" name="search" class="form-control" placeholder="Your Input">            <button type="submit" class="btn btn-info"> Go! </button>
                 <!-- JACKIE'S NEW CODE -->
                 <br>
-                <input type="radio" name="search_option" value="candidate"> Search by Candidate
-                <input type="radio" name="search_option" value="term"> Search by Term
+				<div>
+                    <input type="radio" name="search_option" value="candidate"id="radio2" class="radio"/>
+    				<label for="radio2"> Search by Candidate </label>
+				</div>
+				
+				<div>
+                    <input type="radio" name="search_option" value="term"id="radio3" class="radio"/>
+                    <label for="radio3"> Search by Term </label>
+				</div>
             </div>
-            <button type="submit" class="btn btn-info"> Go! </button>
+
         </form>
         
         <div class="form-inline global-search">
-            <h4>Output</h4><br>
+            <!-- <h4>Output</h4><br> -->
             {% comment %}
             {{output}}
             {% endcomment %}
@@ -45,15 +50,17 @@
                 {{line}}<br>
             {% endfor %} -->
 
-            <h5>Searched: {{searched}}</h5>
+            <h5>Searched in {{search_option}}s: '{{searched}}'</h5> <br> <br>
+			<div id="selfie" class = "selfie"> </div>
             <br/>
+            {% comment %}
             {% for value in plot %}
                 {% for part in value %}
                 {{part}}
                 {% endfor %}
                 <br/>
             {% endfor %}
-            
+            {% endcomment %}
 
             {% comment %}
             {% for key,val in output.items %}
@@ -84,19 +91,111 @@
                     {% endcomment %}
                 </span>
             </div> -->
+            
+
         </div>
         <script type="text/javascript">
+            // SEARCH BY TERM DATA
             var candidate_names = {{candidate_names|safe}}; // array of candidate names
             var mentions_by_candidate = {{mentions_by_candidate}}; // array of ints, which are the number of times each candidate mentions the query
             var debate_titles = {{debate_titles|safe}};
             var mentions_by_debate = {{mentions_by_debate}}; // array of ints, which are the number of times each query is mentioned in each debate
             var interactions = {{interactions}};
 
+            // SEARCH BY CANDIDATE DATA
+            var top_ten_words = {{ten_words|safe}}; // actual words
+            var top_ten_words_counts = {{ten_words_counts}}; // num times each of top 10 words is said by that candidate
+            var respond_to_names = {{respond_names|safe}}; // names of people that candidate responds to (or doesn't)
+            var respond_to_counts = {{respond_values}};
+
+            //console.log(ten_words_counts);
+
+            // MAKE WORD CLOUD
+            function makeWordCloud(w, frequencies) {
+                var frequency_list = [];
+                for (var i=0; i<w.length; i++) {
+                    frequency_list.push({
+                        'text': w[i],
+                        'size': frequencies[i]
+                    });
+                }
+
+                // custom color scale domain values
+                var max_freq = Math.max.apply(Math, frequencies); 
+                var min_freq = Math.min.apply(Math, frequencies); 
+                var domain_values = [];
+                var num_steps = 10;
+                var fraction = (max_freq - min_freq)/num_steps;
+                for (var i=1; i<num_steps+1; i++) {
+                    domain_values.push(Math.round(fraction*i)); // whole number
+                }
+
+                //var colors = ["#B3B3B3", "#868686", "#595959", "#2C2C2C", "#000000"];
+                //console.log(domain_values);
+
+                // COLOR SCALE FOR WORDS
+                var color = d3.scale.linear()
+                        .domain([0,10,20,30,40,50,60,100,150,300,400])
+                        //.domain([0,10,30,40,60,100,150,300,400])
+                        //.domain(domain_values)
+                        .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
+                        //.range(colors);
+
+                var scale_value = 5; // make size of words smaller
+
+                d3.layout.cloud().size([850, 350])
+                        .words(frequency_list)
+                        //.rotate(function() { return ~~(Math.random()*2) * 90;}) // 0 or 90deg - from https://www.pubnub.com/blog/2014-10-09-quick-word-cloud-from-a-chatroom-with-d3js/
+                        .rotate(0)
+                        //.fontSize(function(d) { return d.size; })
+                        .fontSize(function(d) { return d.size/scale_value; })
+                        .on("end", draw)
+                        .start();
+
+                
+
+                function draw(words) {
+                    d3.select("body").append("svg")
+                    var svg = d3.select("body").append("svg")
+                            .attr("width", 850)
+                            .attr("height", 350)
+                            .attr("class", "wordcloud");
+                    var grouping = svg.append("g")
+                            // without the transform, words words would get cutoff to the left and top, they would
+                            // appear outside of the SVG area
+                            .attr("transform", "translate(320,200)")
+                    var text = grouping.selectAll("text")
+                            .data(words)
+                            .enter().append("text")
+                            .style("font-size", function(d) { return d.size + "px"; })
+                            //.style("fill", function(d, i) { return color(i); })
+                            //.style("fill", function(d, i) { return color(i); }) // COLOR SCALE
+                            .style("fill", "#000000")
+                            .attr("transform", function(d) {
+                                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                            })
+                            //.attr("transform", "translate(320,200)") // transform text
+                            .text(function(d) { return d.text; });
+                }
+            }
+			
+			/* A function to check if a file exists on the servor. In this case, we want to pull images if they exist for candidates.*/
+			function imageExists(image_url){
+
+				var http = new XMLHttpRequest();
+
+				http.open('HEAD', image_url, false);
+				http.send();
+
+				return http.status != 404;
+
+			}
+
             // MAKE BAR GRAPH 
-            /* x_values are labels for bar graphs 
+            /* x_values are labels for bar graphs, category is "Candidate mentions of" or "Debate mentions of"
                 bar plot help from https://bl.ocks.org/mbostock/3885304
             */
-            function makeBarGraph(x_values, y_values) {
+            function makeBarGraph(x_values, y_values, category) {
                 // make json array
                 var data = [];
                 for (var i = 0; i < x_values.length; i++) {
@@ -132,20 +231,168 @@
                     .attr("height", function(d) { return height - y(d.y); })
                     .attr("width", barWidth - 1);
 
+                // mouseover tooltip from http://bl.ocks.org/Caged/6476579
+                // var tip = d3.tip()
+                //     .attr('class', 'd3-tip')
+                //     .offset([-10, 0])
+                //     .html(function(d) {
+                //         return "<strong>" + d.x + "</strong>";
+                //     });
+
+                // chart.call(tip);
+
+                // text to show y values
                 bar.append("text")
-                    //.attr("x", barWidth / 2)
+                    .attr("x", barWidth / 2)
                     .attr("y", function(d) { return y(d.y) - 30; })
                     .attr("dy", ".75em")
                     .attr("fill",'red')
-                    .text(function(d) { return d.x; });
+                    .text(function(d) { return d.y; });
+
+                //text to show x values
+                bar.append("text")
+                    .attr("x", barWidth / 2)
+                    .attr("y", height) // function(d) { return y(d.y) - 30; }
+                    .attr("dy", ".75em")
+                    .attr("fill",'red')
+                    .text(function(d) { return d.x; })
+                    .attr("transform", "rotate(45 0 0)")
+                    .style("text-anchor", "start");
+
+                // add title to graph
+                chart.append("text")
+                    .attr("x", (width / 2))             
+                    .attr("y", 0 - (margin.top / 2))
+                    .attr("text-anchor", "middle")  
+                    .style("font-size", "16px") 
+                    .style("text-decoration", "underline")  
+                    .text(category + " {{searched}}");
 
             }
 
-            // query mentions by candidate
-            makeBarGraph(candidate_names, mentions_by_candidate);
 
-            // query mentions by debate
-            makeBarGraph(debate_titles, mentions_by_debate);
+
+            // MAKE RESPONSE GRAPH
+            /* names is names of candidates respond to, counts is num times query candidate responds to each candidate */
+            function makeResponseGraph(candidate, names, counts) {
+                // SET UP NODES AND LINKS
+                // nodes array
+                var nodes = [];
+                nodes.push(
+                    {
+                        'name': candidate,
+                        'responses': 0
+                    });
+                for (var i=0; i<names.length; i++) {
+                    nodes.push(
+                    {
+                        'name': names[i],
+                        'responses': counts[i]
+                    });
+                }
+
+                // links array
+                var links = [];
+                for (var i=0; i<names.length; i++) {
+                    links.push(
+                    {
+                        'source': candidate,
+                        'target': names[i]
+                    });
+                }
+
+                // save nodes and links to graph
+                var graph = {
+                    'nodes': nodes,
+                    'links': links
+                };
+
+                // MAKE GRAPH
+                var width = 960,
+                    height = 500;
+
+                var color = d3.scale.category20();
+
+                var force = d3.layout.force()
+                    .charge(-120)
+                    .linkDistance(30)
+                    .size([width, height]);
+
+                var svg = d3.select("body").append("svg")
+                    .attr("width", width)
+                    .attr("height", height);
+
+                
+                force.nodes(graph.nodes)
+                    .links(graph.links)
+                    .start();
+
+                var link = svg.selectAll(".link")
+                    .data(graph.links)
+                    .enter().append("line")
+                    .attr("class", "link")
+                    .style("stroke-width", function(d) { return Math.sqrt(d.responses); }); // make this constant line thickness, possibly?
+
+                var node = svg.selectAll(".node")
+                    .data(graph.nodes)
+                    .enter().append("circle")
+                    .attr("class", "node")
+                    .attr("r", 5)
+                    //.style("fill", function(d) { return color(d.group); }) // color by political party?
+                    .call(force.drag);
+
+                node.append("title")
+                    .text(function(d) { return d.name; });
+
+                force.on("tick", function() {
+                    link.attr("x1", function(d) { return d.source.x; })
+                        .attr("y1", function(d) { return d.source.y; })
+                        .attr("x2", function(d) { return d.target.x; })
+                        .attr("y2", function(d) { return d.target.y; });
+
+                    node.attr("cx", function(d) { return d.x; })
+                        .attr("cy", function(d) { return d.y; });
+                    });
+            }
+
+            var search_option = document.getElementsByTagName('h5')[0].innerText.split(" ")[2];
+            
+
+            // IF SEARCH BY TERM
+            if (search_option == 'terms:') {
+                // query mentions by candidate
+                makeBarGraph(candidate_names, mentions_by_candidate, "Candidate mentions of");
+                // query mentions by debate
+                makeBarGraph(debate_titles, mentions_by_debate, "Debate mentions of");
+            }
+            // IF SEARCH BY CANDIDATE
+            else if (search_option == 'candidates:') {
+			
+				//add a picture of the candidate
+				var can = document.getElementsByTagName('h5')[0].innerText.split(" ")[3];
+				var candidate = can.substring(1, can.length-1);
+				
+				var imageurl = "/static/Images/" + candidate + ".JPG";
+				console.log(imageurl);
+				console.log(imageExists(imageurl));
+				
+                if(imageExists(imageurl)){
+    				var img = document.createElement("img");
+    				img.className = "img-circle";
+    				img.src = imageurl;
+    				var src = document.getElementById("selfie");
+    				src.appendChild(img);
+				}
+				
+				// make response graph
+                console.log(candidate, respond_to_names, respond_to_counts);
+                makeResponseGraph(candidate, respond_to_names, respond_to_counts);
+
+                // make top 10 word cloud for candidate
+                makeWordCloud(top_ten_words, top_ten_words_counts);
+            }
+            
+            
 
 
         </script>
