@@ -40,10 +40,10 @@ def find_similar_advanced(query, option):
 
 # PUT THIS IN PREPROCESSING SO DON'T NEED TO DO IT EVERY TIME
 # debate data, so available throughout this script
-debate_data_file = open("./test_code/debates_top_words.json") # this data is organized by date (so debate)
-debate_data = json.load(debate_data_file)
-candidate_data_file = open("./test_code/candidates_top_words.json")
-candidate_data = json.load(candidate_data_file)
+# debate_data_file = open("./test_code/debates_top_words.json") # this data is organized by date (so debate)
+# debate_data = json.load(debate_data_file)
+# candidate_data_file = open("./test_code/candidates_top_words.json")
+# candidate_data = json.load(candidate_data_file)
 
 # # TODO: GET ALL WORDS BY DEBATE, store as debate --> all words in that debate
 # all_words_debate = {} # dictionary with date as key and words spoken as value

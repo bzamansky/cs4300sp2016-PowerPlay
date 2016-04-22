@@ -172,7 +172,7 @@ def most_spoken_words_by_candidate(candidate,n=10):
   cand_array = candidate_term_matrix.toarray()
   can_row = candidates_to_index[candidate]
   words = cand_array[can_row]
-  top = sorted(range(len(words)), key=lambda i: words[i], reverse=True)
+  top = sorted(range(len(words)), key=lambda i: words[i], reverse=True)[:n]
   top_words = {}
   for x in top:
     top_words[c_terms[x]] = cand_array[can_row,x]
@@ -183,7 +183,7 @@ def most_spoken_words_by_debate(debate,n=10):
   deb_array = debate_term_matrix.toarray()
   deb_row = debates_to_index[debate]
   words = deb_array[deb_row]
-  top = sorted(range(len(words)), key=lambda i: words[i], reverse=True)
+  top = sorted(range(len(words)), key=lambda i: words[i], reverse=True)[:n]
   top_words = {}
   for x in top:
     top_words[d_terms[x]] = deb_array[deb_row,x]
@@ -231,15 +231,22 @@ def word_spoken_most_by_candidate(word,n=10):
 #   json.dump(debates_top_words_r_u, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
 
-candidate_responses = {}
-for c in candidates:
-  candidate_responses[c] = {}
-  for c2 in candidates:
-    if c2 != c:
-      candidate_responses[c][c2] = 0
-for line in transcripts:
-  if line['prev'] in candidates:
-    candidate_responses[line['speaker']][line['prev']] += 1
+# candidate_responses = {}
+# for c in candidates:
+#   candidate_responses[c] = {}
+#   for c2 in candidates:
+#     if c2 != c:
+#       candidate_responses[c][c2] = 0
+# for line in transcripts:
+#   if line['prev'] in candidates:
+#     candidate_responses[line['speaker']][line['prev']] += 1
 
-with open('candidate_responses.json','w') as outfile:
-  json.dump(candidate_responses, outfile, sort_keys=True, indent=4, separators=(',',': '))
+# with open('candidate_responses.json','w') as outfile:
+#   json.dump(candidate_responses, outfile, sort_keys=True, indent=4, separators=(',',': '))
+
+candidates_top_ten_words = {}
+for c in candidates:
+  candidates_top_ten_words[c] = most_spoken_words_by_candidate(c)
+
+with open('candidates_top_ten_words.json', 'w') as outfile:
+  json.dump(candidates_top_ten_words, outfile, sort_keys=True, indent=4, separators=(',',': '))
