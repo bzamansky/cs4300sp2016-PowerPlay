@@ -49,7 +49,8 @@
                 {{line}}<br>
             {% endfor %} -->
 
-            <h5>Searched in {{search_option}}s: '{{searched}}'</h5>
+            <h5>Searched in {{search_option}}s: '{{searched}}'</h5> <br> <br>
+			<div id="selfie" class = "selfie"> </div>
             <br/>
             {% comment %}
             {% for value in plot %}
@@ -119,7 +120,7 @@
                 }
 
                 var color = d3.scale.linear()
-                        .domain([0,1,2,3,4,5,6,10,20,100,350])
+                        .domain([0,1,2,5,10,25,50,100,150,210,350])
                         .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
 
                 d3.layout.cloud().size([800, 300])
@@ -149,6 +150,18 @@
                             .text(function(d) { return d.text; });
                 }
             }
+			
+			/* A function to check if a file exists on the servor. In this case, we want to pull images if they exist for candidates.*/
+			function imageExists(image_url){
+
+				var http = new XMLHttpRequest();
+
+				http.open('HEAD', image_url, false);
+				http.send();
+
+				return http.status != 404;
+
+			}
 
             // MAKE BAR GRAPH 
             /* x_values are labels for bar graphs, category is "Candidate mentions of" or "Debate mentions of"
@@ -241,6 +254,24 @@
             }
             // IF SEARCH BY CANDIDATE
             else if (search_option == 'candidates:') {
+			
+				//add a picture of the candidate
+				var candidate = document.getElementsByTagName('h5')[0].innerText.split(" ")[3];
+				var candidate = candidate.substring(1, candidate.length-1);
+				
+				var imageurl = "/static/Images/" + candidate + ".JPG";
+				console.log(imageurl);
+				console.log(imageExists(imageurl));
+				if(imageExists(imageurl)){
+				
+				var img = document.createElement("img");
+				img.className = "img-circle";
+				img.src = imageurl;
+				var src = document.getElementById("selfie");
+				src.appendChild(img);
+				}
+				
+				
                 // make top 10 word cloud for candidate
                 makeWordCloud(top_ten_words, top_ten_words_counts);
             }
