@@ -142,7 +142,8 @@ for speech in transcripts:
     speeches_by_candidate[index] += speech['speech']
 
 #play with the max_df and min_df to get something we like.
-c_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words='english')
+#add ngram_range=(1,2) back to paramaters if we want them
+c_vectorizer = CountVectorizer(strip_accents='unicode',analyzer="word",lowercase=True, stop_words='english')
 c_vectorizer.fit(speeches_by_candidate)
 c_terms = c_vectorizer.get_feature_names()
 c_terms.remove('ve')
