@@ -54,6 +54,7 @@ def search_results(query, option_1, option_2):
 		total_mentions_debate = {}
 		for key in debate_data_d.keys(): #keys_d
 			#print(total_mentions_debate[key])
+			#print(debate_data_d[key][query])
 			total_mentions_debate[key] = debate_data_d[key][query]
 		for key in debate_data_r.keys():
 			total_mentions_debate[key] = debate_data_r[key][query]

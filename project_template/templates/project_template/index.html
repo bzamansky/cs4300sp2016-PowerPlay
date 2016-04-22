@@ -2,7 +2,8 @@
     <head>
         <link rel="stylesheet" href="/static/bootstrap.min.css">
         <link rel="stylesheet" href="/static/main.css">
-        <script src="//d3js.org/d3.v3.min.js"></script>
+        <script src="//d3js.org/d3.v3.min.js"></script> <!-- d3 -->
+        <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> <!-- d3.tip -->
     </head>
     
     <body>
@@ -40,7 +41,7 @@
         </form>
         
         <div class="form-inline global-search">
-            <h4>Output</h4><br>
+            <!-- <h4>Output</h4><br> -->
             {% comment %}
             {{output}}
             {% endcomment %}
@@ -52,13 +53,14 @@
 
             <h5>Searched: {{searched}}</h5>
             <br/>
+            {% comment %}
             {% for value in plot %}
                 {% for part in value %}
                 {{part}}
                 {% endfor %}
                 <br/>
             {% endfor %}
-            
+            {% endcomment %}
 
             {% comment %}
             {% for key,val in output.items %}
@@ -99,10 +101,10 @@
             var interactions = {{interactions}};
 
             // MAKE BAR GRAPH 
-            /* x_values are labels for bar graphs 
+            /* x_values are labels for bar graphs, category is "Candidate mentions of" or "Debate mentions of"
                 bar plot help from https://bl.ocks.org/mbostock/3885304
             */
-            function makeBarGraph(x_values, y_values) {
+            function makeBarGraph(x_values, y_values, category) {
                 // make json array
                 var data = [];
                 for (var i = 0; i < x_values.length; i++) {
@@ -138,22 +140,50 @@
                     .attr("height", function(d) { return height - y(d.y); })
                     .attr("width", barWidth - 1);
 
+                // mouseover tooltip from http://bl.ocks.org/Caged/6476579
+                var tip = d3.tip()
+                    .attr('class', 'd3-tip')
+                    .offset([-10, 0])
+                    .html(function(d) {
+                        return "<strong>" + d.x + "</strong>";
+                    });
+
+                chart.call(tip);
+
+                // text to show y values
                 bar.append("text")
-                    //.attr("x", barWidth / 2)
+                    .attr("x", barWidth / 2)
                     .attr("y", function(d) { return y(d.y) - 30; })
                     .attr("dy", ".75em")
                     .attr("fill",'red')
-                    .attr("transform", "rotate(90)")
-                    .style("text-anchor", "start")
-                    .text(function(d) { return d.x; });
+                    .text(function(d) { return d.y; });
+
+                //text to show x values
+                bar.append("text")
+                    .attr("x", barWidth / 2)
+                    .attr("y", height) // function(d) { return y(d.y) - 30; }
+                    .attr("dy", ".75em")
+                    .attr("fill",'red')
+                    .text(function(d) { return d.x; })
+                    .attr("transform", "rotate(45 0 0)")
+                    .style("text-anchor", "start");
+
+                // add title to graph
+                chart.append("text")
+                    .attr("x", (width / 2))             
+                    .attr("y", 0 - (margin.top / 2))
+                    .attr("text-anchor", "middle")  
+                    .style("font-size", "16px") 
+                    .style("text-decoration", "underline")  
+                    .text(category + " {{searched}}");
 
             }
 
             // query mentions by candidate
-            makeBarGraph(candidate_names, mentions_by_candidate);
+            makeBarGraph(candidate_names, mentions_by_candidate, "Candidate mentions of");
 
             // query mentions by debate
-            makeBarGraph(debate_titles, mentions_by_debate);
+            makeBarGraph(debate_titles, mentions_by_debate, "Debate mentions of");
 
 
         </script>
