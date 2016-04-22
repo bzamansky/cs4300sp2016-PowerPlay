@@ -270,6 +270,91 @@
 
             }
 
+
+
+            // MAKE RESPONSE GRAPH
+            /* names is names of candidates respond to, counts is num times query candidate responds to each candidate */
+            function makeResponseGraph(candidate, names, counts) {
+                // SET UP NODES AND LINKS
+                // nodes array
+                var nodes = [];
+                nodes.push(
+                    {
+                        'name': candidate,
+                        'responses': 0
+                    });
+                for (var i=0; i<names.length; i++) {
+                    nodes.push(
+                    {
+                        'name': names[i],
+                        'responses': counts[i]
+                    });
+                }
+
+                // links array
+                var links = [];
+                for (var i=0; i<names.length; i++) {
+                    links.push(
+                    {
+                        'source': candidate,
+                        'target': names[i]
+                    });
+                }
+
+                // save nodes and links to graph
+                var graph = {
+                    'nodes': nodes,
+                    'links': links
+                };
+
+                // MAKE GRAPH
+                var width = 960,
+                    height = 500;
+
+                var color = d3.scale.category20();
+
+                var force = d3.layout.force()
+                    .charge(-120)
+                    .linkDistance(30)
+                    .size([width, height]);
+
+                var svg = d3.select("body").append("svg")
+                    .attr("width", width)
+                    .attr("height", height);
+
+                
+                force.nodes(graph.nodes)
+                    .links(graph.links)
+                    .start();
+
+                var link = svg.selectAll(".link")
+                    .data(graph.links)
+                    .enter().append("line")
+                    .attr("class", "link")
+                    .style("stroke-width", function(d) { return Math.sqrt(d.responses); }); // make this constant line thickness, possibly?
+
+                var node = svg.selectAll(".node")
+                    .data(graph.nodes)
+                    .enter().append("circle")
+                    .attr("class", "node")
+                    .attr("r", 5)
+                    //.style("fill", function(d) { return color(d.group); }) // color by political party?
+                    .call(force.drag);
+
+                node.append("title")
+                    .text(function(d) { return d.name; });
+
+                force.on("tick", function() {
+                    link.attr("x1", function(d) { return d.source.x; })
+                        .attr("y1", function(d) { return d.source.y; })
+                        .attr("x2", function(d) { return d.target.x; })
+                        .attr("y2", function(d) { return d.target.y; });
+
+                    node.attr("cx", function(d) { return d.x; })
+                        .attr("cy", function(d) { return d.y; });
+                    });
+            }
+
             var search_option = document.getElementsByTagName('h5')[0].innerText.split(" ")[2];
             
 
@@ -299,7 +384,10 @@
     				src.appendChild(img);
 				}
 				
-				
+				// make response graph
+                console.log(candidate, respond_to_names, respond_to_counts);
+                makeResponseGraph(candidate, respond_to_names, respond_to_counts);
+
                 // make top 10 word cloud for candidate
                 makeWordCloud(top_ten_words, top_ten_words_counts);
             }
