@@ -7,14 +7,14 @@ import json
 
 #This is the scraping data!
 
-## File containing all the links to the debates
+# File containing all the links to the debates
 # all_debates_filename = "Presidential_Debates.html"
 # with open(all_debates_filename) as f:
 #   all_debates = bs4.BeautifulSoup(f)
 
-##Manually found the table that has the debate data
+# #Manually found the table that has the debate data
 # table = all_debates.find_all('table',{'class':'TABLE_WE_NEED'})
-##Getting all rows of the debate table to get the links
+# #Getting all rows of the debate table to get the links
 # links = table[0].find_all('tr')
 # all_debates = []
 # for row in links:
@@ -103,7 +103,17 @@ for file in os.listdir('debates'):
   #Debate information
   debate = file.strip(".html")
   party = debate.split("_")[0]
-  loc = " ".join(debate.split("_")[2:])
+  debate_loc_words = debate.split("_")
+  loc = " ".join(debate_loc_words[2:])
+  name = date + " " + " ".join(loc.split(" ")[2:])
+  if '"Undercard"' in debate_loc_words:
+    name += " U"
+  if party == "Democratic":
+    name += " D"
+  if party == "Republican":
+    name += " R"
+
+  transcript['name'] = name
 
   #Getting each line of the debate
   pars = tran[0].find_all('p')
