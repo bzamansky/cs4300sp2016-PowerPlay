@@ -109,43 +109,68 @@
             //console.log(ten_words_counts);
 
             // MAKE WORD CLOUD
-            function makeWordCloud(words, frequencies) {
+            function makeWordCloud(w, frequencies) {
                 var frequency_list = [];
-                for (var i=0; i<words.length; i++) {
+                for (var i=0; i<w.length; i++) {
                     frequency_list.push({
-                        'text': words[i],
+                        'text': w[i],
                         'size': frequencies[i]
                     });
                 }
 
-                var color = d3.scale.linear()
-                        .domain([0,1,2,3,4,5,6,10,15,20,100])
-                        .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
+                // custom color scale domain values
+                var max_freq = Math.max.apply(Math, frequencies); 
+                var min_freq = Math.min.apply(Math, frequencies); 
+                var domain_values = [];
+                var num_steps = 10;
+                var fraction = (max_freq - min_freq)/num_steps;
+                for (var i=1; i<num_steps+1; i++) {
+                    domain_values.push(Math.round(fraction*i)); // whole number
+                }
 
-                d3.layout.cloud().size([800, 300])
+                //var colors = ["#B3B3B3", "#868686", "#595959", "#2C2C2C", "#000000"];
+                //console.log(domain_values);
+
+                // COLOR SCALE FOR WORDS
+                var color = d3.scale.linear()
+                        .domain([0,10,20,30,40,50,60,100,150,300,400])
+                        //.domain([0,10,30,40,60,100,150,300,400])
+                        //.domain(domain_values)
+                        .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
+                        //.range(colors);
+
+
+                var scale_value = 5; // make size of words smaller
+
+                d3.layout.cloud().size([850, 350])
                         .words(frequency_list)
+                        //.rotate(function() { return ~~(Math.random()*2) * 90;}) // 0 or 90deg - from https://www.pubnub.com/blog/2014-10-09-quick-word-cloud-from-a-chatroom-with-d3js/
                         .rotate(0)
-                        .fontSize(function(d) { return d.size; })
+                        .fontSize(function(d) { return d.size/scale_value; })
                         .on("end", draw)
                         .start();
 
+                
+
                 function draw(words) {
-                    d3.select("body").append("svg")
+                    var svg = d3.select("body").append("svg")
                             .attr("width", 850)
                             .attr("height", 350)
-                            .attr("class", "wordcloud")
-                            .append("g")
+                            .attr("class", "wordcloud");
+                    var grouping = svg.append("g")
                             // without the transform, words words would get cutoff to the left and top, they would
                             // appear outside of the SVG area
                             .attr("transform", "translate(320,200)")
-                            .selectAll("text")
+                    var text = grouping.selectAll("text")
                             .data(words)
                             .enter().append("text")
                             .style("font-size", function(d) { return d.size + "px"; })
-                            .style("fill", function(d, i) { return color(i); })
+                            //.style("fill", function(d, i) { return color(i); }) // COLOR SCALE
+                            .style("fill", "#000000")
                             .attr("transform", function(d) {
                                 return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
                             })
+                            //.attr("transform", "translate(320,200)") // transform text
                             .text(function(d) { return d.text; });
                 }
             }
