@@ -106,7 +106,7 @@ for file in os.listdir('debates'):
   debate_loc_words = debate.split("_")
   loc = " ".join(debate_loc_words[2:])
   name = date + " " + " ".join(loc.split(" ")[2:])
-  if '"Undercard"' in debate_loc_words:
+  if 'Undercard' in debate_loc_words:
     name += " U"
   if party == "Democratic":
     name += " D"
