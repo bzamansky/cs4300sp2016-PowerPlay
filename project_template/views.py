@@ -98,15 +98,15 @@ def index(request):
         values_by_debate = total_mentions_debate.values()
         debate_titles = total_mentions_debate.keys()
         values_interactions = interactions.values()
-        # top_ten_words = top_ten.keys()
-        # top_ten_words_counts = top_ten.values()
-        # respond_to = responses.keys()
-        # respond_values = responses.values()
+        top_ten_words = top_ten.keys()
+        top_ten_words_counts = top_ten.values()
+        respond_to = responses.keys()
+        respond_values = responses.values()
 
     return render_to_response('project_template/index.html', 
                           {'output': output,
                           'search_option_normal': search_option, # want to know if search by candidate or term
-                          'search_option': json.dumps(search_option),
+                          'search_option': search_option,
                           # THIS IS BATYA'S MOSTLY WORKING CODE
                           'plot': cand_nums,
                           'searched': search,
@@ -117,10 +117,9 @@ def index(request):
                            'mentions_by_candidate': values_by_candidate,
                            'debate_titles': json.dumps(debate_titles),
                            'mentions_by_debate': values_by_debate,
-                           'interactions': values_interactions
+                           'interactions': values_interactions,
+                           'ten_words': json.dumps(top_ten_words),
+                           'ten_words_counts': top_ten_words_counts,
+                           'respond_names': json.dumps(respond_to),
+                           'respond_values': respond_values
                            })
-    #                        'ten_words': json.dumps(top_ten_words),
-    #                        'ten_words_counts': top_ten_words_counts,
-    #                        'respond_names': json.dumps(respond_to),
-    #                        'respond_values': respond_values
-    # 

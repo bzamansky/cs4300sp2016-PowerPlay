@@ -91,9 +91,7 @@
                     {% endcomment %}
                 </span>
             </div> -->
-            {{ten_words}}
-            <br>
-            {{ten_words_counts}}
+            
 
         </div>
         <script type="text/javascript">
@@ -105,7 +103,10 @@
             var interactions = {{interactions}};
 
             // SEARCH BY CANDIDATE DATA
-            // CHECK NOTES
+            var top_ten_words = {{ten_words|safe}}; // actual words
+            var top_ten_words_counts = {{ten_words_counts}}; // num times each of top 10 words is said by that candidate
+            var respond_to_names = {{respond_names|safe}}; // names of people that candidate responds to (or doesn't)
+            var respond_to_counts = {{respond_values}};
 
             //console.log(ten_words_counts);
 
@@ -230,22 +231,21 @@
 
             }
 
-            var search_option = {{search_option|safe}};
-            if search_option == 'term':
-                console.log('DID IT');
+            var search_option = document.getElementsByTagName('h5')[0].innerText.split(" ")[2];
+            
 
             // IF SEARCH BY TERM
-            //if search_option == 'term' {
+            if (search_option == 'terms:') {
                 // query mentions by candidate
                 makeBarGraph(candidate_names, mentions_by_candidate, "Candidate mentions of");
                 // query mentions by debate
                 makeBarGraph(debate_titles, mentions_by_debate, "Debate mentions of");
-            //}
+            }
             // IF SEARCH BY CANDIDATE
-            //else if search_option == 'candidate' {
+            else if (search_option == 'candidates:') {
                 // make top 10 word cloud for candidate
-                //makeWordCloud(top_ten_words, top_ten_words_counts);
-            //}
+                makeWordCloud(top_ten_words, top_ten_words_counts);
+            }
             
             
 
