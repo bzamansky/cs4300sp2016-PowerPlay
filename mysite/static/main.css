@@ -91,6 +91,20 @@ body {
 	background-color: #eee;
 }
 
+/* make images round*/
+
+.selfie {
+	float: left;
+    width: 200px;
+    height: 120px;
+}
+
+.img-circle {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+}
+
 .global-search {
 text-align:center;
 padding:10px;
