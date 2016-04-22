@@ -156,8 +156,8 @@ debates = []
 debate_names = []
 debates_to_index = {}
 for i,d in enumerate(debates_list):
-  debates_to_index[d['file']] = i
-  debate_names.append(d['file'])
+  debates_to_index[d['name']] = i
+  debate_names.append(d['name'])
   tran = ""
   for x in d['tran']:
     tran += x['speech']
@@ -208,10 +208,24 @@ def word_spoken_most_by_candidate(word,n=10):
 # with open('candidates_top_words.json','w') as outfile:
 #   json.dump(candidates_top_words, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
-# debates_top_words = {}
-# for d in debate_names:
-#   debates_top_words[d] = most_spoken_words_by_debate(d)
+debates_top_words_d = {}
+debates_top_words_r = {}
+debates_top_words_r_u = {}
+for d in debate_names:
+  party = d.split(" ")[-1]
+  und = d.split(" ")[-2]
+  if party == "D":
+    debates_top_words_d[d] = most_spoken_words_by_debate(d)
+  elif und == "U":
+    debates_top_words_r_u[d] = most_spoken_words_by_debate(d)
+  else:
+    debates_top_words_r[d] = most_spoken_words_by_debate(d)
 
-# with open('debates_top_words.json','w') as outfile:
-#   json.dump(debates_top_words, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+with open('debates_top_words_d.json','w') as outfile:
+  json.dump(debates_top_words_d, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
+with open('debates_top_words_r.json','w') as outfile:
+  json.dump(debates_top_words_r, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+
+with open('debates_top_words_r_u.json','w') as outfile:
+  json.dump(debates_top_words_r_u, outfile, sort_keys=True, indent=4, separators=(',', ': '))
