@@ -28,7 +28,7 @@ def index(request):
     values_interactions = None
 
     if request.GET.get('search'):
-        search = request.GET.get('search')
+        search = request.GET.get('search').lower() # make case insensitive
         search_option = request.GET.get('search_option')
         opt1 = False
         opt2 = False
@@ -56,14 +56,6 @@ def index(request):
         # except EmptyPage:
         #     output = paginator.page(paginator.num_pages)
 
-
-        # https://docs.djangoproject.com/en/dev/ref/request-response/#jsonresponse-objects
-        # save json data to file, open this file using javascript in index.html
-        # new_file_path = static('output_data_file.json')
-        # print("hi"+new_file_path)
-        # data = str(output)
-        # with open(new_file_path,'w') as outfile:
-        #     json.dump(data, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
         values_by_candidate = total_mentions_candidate.values()
         values_by_debate = total_mentions_debate.values()

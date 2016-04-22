@@ -25,19 +25,6 @@ def find_similar(q):
 	return sorted(result, key=lambda tup: tup[0])
 
 # JACKIE'S NEW CODE
-# query is a... query
-# option is either 'term' or 'candidate', from the radio button selection
-def find_similar_advanced(query, option):
-	if option == 'term':
-		transcripts = read_file(1) # read the TERM json file
-	elif option == 'candidate':
-		transcripts = read_file(1) # read the CANDIDATE json file
-	for transcript in transcripts:
-		for item in transcript:
-			m = item['text']
-			result.append(((_edit(q, m)), m))
-
-	return sorted(result, key=lambda tup: tup[0])
 
 # PUT THIS IN PREPROCESSING SO DON'T NEED TO DO IT EVERY TIME
 # debate data, so available throughout this script
@@ -60,13 +47,18 @@ def search_results(query, option_1, option_2):
 	if option_2 == True:
 		# get Total Mentions by Debate
 		# debate is key and term count is value
-		total_mentions_debate = defaultdict()
-		for key in debate_data_d.keys():
-			total_mentions_debate[key] += debate_data_d[key][query]
+		# total_mentions_debate = defaultdict()
+		# keys_d = [] # democrat debate keys
+		# for uni in debate_data_d.keys():
+		# 	keys_d.append(uni.encode('utf8'))
+		total_mentions_debate = {}
+		for key in debate_data_d.keys(): #keys_d
+			#print(total_mentions_debate[key])
+			total_mentions_debate[key] = debate_data_d[key][query]
 		for key in debate_data_r.keys():
-			total_mentions_debate[key] += debate_data_r[key][query]
+			total_mentions_debate[key] = debate_data_r[key][query]
 		for key in debate_data_r_u.keys(): 
-			total_mentions_debate[key] += debate_data_r_u[key][query]
+			total_mentions_debate[key] = debate_data_r_u[key][query]
 
 		# get Total Mentions by Candidate
 		# candidate is key and term count is value
