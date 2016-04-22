@@ -88,6 +88,7 @@
         <script type="text/javascript">
             var candidate_names = {{candidate_names|safe}}; // array of candidate names
             var mentions_by_candidate = {{mentions_by_candidate}}; // array of ints, which are the number of times each candidate mentions the query
+            var debate_titles = {{debate_titles|safe}};
             var mentions_by_debate = {{mentions_by_debate}}; // array of ints, which are the number of times each query is mentioned in each debate
             var interactions = {{interactions}};
 
@@ -142,7 +143,9 @@
 
             // query mentions by candidate
             makeBarGraph(candidate_names, mentions_by_candidate);
-            
+
+            // query mentions by debate
+            makeBarGraph(debate_titles, mentions_by_debate);
 
 
         </script>

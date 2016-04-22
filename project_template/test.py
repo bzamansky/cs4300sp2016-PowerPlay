@@ -2,6 +2,7 @@ from .models import Docs
 import os
 import Levenshtein
 import json
+from collections import defaultdict
 
 
 def read_file(n):
@@ -40,20 +41,15 @@ def find_similar_advanced(query, option):
 
 # PUT THIS IN PREPROCESSING SO DON'T NEED TO DO IT EVERY TIME
 # debate data, so available throughout this script
+# NOTE: debate word data is in 3 files (dem, rep, rep undercard) because one file too bit for GitHub :(
 debate_data_file_dem = open("./test_code/debates_top_words_d.json") # democratic debates
 debate_data_file_rep = open("./test_code/debates_top_words_r.json") # republican debates
 debate_data_file_rep_under = open("./test_code/debates_top_words_r_u.json") # republican undercard debates
-debate_data = json.load(debate_data_file)
+debate_data_d = json.load(debate_data_file_dem)
+debate_data_r = json.load(debate_data_file_rep)
+debate_data_r_u = json.load(debate_data_file_rep_under)
 candidate_data_file = open("./test_code/candidates_top_words.json")
 candidate_data = json.load(candidate_data_file)
-
-# # TODO: GET ALL WORDS BY DEBATE, store as debate --> all words in that debate
-# all_words_debate = {} # dictionary with date as key and words spoken as value
-# for debate in debate_data:
-# 	debate_words = ""
-# 	for line in debate['tran']:
-# 		debate_words = debate_words + line['speech']
-# 	all_words_debate[debate['date']] = debate_words
 
 # option_1 is T/F for candidate, option_2 is T/F for term
 def search_results(query, option_1, option_2):
@@ -64,17 +60,24 @@ def search_results(query, option_1, option_2):
 	if option_2 == True:
 		# get Total Mentions by Debate
 		# debate is key and term count is value
-		total_mentions_debate = {}
-		for key in debate_data.keys():
-			total_mentions_debate[key] = debate_data[key][query]
+		total_mentions_debate = defaultdict()
+		for key in debate_data_d.keys():
+			total_mentions_debate[key] += debate_data_d[key][query]
+		for key in debate_data_r.keys():
+			total_mentions_debate[key] += debate_data_r[key][query]
+		for key in debate_data_r_u.keys(): 
+			total_mentions_debate[key] += debate_data_r_u[key][query]
+
 		# get Total Mentions by Candidate
 		# candidate is key and term count is value
 		total_mentions_candidate = {}
 		for key in candidate_data.keys():
 			total_mentions_candidate[key] = candidate_data[key][query]
+		
 		# get Arguments and Interactions
 		interactions = {}
 		return (total_mentions_debate, total_mentions_candidate, interactions)
+	
 	return ({'nothing here':'hi'},{'nope':'nope'},{})
 	
 

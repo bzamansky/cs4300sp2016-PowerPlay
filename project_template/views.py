@@ -24,6 +24,7 @@ def index(request):
     candidates = None
     values_by_candidate = None
     values_by_debate = None
+    debate_titles = None
     values_interactions = None
 
     if request.GET.get('search'):
@@ -66,6 +67,7 @@ def index(request):
 
         values_by_candidate = total_mentions_candidate.values()
         values_by_debate = total_mentions_debate.values()
+        debate_titles = total_mentions_debate.keys()
         values_interactions = interactions.values()
 
     return render_to_response('project_template/index.html', 
@@ -78,6 +80,7 @@ def index(request):
                            # JACKIE CODE
                            'candidate_names': json.dumps(candidates),
                            'mentions_by_candidate': values_by_candidate,
+                           'debate_titles': json.dumps(debate_titles),
                            'mentions_by_debate': values_by_debate,
                            'interactions': values_interactions
                            })
