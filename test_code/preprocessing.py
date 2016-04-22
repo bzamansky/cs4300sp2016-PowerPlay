@@ -145,6 +145,8 @@ for speech in transcripts:
 c_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words='english')
 c_vectorizer.fit(speeches_by_candidate)
 c_terms = c_vectorizer.get_feature_names()
+c_terms.remove('ve')
+c_terms.remove('don')
 candidate_term_matrix = c_vectorizer.transform(speeches_by_candidate)
 
 #WE NEED TO STEM BECAUSE MEXICAN != MEXICANS
@@ -166,6 +168,8 @@ for i,d in enumerate(debates_list):
 d_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words='english')
 d_vectorizer.fit(debates)
 d_terms = d_vectorizer.get_feature_names()
+d_terms.remove('ve')
+d_terms.remove('don')
 debate_term_matrix = d_vectorizer.transform(debates)
 
 def most_spoken_words_by_candidate(candidate,n=10):
@@ -203,7 +207,7 @@ def word_spoken_most_by_candidate(word,n=10):
 
 # candidates_top_words = {}
 # for c in candidates:
-#   candidates_top_words[c] = most_spoken_words_by_candidate(c)
+#   candidates_top_words[c] = most_spoken_words_by_candidate(c,len(c_terms))
 
 # with open('candidates_top_words.json','w') as outfile:
 #   json.dump(candidates_top_words, outfile, sort_keys=True, indent=4, separators=(',', ': '))
