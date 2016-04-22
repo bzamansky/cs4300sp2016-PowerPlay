@@ -221,11 +221,11 @@ for d in debate_names:
   else:
     debates_top_words_r[d] = most_spoken_words_by_debate(d)
 
-with open('debates_top_words_d.json','w') as outfile:
-  json.dump(debates_top_words_d, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+# with open('debates_top_words_d.json','w') as outfile:
+#   json.dump(debates_top_words_d, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
-with open('debates_top_words_r.json','w') as outfile:
-  json.dump(debates_top_words_r, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+# with open('debates_top_words_r.json','w') as outfile:
+#   json.dump(debates_top_words_r, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
-with open('debates_top_words_r_u.json','w') as outfile:
-  json.dump(debates_top_words_r_u, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+# with open('debates_top_words_r_u.json','w') as outfile:
+#   json.dump(debates_top_words_r_u, outfile, sort_keys=True, indent=4, separators=(',', ': '))
