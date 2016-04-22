@@ -233,5 +233,13 @@ def word_spoken_most_by_candidate(word,n=10):
 
 candidate_responses = {}
 for c in candidates:
-  
+  candidate_responses[c] = {}
+  for c2 in candidates:
+    if c2 != c:
+      candidate_responses[c][c2] = 0
 for line in transcripts:
+  if line['prev'] in candidates:
+    candidate_responses[line['speaker']][line['prev']] += 1
+
+with open('candidate_responses.json','w') as outfile:
+  json.dump(candidate_responses, outfile, sort_keys=True, indent=4, separators=(',',': '))
