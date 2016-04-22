@@ -51,7 +51,7 @@
                 {{line}}<br>
             {% endfor %} -->
 
-            <h5>Searched: {{searched}}</h5>
+            <h5>Searched in {{search_option}}s: '{{searched}}'</h5>
             <br/>
             {% comment %}
             {% for value in plot %}
@@ -91,6 +91,10 @@
                     {% endcomment %}
                 </span>
             </div> -->
+            {{ten_words}}
+            <br>
+            {{ten_words_counts}}
+
         </div>
         <script type="text/javascript">
             // SEARCH BY TERM DATA
@@ -101,13 +105,51 @@
             var interactions = {{interactions}};
 
             // SEARCH BY CANDIDATE DATA
-            var top_ten_words = {{ten_words|safe}}; // actual words
-            var top_ten_words_counts = {{ten_words_counts}}; // num times each of top 10 words is said by that candidate
-            var respond_to_names = {{respond_names|safe}}; // names of people that candidate responds to (or doesn't)
-            var respond_to_counts = {{respond_values}};
+            // CHECK NOTES
+
+            //console.log(ten_words_counts);
 
             // MAKE WORD CLOUD
-            
+            function makeWordCloud(words, frequencies) {
+                var frequency_list = [];
+                for (var i=0; i<words.length; i++) {
+                    frequency_list.push({
+                        'text': words[i],
+                        'size': frequencies[i]
+                    });
+                }
+
+                var color = d3.scale.linear()
+                        .domain([0,1,2,3,4,5,6,10,15,20,100])
+                        .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
+
+                d3.layout.cloud().size([800, 300])
+                        .words(frequency_list)
+                        .rotate(0)
+                        .fontSize(function(d) { return d.size; })
+                        .on("end", draw)
+                        .start();
+
+                function draw(words) {
+                    d3.select("body").append("svg")
+                            .attr("width", 850)
+                            .attr("height", 350)
+                            .attr("class", "wordcloud")
+                            .append("g")
+                            // without the transform, words words would get cutoff to the left and top, they would
+                            // appear outside of the SVG area
+                            .attr("transform", "translate(320,200)")
+                            .selectAll("text")
+                            .data(words)
+                            .enter().append("text")
+                            .style("font-size", function(d) { return d.size + "px"; })
+                            .style("fill", function(d, i) { return color(i); })
+                            .attr("transform", function(d) {
+                                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                            })
+                            .text(function(d) { return d.text; });
+                }
+            }
 
             // MAKE BAR GRAPH 
             /* x_values are labels for bar graphs, category is "Candidate mentions of" or "Debate mentions of"
@@ -150,14 +192,14 @@
                     .attr("width", barWidth - 1);
 
                 // mouseover tooltip from http://bl.ocks.org/Caged/6476579
-                var tip = d3.tip()
-                    .attr('class', 'd3-tip')
-                    .offset([-10, 0])
-                    .html(function(d) {
-                        return "<strong>" + d.x + "</strong>";
-                    });
+                // var tip = d3.tip()
+                //     .attr('class', 'd3-tip')
+                //     .offset([-10, 0])
+                //     .html(function(d) {
+                //         return "<strong>" + d.x + "</strong>";
+                //     });
 
-                chart.call(tip);
+                // chart.call(tip);
 
                 // text to show y values
                 bar.append("text")
@@ -188,11 +230,24 @@
 
             }
 
-            // query mentions by candidate
-            makeBarGraph(candidate_names, mentions_by_candidate, "Candidate mentions of");
+            var search_option = {{search_option|safe}};
+            if search_option == 'term':
+                console.log('DID IT');
 
-            // query mentions by debate
-            makeBarGraph(debate_titles, mentions_by_debate, "Debate mentions of");
+            // IF SEARCH BY TERM
+            //if search_option == 'term' {
+                // query mentions by candidate
+                makeBarGraph(candidate_names, mentions_by_candidate, "Candidate mentions of");
+                // query mentions by debate
+                makeBarGraph(debate_titles, mentions_by_debate, "Debate mentions of");
+            //}
+            // IF SEARCH BY CANDIDATE
+            //else if search_option == 'candidate' {
+                // make top 10 word cloud for candidate
+                //makeWordCloud(top_ten_words, top_ten_words_counts);
+            //}
+            
+            
 
 
         </script>
