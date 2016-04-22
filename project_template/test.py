@@ -37,24 +37,31 @@ debate_data_r = json.load(debate_data_file_rep)
 debate_data_r_u = json.load(debate_data_file_rep_under)
 candidate_data_file = open("./test_code/candidates_top_words.json")
 candidate_data = json.load(candidate_data_file)
+candidate_top_words_file = open("./test_code/candidates_top_ten_words.json")
+candidate_top_ten_data = json.load(candidate_top_words_file)
+candidate_response_file = open("./test_code/candidate_responses.json")
+candidate_responses = json.load(candidate_response_file)
 
 # option_1 is T/F for candidate, option_2 is T/F for term
-def search_results(query, option_1, option_2):
+def search_results_candidate(query, option_1, option_2):
 	# if option is candidate
 	if option_1 == True:
-		pass
+		# query is the key
+		# pull the dictionary of words for that candidate
+		top_ten_words = candidate_top_ten_data[query]
+
+		# candidate responses
+		responses = candidate_responses[query]
+
+		return (top_ten_words, responses)
+
+def search_results_term(query, option_1, option_2):
 	# if option is term
 	if option_2 == True:
 		# get Total Mentions by Debate
-		# debate is key and term count is value
-		# total_mentions_debate = defaultdict()
-		# keys_d = [] # democrat debate keys
-		# for uni in debate_data_d.keys():
-		# 	keys_d.append(uni.encode('utf8'))
+		# debate date, location is key and term count is value
 		total_mentions_debate = {}
-		for key in debate_data_d.keys(): #keys_d
-			#print(total_mentions_debate[key])
-			#print(debate_data_d[key][query])
+		for key in debate_data_d.keys():
 			total_mentions_debate[key] = debate_data_d[key][query]
 		for key in debate_data_r.keys():
 			total_mentions_debate[key] = debate_data_r[key][query]
