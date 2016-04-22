@@ -22,7 +22,10 @@ def index(request):
     cand_nums=[]
     new_file_path = ''
     candidates = None
-    values = None
+    values_by_candidate = None
+    values_by_debate = None
+    values_interactions = None
+
     if request.GET.get('search'):
         search = request.GET.get('search')
         search_option = request.GET.get('search_option')
@@ -61,7 +64,9 @@ def index(request):
         # with open(new_file_path,'w') as outfile:
         #     json.dump(data, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
-        values = total_mentions_candidate.values()
+        values_by_candidate = total_mentions_candidate.values()
+        values_by_debate = total_mentions_debate.values()
+        values_interactions = interactions.values()
 
     return render_to_response('project_template/index.html', 
                           {'output': output,
@@ -72,6 +77,8 @@ def index(request):
                            'magic_url': request.get_full_path(),
                            # JACKIE CODE
                            'candidate_names': json.dumps(candidates),
-                           'mentions': values
+                           'mentions_by_candidate': values_by_candidate,
+                           'mentions_by_debate': values_by_debate,
+                           'interactions': values_interactions
                            })
     

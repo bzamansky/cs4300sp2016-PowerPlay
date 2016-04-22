@@ -40,7 +40,9 @@ def find_similar_advanced(query, option):
 
 # PUT THIS IN PREPROCESSING SO DON'T NEED TO DO IT EVERY TIME
 # debate data, so available throughout this script
-debate_data_file = open("./test_code/debates_top_words.json") # this data is organized by date (so debate)
+debate_data_file_dem = open("./test_code/debates_top_words_d.json") # democratic debates
+debate_data_file_rep = open("./test_code/debates_top_words_r.json") # republican debates
+debate_data_file_rep_under = open("./test_code/debates_top_words_r_u.json") # republican undercard debates
 debate_data = json.load(debate_data_file)
 candidate_data_file = open("./test_code/candidates_top_words.json")
 candidate_data = json.load(candidate_data_file)

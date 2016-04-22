@@ -27,6 +27,7 @@
             <div class="form-group">
                 <input id="input" type="text" name="search" class="form-control" placeholder="Your Input">
                 <!-- JACKIE'S NEW CODE -->
+                <br>
                 <input type="radio" name="search_option" value="candidate"> Search by Candidate
                 <input type="radio" name="search_option" value="term"> Search by Term
             </div>
@@ -67,6 +68,7 @@
             <!-- REMEMBER TO UNCOMMENT THIS IF NEED PAGINATOR -->
             <!-- <div class="pagination">
                 <span class="step-links">
+                    {% comment %}
                     {% if output.has_previous %}
                     <a href= "{{magic_url}}&page={{ output.previous_page_number }}">previous</a>
                     {% endif %} -->
@@ -79,114 +81,70 @@
                     {% if output.has_next %}
                     <a href= "{{magic_url}}&page={{ output.next_page_number }}">next</a>
                     {% endif %}
+                    {% endcomment %}
                 </span>
             </div> -->
         </div>
         <script type="text/javascript">
-            var candidate_names = {{candidate_names|safe}};
-            var mentions = {{mentions}};
-            var x_values = []; // names
-            var y_values = []; // # times word mentioned for each name
-            for (i=0; i<candidate_names.length; i++) {
-                x_values.push(candidate_names[i]);
-                y_values.push(mentions[i]);
+            var candidate_names = {{candidate_names|safe}}; // array of candidate names
+            var mentions_by_candidate = {{mentions_by_candidate}}; // array of ints, which are the number of times each candidate mentions the query
+            var mentions_by_debate = {{mentions_by_debate}}; // array of ints, which are the number of times each query is mentioned in each debate
+            var interactions = {{interactions}};
+
+            // MAKE BAR GRAPH 
+            /* x_values are labels for bar graphs 
+                bar plot help from https://bl.ocks.org/mbostock/3885304
+            */
+            function makeBarGraph(x_values, y_values) {
+                // make json array
+                var data = [];
+                for (var i = 0; i < x_values.length; i++) {
+                    data.push({'x':x_values[i],'y':y_values[i]});
+                }
+
+                var formatCount = d3.format(",.0f");
+
+                var margin = {top: 10, right: 30, bottom: 30, left: 30},
+                    width = 1000 - margin.left - margin.right,
+                    height = 500 - margin.top - margin.bottom;
+
+                var y = d3.scale.linear()
+                    .domain([0, d3.max(y_values)])
+                    .range([height, 0]);
+
+                var chart = d3.select("body").append("svg")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            
+                var barWidth = (width - margin.left)/ x_values.length;
+
+                var bar = chart.selectAll("g")
+                    .data(data)
+                    .enter().append("g")
+                    .attr("class","bar")
+                    .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",-20)"; });
+
+                bar.append("rect")
+                    .attr("y", function(d) { return y(d.y); })
+                    .attr("height", function(d) { return height - y(d.y); })
+                    .attr("width", barWidth - 1);
+
+                bar.append("text")
+                    //.attr("x", barWidth / 2)
+                    .attr("y", function(d) { return y(d.y) - 30; })
+                    .attr("dy", ".75em")
+                    .attr("fill",'red')
+                    .text(function(d) { return d.x; });
+
             }
-            console.log(x_values);
-            console.log(y_values);
+
+            // query mentions by candidate
+            makeBarGraph(candidate_names, mentions_by_candidate);
             
-            // MAKE HISTOGRAM
-            var formatCount = d3.format(",.0f"); // line copied from https://bl.ocks.org/mbostock/3048450
-            
-            var margin = {top: 10, right: 30, bottom: 30, left: 30},
-                width = 1000 - margin.left - margin.right,
-                height = 500 - margin.top - margin.bottom;
 
-            var y = d3.scale.linear()
-                .domain([0, d3.max(y_values)])
-                .range([height, 0]);
 
-            var chart = d3.select("body").append("svg")
-                .attr("width", width)
-                .attr("height", height)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        
-            var barWidth = (width - margin.left)/ x_values.length;
-
-            var data = []
-            for (var i = 0; i < x_values.length; i++) {
-                data.push({'name':x_values[i],'value':y_values[i]});
-            }
-
-            var bar = chart.selectAll("g")
-                .data(data)
-                .enter().append("g")
-                .attr("class","bar")
-                .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",-20)"; });
-
-            bar.append("rect")
-                .attr("y", function(d) { return y(d.value); })
-                .attr("height", function(d) { return height - y(d.value); })
-                .attr("width", barWidth - 1);
-
-            bar.append("text")
-                //.attr("x", barWidth / 2)
-                .attr("y", function(d) { return y(d.value) - 30; })
-                .attr("dy", ".75em")
-                .attr("fill",'red')
-                .text(function(d) { return d.name; });
-
-            function type(d) {
-                d.value = +d.value; // coerce to number
-                return d;
-            }
-            // var x = d3.scale.linear()
-            //     .domain([0, 1])
-            //     .range([0, width]);
-            
-            // // line copied from https://bl.ocks.org/mbostock/3048450
-            // var data = d3.layout.histogram()
-            //     .bins(x.ticks(20))
-            //     (y_values);
-            
-            // var y = d3.scale.linear()
-            //     .domain([0, d3.max(y_values)])
-            //     .range([height, 0]);
-
-            // var xAxis = d3.svg.axis()
-            //     .scale(x)
-            //     .orient("bottom");
-
-            // var svg = d3.select("body").append("svg")
-            //     .attr("width", width + margin.left + margin.right)
-            //     .attr("height", height + margin.top + margin.bottom)
-            //   .append("g")
-            //     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-            // var bar = svg.selectAll(".bar")
-            //     .data(data)
-            //   .enter().append("g")
-            //     .attr("class", "bar")
-            //     .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
-
-            // bar.append("rect")
-            //     .attr("x", 1)
-            //     .attr("width", x(data[0].dx) - 1)
-            //     .attr("height", function(d) { return height - y(d.y); });
-
-            // bar.append("text")
-            //     .attr("dy", ".75em")
-            //     .attr("y", 6)
-            //     .attr("x", x(data[0].dx) / 2)
-            //     .attr("text-anchor", "middle")
-            //     .text(function(d) { return formatCount(d.y); });
-
-            // svg.append("g")
-            //     .attr("class", "x axis")
-            //     .attr("transform", "translate(0," + height + ")")
-            //     .call(xAxis);
-                
         </script>
     </body>
 </html>
