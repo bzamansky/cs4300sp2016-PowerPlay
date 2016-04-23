@@ -231,7 +231,7 @@
                   .attr('class', 'd3-tip')
                   .offset([-10, 0])
                   .html(function(d) {
-                    return "<strong>Frequency:</strong> <span style='color:red'>" + d.y + "</span>";
+                    return "<strong>" + d.x.toUpperCase() + "</strong><br><span style='color:red'>" + d.y + "</span>";
                   })
 
                 var svg = d3.select("body").append("svg")
@@ -258,7 +258,7 @@
                     .attr("y", 6)
                     .attr("dy", ".71em")
                     .style("text-anchor", "end")
-                    .text("Frequency");
+                    .text("Number of Mentions");
 
                 svg.selectAll(".bar")
                     .data(data)
@@ -270,6 +270,31 @@
                     .attr("height", function(d) { return height - y(d.y); })
                     .on('mouseover', tip.show)
                     .on('mouseout', tip.hide);
+
+                // get query
+                var q = document.getElementsByTagName('h5')[0].innerText.split(" ")[3];
+                var query = q.substring(1, q.length-1).toUpperCase();
+                
+                // set graph title
+                if (category == 'candidate') {
+                    svg.append("text")
+                        .attr("x", width / 2 )
+                        .attr("y", -5)
+                        .style("text-anchor", "middle")
+                        .style("text-decoration", "underline")
+                        .style("font-weight", "bold")
+                        .text("Number of Times Each CANDIDATE Mentions " + query);
+                }
+                else if (category == 'debate') {
+                    svg.append("text")
+                        .attr("x", width / 2 )
+                        .attr("y", -5)
+                        .style("text-anchor", "middle")
+                        .style("text-decoration", "underline")
+                        .style("font-weight", "bold")
+                        .text("Number of Times Each DEBATE Mentions " + query);
+                }
+                
 
             }
 
@@ -364,9 +389,9 @@
             // IF SEARCH BY TERM
             if (search_option == 'terms:') {
                 // query mentions by candidate
-                makeBarGraph(candidate_names, mentions_by_candidate, "Candidate mentions of");
+                makeBarGraph(candidate_names, mentions_by_candidate, "candidate"); // candidate mentions of...
                 // query mentions by debate
-                makeBarGraph(debate_titles, mentions_by_debate, "Debate mentions of");
+                makeBarGraph(debate_titles, mentions_by_debate, "debate"); // debate mentions of...
             }
             // IF SEARCH BY CANDIDATE
             else if (search_option == 'candidates:') {
