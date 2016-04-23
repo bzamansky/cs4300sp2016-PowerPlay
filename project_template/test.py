@@ -43,10 +43,8 @@ candidate_response_file = open("./test_code/candidate_responses.json")
 candidate_responses = json.load(candidate_response_file)
 
 # COME BACK TO THIS
-# # option_1 is T/F for candidate, option_2 is T/F for term
-# def search_results_candidate(query, option_1, option_2):
-# 	# if option is candidate
-# 	if option_1 == True:
+# def search_results_candidate(query, search_option):
+# 	if search_option == "candidate":
 # 		# query is the key
 # 		# pull the dictionary of words for that candidate
 # 		top_ten_words = candidate_top_ten_data[query]
@@ -56,9 +54,8 @@ candidate_responses = json.load(candidate_response_file)
 
 # 		return (top_ten_words, responses)
 
-# def search_results_term(query, option_1, option_2):
-# 	# if option is term
-# 	if option_2 == True:
+# def search_results_term(query, search_option):
+# 	if search_option == "term":
 # 		# get Total Mentions by Debate
 # 		# debate date, location is key and term count is value
 # 		total_mentions_debate = {}

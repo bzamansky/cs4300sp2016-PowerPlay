@@ -36,16 +36,12 @@ def index(request):
     # total_mentions_debate, total_mentions_candidate, interactions = None, None, None
     # top_ten, responses = None, None
 
-    if request.GET.get('search'):
-        search = request.GET.get('search').lower() # make case insensitive
+    if 'search' in request.GET:
+        search = request.GET['search'].lower() # make case insensitive
         search_option = request.GET.get('search_option')
-        opt1 = False
-        opt2 = False
-        if search_option=="candidate": opt1 = True
-        if search_option=="term": opt2 = True
         
         # CHECK THIS: problem here? dunno...
-        # if opt2 == True: # term
+        # if search_option == "term":
             # (total_mentions_debate, total_mentions_candidate, interactions) = search_results_term(search,opt1,opt2)
             # # # THIS IS BATYA'S MOSTLY WORKING CODE
             # # output = total_mentions_candidate
@@ -57,7 +53,7 @@ def index(request):
             # values_by_debate = total_mentions_debate.values()
             # debate_titles = total_mentions_debate.keys()
             # values_interactions = interactions.values()
-        # elif opt1 == True: # candidate
+        # elif search_option == "candidate":
             # (top_ten, responses) = search_results_candidate(search, opt1, opt2)
             # top_ten_words = top_ten.keys()
             # top_ten_words_counts = top_ten.values()
@@ -67,10 +63,10 @@ def index(request):
         # print(type(output)) # make sure it's a dict for JsonResponse
         #http://stackoverflow.com/questions/30531990/matplotlib-into-a-django-template
 
-        #(total_mentions_debate, total_mentions_candidate, interactions) = search_results_term(search,opt1,opt2)
-        (total_mentions_debate, total_mentions_candidate, interactions) = search_results(search,opt1,opt2)
-        #(top_ten, responses) = search_results_candidate(search, opt1, opt2)
-        (top_ten, responses, dummy) = search_results(search, opt1, opt2)
+        #(total_mentions_debate, total_mentions_candidate, interactions) = search_results_term(search, search_option)
+        (total_mentions_debate, total_mentions_candidate, interactions) = search_results(search, search_option)
+        #(top_ten, responses) = search_results_candidate(search, search_option)
+        (top_ten, responses, dummy) = search_results(search, search_option)
         # print(top_ten)
 
         # THIS IS BATYA'S MOSTLY WORKING CODE
