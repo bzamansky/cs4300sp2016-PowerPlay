@@ -61,6 +61,9 @@
             {% if search_option == 'candidate' and not top_ten %}
                 <h5><b>Sorry, no candidate with that name found!</b></h5>
                 <br/>
+            {% elif search_option == 'term' and not mentions_by_debate %}
+                <h5><b>Sorry, that term was not found in any of the debates!</b></h5>
+                <br/>
             {% endif %}
             
 			<div id="selfie" class = "selfie"> </div>
@@ -396,10 +399,12 @@
 
             // IF SEARCH BY TERM
             if (search_option == 'terms:') {
-                // query mentions by candidate
-                makeBarGraph(candidate_names, mentions_by_candidate, "candidate"); // candidate mentions of...
-                // query mentions by debate
-                makeBarGraph(debate_titles, mentions_by_debate, "debate"); // debate mentions of...
+                {% if mentions_by_debate %}
+                    // query mentions by candidate
+                    makeBarGraph(candidate_names, mentions_by_candidate, "candidate"); // candidate mentions of...
+                    // query mentions by debate
+                    makeBarGraph(debate_titles, mentions_by_debate, "debate"); // debate mentions of...
+                {% endif %}
             }
             // IF SEARCH BY CANDIDATE
             else if (search_option == 'candidates:') {

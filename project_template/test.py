@@ -110,8 +110,11 @@ def search_results(query, search_option):
         for key in candidate_data:
             total_mentions_candidate[key] = candidate_data[key].get(query, 0)
         
-        # get Arguments and Interactions
-        interactions = {}
-        return (total_mentions_debate, total_mentions_candidate, interactions)
+        if any(total_mentions_debate.values()):
+            # get Arguments and Interactions
+            interactions = {}
+            return (total_mentions_debate, total_mentions_candidate, interactions)
+        else:
+            return {}, {}, {}
     
     return ({'nothing here':'hi'},{'nope':'nope'},{})
