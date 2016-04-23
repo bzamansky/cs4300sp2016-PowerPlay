@@ -7,8 +7,10 @@
 		<script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script>
         <link rel='shortcut icon' href='/static/Images/favicon.ico' type='image/x-icon'/ >
     </head>
-    
+
+	
     <body>
+	<div class="header"> </div>
        <div class="topcorner">
             <p>Rebecca Mozdy (rlm393), Daniel Rong (ddr42), Jacqueline Viola (jlv78), Batya Zamansky (bz82)</p>
 			<p>Power Of Speech</p>
@@ -16,17 +18,14 @@
 	<br>         
         <form class="form-inline global-search" method='GET'>
             <h1 style="font-size: 55px; font-family:Futura; color: #4285F4">
-                Power of Speech
+                Power o <h1 style="color:red; font-size: 55px; font-family:Futura;">f Speech</h1>
 
             </h1>
             
             <br><br>
             
             <div class="form-group">
-                <input id="input" type="text" name="search" class="form-control" placeholder="Your Input">            <button type="submit" class="btn btn-info"> Go! </button>
-                <!-- JACKIE'S NEW CODE -->
-                <br>
-				<div>
+							<div>
                     <input type="radio" name="search_option" value="candidate"id="radio2" class="radio"/>
     				<label for="radio2"> Search by Candidate </label>
 				</div>
@@ -34,7 +33,11 @@
 				<div>
                     <input type="radio" name="search_option" value="term"id="radio3" class="radio"/>
                     <label for="radio3"> Search by Term </label>
-				</div>
+				</div> <br> 
+                <input id="input" type="text" name="search" class="form-control" placeholder="Your Input">            <button type="submit" class="btn btn-info"> Go! </button>
+                <!-- JACKIE'S NEW CODE -->
+                <br>
+
             </div>
 
         </form>
