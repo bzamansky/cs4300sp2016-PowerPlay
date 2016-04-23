@@ -58,7 +58,7 @@
             <h5>Searched in {{search_option}}s: '{{searched}}'</h5>
             <br/><br/>
             
-            {% if search_option == 'candidate' and not top_ten %}
+            {% if search_option == 'candidate' and not ten_words_counts %}
                 <h5><b>Sorry, no candidate with that name found!</b></h5>
                 <br/>
             {% elif search_option == 'term' and not mentions_by_debate %}
