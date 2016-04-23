@@ -149,11 +149,11 @@ color: #4285F4;
 }
 
 .bar {
-  fill: blue;
+  fill: #4285F4;
 }
 
 .bar:hover {
-  fill: red ;
+  fill: #d93232;
 }
 
 .x.axis path {
