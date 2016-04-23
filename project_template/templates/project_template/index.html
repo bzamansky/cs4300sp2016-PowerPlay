@@ -53,7 +53,14 @@
                 {{line}}<br>
             {% endfor %} -->
 
-            <h5>Searched in {{search_option}}s: '{{searched}}'</h5> <br> <br>
+            <h5>Searched in {{search_option}}s: '{{searched}}'</h5>
+            <br/><br/>
+            
+            {% if search_option == 'candidate' and not top_ten %}
+                <h5><b>Sorry, no candidate with that name found!</b></h5>
+                <br/>
+            {% endif %}
+            
 			<div id="selfie" class = "selfie"> </div>
             <br/>
             {% comment %}

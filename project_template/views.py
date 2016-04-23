@@ -105,7 +105,6 @@ def index(request):
 
     return render_to_response('project_template/index.html', 
                           {'output': output,
-                          'search_option_normal': search_option, # want to know if search by candidate or term
                           'search_option': search_option,
                           # THIS IS BATYA'S MOSTLY WORKING CODE
                           'plot': cand_nums,
