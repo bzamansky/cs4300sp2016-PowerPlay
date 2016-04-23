@@ -151,20 +151,21 @@
 
                 // COLOR SCALE FOR WORDS
                 var color = d3.scale.linear()
-                        .domain([0,10,20,30,40,50,60,100,150,300,400])
+                        // .domain([0,10,20,30,40,50,60,100,150,300,400]) // domain for non-tfidf values
+                        .domain([0.10, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.20, 0.22, 0.30]) // for tfidf values
                         //.domain([0,10,30,40,60,100,150,300,400])
                         //.domain(domain_values)
                         .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
                         //.range(colors);
 
-                var scale_value = 5; // make size of words smaller
+                var scale_value = 150; // make size of words smaller
 
                 d3.layout.cloud().size([850, 350])
                         .words(frequency_list)
                         //.rotate(function() { return ~~(Math.random()*2) * 90;}) // 0 or 90deg - from https://www.pubnub.com/blog/2014-10-09-quick-word-cloud-from-a-chatroom-with-d3js/
                         .rotate(0)
                         //.fontSize(function(d) { return d.size; })
-                        .fontSize(function(d) { return d.size/scale_value; })
+                        .fontSize(function(d) { return d.size*scale_value; }) // need to make text bigger
                         .on("end", draw)
                         .start();
 
@@ -182,7 +183,7 @@
                             .attr("transform", "translate(320,200)")
                     var text = grouping.selectAll("text")
                             .data(words)
-                            .enter().append("text")
+                            .enter().append("text").attr("class", "wordcloud_text")
                             .style("font-size", function(d) { return d.size + "px"; })
                             //.style("fill", function(d, i) { return color(i); })
                             //.style("fill", function(d, i) { return color(i); }) // COLOR SCALE
@@ -191,7 +192,15 @@
                                 return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
                             })
                             //.attr("transform", "translate(320,200)") // transform text
-                            .text(function(d) { return d.text; });
+                            .text(function(d) { return d.text; })
+                            .on("mouseover", function() {
+                                d3.select(this).style("fill", "#4285F4")
+                                    .style("font-size", "75px");
+                            })
+                            .on("mouseout", function() {
+                                d3.select(this).style("fill", "#000000")
+                                    .style("font-size", function(d) { return d.size + "px"; });
+                            });
                 }
             }
 			
