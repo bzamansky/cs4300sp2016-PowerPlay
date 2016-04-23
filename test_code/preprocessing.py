@@ -250,12 +250,12 @@ def word_spoken_most_by_candidate(word,n=10):
 #   json.dump(candidate_responses, outfile, sort_keys=True, indent=4, separators=(',',': '))
 
 #tf_idf
-ct_vectorizer = TfidfVectorizer(strip_accents='unicode',analyzer="word",lowercase=True, stop_words='english')
-ct_vectorizer.fit(speeches_by_candidate)
-ct_terms = ct_vectorizer.get_feature_names()
-ct_terms.remove('ve')
-ct_terms.remove('don')
-candidate_term_t_matrix = ct_vectorizer.transform(speeches_by_candidate)
+# ct_vectorizer = TfidfVectorizer(strip_accents='unicode',analyzer="word",lowercase=True, stop_words='english')
+# ct_vectorizer.fit(speeches_by_candidate)
+# ct_terms = ct_vectorizer.get_feature_names()
+# ct_terms.remove('ve')
+# ct_terms.remove('don')
+# candidate_term_t_matrix = ct_vectorizer.transform(speeches_by_candidate)
 
 def most_spoken_words_by_candidate_tfidf(candidate,n=10):
   cand_array = candidate_term_t_matrix.toarray()
@@ -268,9 +268,16 @@ def most_spoken_words_by_candidate_tfidf(candidate,n=10):
     #top_words.append((c_terms[x],cand_array[can_row,x]))
   return top_words
 
+# candidates_top_ten_words_tfidf = {}
+# for c in candidates:
+#   candidates_top_ten_words_tfidf[c] = most_spoken_words_by_candidate_tfidf(c)
+
+# with open('candidates_top_ten_words_tfidf.json', 'w') as outfile:
+#   json.dump(candidates_top_ten_words_tfidf, outfile, sort_keys=True, indent=4, separators=(',',': '))
+
 candidates_top_ten_words = {}
 for c in candidates:
-  candidates_top_ten_words[c] = most_spoken_words_by_candidate_tfidf(c)
+  candidates_top_ten_words[c] = most_spoken_words_by_candidate(c)
 
 with open('candidates_top_ten_words.json', 'w') as outfile:
   json.dump(candidates_top_ten_words, outfile, sort_keys=True, indent=4, separators=(',',': '))
