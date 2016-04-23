@@ -3,9 +3,63 @@
         <link rel="stylesheet" href="/static/bootstrap.min.css">
         <link rel="stylesheet" href="/static/main.css">
         <script src="//d3js.org/d3.v3.min.js"></script> <!-- d3 -->
-        <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> <!-- d3.tip --> 
+        <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> <!-- tooltip -->
 		<script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script>
         <link rel='shortcut icon' href='/static/Images/favicon.ico' type='image/x-icon'/ >
+        <style>
+
+            body {
+              font: 10px sans-serif;
+            }
+
+            .axis path,
+            .axis line {
+              fill: none;
+              stroke: #000;
+              shape-rendering: crispEdges;
+            }
+
+            .bar {
+              fill: blue;
+            }
+
+            .bar:hover {
+              fill: red ;
+            }
+
+            .x.axis path {
+              display: none;
+            }
+
+            .d3-tip {
+              line-height: 1;
+              font-weight: bold;
+              padding: 12px;
+              background: rgba(0, 0, 0, 0.8);
+              color: #fff;
+              border-radius: 2px;
+            }
+
+            /* Creates a small triangle extender for the tooltip */
+            .d3-tip:after {
+              box-sizing: border-box;
+              display: inline;
+              font-size: 10px;
+              width: 100%;
+              line-height: 1;
+              color: rgba(0, 0, 0, 0.8);
+              content: "\25BC";
+              position: absolute;
+              text-align: center;
+            }
+
+            /* Style northward tooltips differently */
+            .d3-tip.n:after {
+              margin: -1px 0 0 0;
+              top: 100%;
+              left: 0;
+            }
+        </style>
     </head>
     
     <body>
@@ -232,14 +286,14 @@
                     .attr("width", barWidth - 1);
 
                 // mouseover tooltip from http://bl.ocks.org/Caged/6476579
-                // var tip = d3.tip()
-                //     .attr('class', 'd3-tip')
-                //     .offset([-10, 0])
-                //     .html(function(d) {
-                //         return "<strong>" + d.x + "</strong>";
-                //     });
+                var tip = d3.tip()
+                    .attr('class', 'd3-tip')
+                    .offset([-10, 0])
+                    .html(function(d) {
+                        return "<strong>" + d.x + "</strong> said word <br><strong>" + d.y + "</strong> times";
+                    });
 
-                // chart.call(tip);
+                chart.call(tip);
 
                 // text to show y values
                 bar.append("text")
@@ -252,11 +306,11 @@
                 //text to show x values
                 bar.append("text")
                     .attr("x", barWidth / 2)
-                    .attr("y", height) // function(d) { return y(d.y) - 30; }
+                    .attr("y", function(d) { return y(d.y/2) - 30; }) // height
                     .attr("dy", ".75em")
                     .attr("fill",'red')
                     .text(function(d) { return d.x; })
-                    .attr("transform", "rotate(45 0 0)")
+                    //.attr("transform", "rotate(45 0 0)")
                     .style("text-anchor", "start");
 
                 // add title to graph
@@ -266,7 +320,9 @@
                     .attr("text-anchor", "middle")  
                     .style("font-size", "16px") 
                     .style("text-decoration", "underline")  
-                    .text(category + " {{searched}}");
+                    .text(category + " {{searched}}")
+                    .on('mouseover', tip.show)
+                    .on('mouseout', tip.hide);
 
             }
 
@@ -373,8 +429,8 @@
 				var candidate = can.substring(1, can.length-1);
 				
 				var imageurl = "/static/Images/" + candidate + ".JPG";
-				console.log(imageurl);
-				console.log(imageExists(imageurl));
+				// console.log(imageurl);
+				// console.log(imageExists(imageurl));
 				
                 if(imageExists(imageurl)){
     				var img = document.createElement("img");
@@ -385,7 +441,7 @@
 				}
 				
 				// make response graph
-                console.log(candidate, respond_to_names, respond_to_counts);
+                //console.log(candidate, respond_to_names, respond_to_counts);
                 //makeResponseGraph(candidate, respond_to_names, respond_to_counts);
 
                 // make top 10 word cloud for candidate
