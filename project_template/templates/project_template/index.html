@@ -6,6 +6,7 @@
         <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> <!-- tooltip -->
 		<script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script>
         <link rel='shortcut icon' href='/static/Images/favicon.ico' type='image/x-icon'/ >
+        
     </head>
 
 	
@@ -24,17 +25,17 @@
             <br><br>
             
             <div class="form-group">
-                <input id="input" type="text" name="search" class="form-control" placeholder="Your Input">
+                <input id="input" type="text" name="search" class="form-control" placeholder="Your Input" value="{{searched}}">
                 <button type="submit" class="btn btn-info"> Go! </button>
                 <!-- JACKIE'S NEW CODE -->
                 <br>
 				<div>
-                    <input type="radio" name="search_option" value="candidate" id="radio2" class="radio"/>
+                    <input type="radio" name="search_option" value="candidate" id="radio2" class="radio" {% if search_option != 'term' %}checked{% endif %}/>
     				<label for="radio2"> Search by Candidate </label>
 				</div>
 				
 				<div>
-                    <input type="radio" name="search_option" value="term" id="radio3" class="radio"/>
+                    <input type="radio" name="search_option" value="term" id="radio3" class="radio" {% if search_option == 'term' %}checked{% endif %}/>
                     <label for="radio3"> Search by Term </label>
 				</div> 
 
