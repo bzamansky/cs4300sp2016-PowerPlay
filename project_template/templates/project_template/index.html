@@ -436,7 +436,16 @@
     				img.className = "img-circle";
     				img.src = imageurl;
     				var src = document.getElementById("selfie");
-    				src.appendChild(img);
+                    if(imageurl.split("/")[3].split(".")[0] == 'trump'){
+                        var a = document.createElement("a");
+                        a.href = 'http://trumpdonald.org/';
+                        a.target = "_blank";
+                        a.appendChild(img)
+                        src.appendChild(a);
+                    }
+                    else{
+                        src.appendChild(img);
+                    }
 				}
 				
 				// make response graph
