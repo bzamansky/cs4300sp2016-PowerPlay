@@ -11,7 +11,11 @@ var top_ten_words_counts = {{ten_words_counts}}; // num times each of top 10 wor
 var respond_to_names = {{respond_names|safe}}; // names of people that candidate responds to (or doesn't)
 var respond_to_counts = {{respond_values}};
 
-//console.log(ten_words_counts);
+// DEMOCRAT NAMES
+var dem_names = ["clinton", "sanders", "o'malley", "chafee", "webb"];
+
+// REPUBLICAN NAMES
+var rep_names = ["cruz", "kasich", "trump", "rubio", "bush", "christie", "fiorina", "santorum", "paul", "huckabee", "pataki", "graham", "jindal", "walker", "perry"];
 
 // MAKE WORD CLOUD
 function makeWordCloud(w, frequencies) {
@@ -94,12 +98,12 @@ function makeWordCloud(w, frequencies) {
 /* A function to check if a file exists on the servor. In this case, we want to pull images if they exist for candidates.*/
 function imageExists(image_url){
 
-	var http = new XMLHttpRequest();
+    var http = new XMLHttpRequest();
 
-	http.open('HEAD', image_url, false);
-	http.send();
+    http.open('HEAD', image_url, false);
+    http.send();
 
-	return http.status != 404;
+    return http.status != 404;
 
 }
 
@@ -135,11 +139,24 @@ function makeBarGraph(x_values, y_values, category) {
         .orient("left");
 
     var tip = d3.tip()
-      .attr('class', 'd3-tip')
-      .offset([-10, -50])
-      .html(function(d) {
-        return "<strong>" + d.x.toUpperCase() + "</strong><br><span style='color:red'>" + d.y + "</span>";
-      });
+        .attr('class', 'd3-tip')
+        .offset([-10, -50])
+        .html(function(d) {
+            // if candidate is a democrat
+            if (dem_names.indexOf(d.x) != -1){
+                var color = "#4285F4";
+            }
+            // if candidate is a republican
+            else if (rep_names.indexOf(d.x) != -1) {
+                var color = "#d93232";
+            }
+            // if it's a debate date and location
+            else {
+                var color = "red";
+            }
+            var tool_text = "<strong>" + d.x.toUpperCase() + "</strong><br><span style='color:" + color + "'>" + d.y + "</span>";
+            return tool_text;
+        });
 
     var svg = d3.select("body")
                 .append("div")
@@ -173,11 +190,35 @@ function makeBarGraph(x_values, y_values, category) {
     svg.selectAll(".bar")
         .data(data)
         .enter().append("rect")
-        .attr("class", "bar")
+        // set class, in main.css make color of bar accordingly
+        .attr("class", function(d) {
+            // if candidate is a democrat
+            if (dem_names.indexOf(d.x) != -1){
+                class_text = "bar-dem";
+            }
+            // if candidate is a republican
+            else if (rep_names.indexOf(d.x) != -1) {
+                class_text = "bar-rep";
+            }
+            // if it's a debate date and location
+            else {
+                class_text = "bar";
+            }
+            return class_text;
+        })
         .attr("x", function(d) { return x(d.x); })
         .attr("width", x.rangeBand())
         .attr("y", function(d) { return y(d.y); })
-        .attr("height", function(d) { return height - y(d.y); })
+        .attr("height", function(d) {
+            // if height not 0
+            if (d.y != 0) {
+                return height - y(d.y);
+            }
+            // if height is 0, we still want users to be able to see the data
+            else {
+                return 5;
+            }
+        })
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide);
 
@@ -310,19 +351,19 @@ if (search_option == 'terms:') {
 // IF SEARCH BY CANDIDATE
 else if (search_option == 'candidates:') {
 
-	//add a picture of the candidate
-	var can = document.getElementsByTagName('h5')[0].innerText.split(" ")[3];
-	var candidate = can.substring(1, can.length-1);
-	
-	var imageurl = "/static/Images/" + candidate + ".jpg";
-	// console.log(imageurl);
-	// console.log(imageExists(imageurl));
-	
+    //add a picture of the candidate
+    var can = document.getElementsByTagName('h5')[0].innerText.split(" ")[3];
+    var candidate = can.substring(1, can.length-1);
+    
+    var imageurl = "/static/Images/" + candidate + ".jpg";
+    // console.log(imageurl);
+    // console.log(imageExists(imageurl));
+    
     if(imageExists(imageurl)){
-		var img = document.createElement("img");
-		img.className = "img-circle";
-		img.src = imageurl;
-		var src = document.getElementById("selfie");
+        var img = document.createElement("img");
+        img.className = "img-circle";
+        img.src = imageurl;
+        var src = document.getElementById("selfie");
         if(imageurl.split("/")[3].split(".")[0] == 'trump'){
             var a = document.createElement("a");
             a.href = 'http://trumpdonald.org/';
@@ -333,9 +374,9 @@ else if (search_option == 'candidates:') {
         else{
             src.appendChild(img);
         }
-	}
-	
-	// make response graph
+    }
+    
+    // make response graph
     //console.log(candidate, respond_to_names, respond_to_counts);
     //makeResponseGraph(candidate, respond_to_names, respond_to_counts);
 
