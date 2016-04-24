@@ -149,11 +149,27 @@ color: #4285F4;
 }
 
 .bar {
-  fill: #4285F4;
+  fill: gray;
+}
+
+.bar-dem {
+	fill: #4285F4;
+}
+
+.bar-rep {
+	fill: #d93232;
 }
 
 .bar:hover {
-  fill: #d93232;
+  fill: orange;
+}
+
+.bar-dem:hover {
+  fill: orange;
+}
+
+.bar-rep:hover {
+  fill: orange;
 }
 
 .x.axis path {

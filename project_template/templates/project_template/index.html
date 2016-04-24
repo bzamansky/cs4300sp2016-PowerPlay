@@ -3,9 +3,10 @@
         <link rel="stylesheet" href="/static/bootstrap.min.css">
         <link rel="stylesheet" href="/static/main.css">
         <script src="//d3js.org/d3.v3.min.js"></script> <!-- d3 -->
-        <script src="/static/d3.tip.v0.6.3.js"></script>
-        
-		<script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script>
+        <script src="/static/d3.tip.v0.6.3.js"></script> <!-- tooltip -->
+		<script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> <!-- word cloud -->
+        <!-- load script.js here -->
+        <!-- main javascript -->
         <link rel='shortcut icon' href='/static/Images/favicon.ico' type='image/x-icon'/ >
         <title>Power of Speech</title>
         
@@ -124,7 +125,11 @@
             var respond_to_names = {{respond_names|safe}}; // names of people that candidate responds to (or doesn't)
             var respond_to_counts = {{respond_values}};
 
-            //console.log(ten_words_counts);
+            // DEMOCRAT NAMES
+            var dem_names = ["clinton", "sanders", "o'malley", "chafee", "webb"];
+
+            // REPUBLICAN NAMES
+            var rep_names = ["cruz", "kasich", "trump", "rubio", "bush", "christie", "fiorina", "santorum", "paul", "huckabee", "pataki", "graham", "jindal", "walker", "perry"];
 
             // MAKE WORD CLOUD
             function makeWordCloud(w, frequencies) {
@@ -248,11 +253,24 @@
                     .orient("left");
 
                 var tip = d3.tip()
-                  .attr('class', 'd3-tip')
-                  .offset([-10, -50])
-                  .html(function(d) {
-                    return "<strong>" + d.x.toUpperCase() + "</strong><br><span style='color:red'>" + d.y + "</span>";
-                  });
+                    .attr('class', 'd3-tip')
+                    .offset([-10, -50])
+                    .html(function(d) {
+                        // if candidate is a democrat
+                        if (dem_names.indexOf(d.x) != -1){
+                            var color = "#4285F4";
+                        }
+                        // if candidate is a republican
+                        else if (rep_names.indexOf(d.x) != -1) {
+                            var color = "#d93232";
+                        }
+                        // if it's a debate date and location
+                        else {
+                            var color = "red";
+                        }
+                        var tool_text = "<strong>" + d.x.toUpperCase() + "</strong><br><span style='color:" + color + "'>" + d.y + "</span>";
+                        return tool_text;
+                    });
 
                 var svg = d3.select("body")
                             .append("div")
@@ -286,11 +304,35 @@
                 svg.selectAll(".bar")
                     .data(data)
                     .enter().append("rect")
-                    .attr("class", "bar")
+                    // set class, in main.css make color of bar accordingly
+                    .attr("class", function(d) {
+                        // if candidate is a democrat
+                        if (dem_names.indexOf(d.x) != -1){
+                            class_text = "bar-dem";
+                        }
+                        // if candidate is a republican
+                        else if (rep_names.indexOf(d.x) != -1) {
+                            class_text = "bar-rep";
+                        }
+                        // if it's a debate date and location
+                        else {
+                            class_text = "bar";
+                        }
+                        return class_text;
+                    })
                     .attr("x", function(d) { return x(d.x); })
                     .attr("width", x.rangeBand())
                     .attr("y", function(d) { return y(d.y); })
-                    .attr("height", function(d) { return height - y(d.y); })
+                    .attr("height", function(d) {
+                        // if height not 0
+                        if (d.y != 0) {
+                            return height - y(d.y);
+                        }
+                        // if height is 0, we still want users to be able to see the data
+                        else {
+                            return 5;
+                        }
+                    })
                     .on('mouseover', tip.show)
                     .on('mouseout', tip.hide);
 
