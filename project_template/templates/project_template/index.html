@@ -229,7 +229,7 @@
                 // make json array
                 var data = [];
                 if (category == "candidate"){
-                    tmp = [];
+                    var tmp = [];
                     for (var i = 0; i < x_values.length; i++) {
                         tmp.push([x_values[i],y_values[i]]);
                     }
@@ -239,8 +239,18 @@
                     }
                 }
                 else{
+                    var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+                    var tmp = []
                     for (var i = 0; i < x_values.length; i++) {
-                        data.push({'x':x_values[i],'y':y_values[i]});
+                        var date_parts = x_values[i].split(" ");
+                        var date = new Date(parseInt(date_parts[2]),months.indexOf(date_parts[0]),parseInt(date_parts[1].replace(/,/g, "")));
+                        tmp.push([date,x_values[i],y_values[i]]);
+                    }
+                    tmp.sort(function(a,b){
+                        return new Date(a[0]) - new Date(b[0]);
+                    })
+                    for (var i = 0; i < tmp.length; i++) {
+                        data.push({'x':tmp[i][1],'y':tmp[i][2]});
                     }
                 }
 
