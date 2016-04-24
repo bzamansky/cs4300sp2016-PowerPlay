@@ -222,14 +222,26 @@
 			}
 
             // MAKE BAR GRAPH 
-            /* x_values are labels for bar graphs, category is "Candidate mentions of" or "Debate mentions of"
+            /* x_values are labels for bar graphs, category is "candidate" or "debate"
                 bar plot help from https://bl.ocks.org/mbostock/3885304
             */
             function makeBarGraph(x_values, y_values, category) {
                 // make json array
                 var data = [];
-                for (var i = 0; i < x_values.length; i++) {
-                    data.push({'x':x_values[i],'y':y_values[i]});
+                if (category == "candidate"){
+                    tmp = [];
+                    for (var i = 0; i < x_values.length; i++) {
+                        tmp.push([x_values[i],y_values[i]]);
+                    }
+                    tmp.sort();
+                    for (var i = 0; i < tmp.length; i++) {
+                        data.push({'x':tmp[i][0],'y':tmp[i][1]});
+                    }
+                }
+                else{
+                    for (var i = 0; i < x_values.length; i++) {
+                        data.push({'x':x_values[i],'y':y_values[i]});
+                    }
                 }
 
                 var margin = {top: 40, right: 20, bottom: 30, left: 40},
