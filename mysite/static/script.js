@@ -8,7 +8,7 @@ var rep_names = ["cruz", "kasich", "trump", "rubio", "bush", "christie", "fiorin
 
 // MAKE WORD CLOUD
 /* w is top words by that candidate, frequencies is number of times each word in w is used by candidate */
-function makeWordCloud(w, frequencies) {
+function makeWordCloud(candidate, w, frequencies) {
     var frequency_list = [];
     for (var i=0; i<w.length; i++) {
         frequency_list.push({
@@ -85,11 +85,11 @@ function makeWordCloud(w, frequencies) {
                 });
         svg.append("text")
             .attr("x", width / 2 )
-            .attr("y", -5)
+            .attr("y", 50)
             .style("text-anchor", "middle")
             .style("text-decoration", "underline")
             .style("font-weight", "bold")
-            .text("Top Words Used");
+            .text("Top Words Used by " + candidate.toUpperCase());
 
     }
 }
@@ -266,21 +266,11 @@ function makeBarGraph(x_values, y_values, category) {
             .style("font-weight", "bold")
             .text("Number of Times Each DEBATE Mentions " + query);
     }
-    // else if (category == 'search_candidate') {
-    //     svg.append("text")
-    //         .attr("x", width / 2 )
-    //         .attr("y", -5)
-    //         .style("text-anchor", "middle")
-    //         .style("text-decoration", "underline")
-    //         .style("font-weight", "bold")
-    //         .text("Number of Times " + query + " Responds to Other Candidates");
-    // }
     
     d3.select("body").append("br");
     d3.select("body").append("br");
 
 }
-
 
 
 // MAKE RESPONSE GRAPH
@@ -329,8 +319,6 @@ function makeResponseGraph(candidate, names, counts) {
         'links': links
     };
 
-    console.log(graph.nodes);
-
     // make links
     for (var i = 0; i < counts.length; i++) {
         var target_node = graph.nodes[i+1]; // exclude the first node, which is the query candidate
@@ -342,9 +330,6 @@ function makeResponseGraph(candidate, names, counts) {
             'weight': counts[i]
         });
     };
-
-    
-
 
     // MAKE GRAPH
     var width = 960,
@@ -361,7 +346,6 @@ function makeResponseGraph(candidate, names, counts) {
         .attr("width", width)
         .attr("height", height);
 
-    
     force.nodes(graph.nodes)
         .links(graph.links)
         .start();
@@ -390,10 +374,22 @@ function makeResponseGraph(candidate, names, counts) {
         // }) // color by political party
         .call(force.drag);
 
+    // shows candidate name when hover over node
     node.append("title")
         .text(function(d) { return d.name; });
+
+    // shows # responses when hover over link
     link.append("title")
         .text(function(d) { return "responses: " + d.weight; });
+
+    // title for network graph
+    svg.append("text")
+        .attr("x", width / 2 )
+        .attr("y", 100)
+        .style("text-anchor", "middle")
+        .style("text-decoration", "underline")
+        .style("font-weight", "bold")
+        .text("Number of Times " + candidate.toUpperCase() + " Responds to Other Candidates");
 
     force.on("tick", function() {
         link.attr("x1", function(d) { return d.source.x; })

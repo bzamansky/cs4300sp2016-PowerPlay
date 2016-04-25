@@ -172,13 +172,10 @@
                 }
                 
                 // make response graph for candidate
-                //console.log(candidate, respond_to_names, respond_to_counts);
                 makeResponseGraph(candidate, respond_to_names, respond_to_counts);
-                // make response bar graph
-                //makeBarGraph(respond_to_names, respond_to_counts, 'search_candidate');
 
                 // make top 10 word cloud for candidate
-                makeWordCloud(top_ten_words, top_ten_words_counts);
+                makeWordCloud(candidate, top_ten_words, top_ten_words_counts);
             }
 
         </script>
