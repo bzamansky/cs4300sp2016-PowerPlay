@@ -68,7 +68,6 @@
                 <br/>
             {% endif %}
             
-			<div id="selfie" class = "selfie"> </div>
             <br/>
             {% comment %}
             {% for value in plot %}
@@ -111,6 +110,11 @@
             
 
         </div>
+
+        <div class="candidate_viz">
+            <div id="selfie" class = "selfie"> </div>
+        </div>
+
         <script type="text/javascript">
             // SEARCH BY TERM DATA
             var candidate_names = {{candidate_names|safe}}; // array of candidate names
@@ -177,7 +181,7 @@
                 
 
                 function draw(words) {
-                    var svg = d3.select("body").append("svg")
+                    var svg = d3.select(".candidate_viz").append("svg")
                             .attr("width", 700)
                             .attr("height", 350)
                             .attr("class", "wordcloud");
