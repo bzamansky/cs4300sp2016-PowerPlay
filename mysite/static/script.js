@@ -84,7 +84,7 @@ function makeWordCloud(candidate, w, frequencies) {
                         .style("font-size", function(d) { return d.size + "px"; });
                 })
                 .on("click",function(d){
-                    wordClick(d.text);
+                    wordClick(d.text,candidate);
                 });
         svg.append("text")
             .attr("x", width / 2 )
@@ -98,8 +98,24 @@ function makeWordCloud(candidate, w, frequencies) {
 }
 
 /* A function to display text including the word clicked on */
-function wordClick(word){
-    console.log(word);
+function wordClick(word,candidate){
+    //found on stack overflow
+    function getAllIndices(arr, val) {
+        var indexes = [], i = -1;
+        while ((i = arr.indexOf(val, i+1)) != -1){
+            indexes.push(i);
+        }
+        return indexes;
+    }
+
+    var text = all_text_dict[candidate].split(" ");
+    var indices = getAllIndices(text, word, false);
+    var span = 15;
+    for (var i = 0; i < indices.length; i++) {
+        if(indices[i]>span && indices[i] < text.length - span){
+            console.log(text.slice(indices[i] - span,indices[i] + span))
+        }
+    }   
 }
 
 
