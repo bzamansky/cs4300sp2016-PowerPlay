@@ -1,21 +1,10 @@
 // SEARCH BY TERM DATA
-var candidate_names = {{candidate_names|safe}}; // array of candidate names
-var mentions_by_candidate = {{mentions_by_candidate}}; // array of ints, which are the number of times each candidate mentions the query
-var debate_titles = {{debate_titles|safe}};
-var mentions_by_debate = {{mentions_by_debate}}; // array of ints, which are the number of times each query is mentioned in each debate
-var interactions = {{interactions}};
-
-// SEARCH BY CANDIDATE DATA
-var top_ten_words = {{ten_words|safe}}; // actual words
-var top_ten_words_counts = {{ten_words_counts}}; // num times each of top 10 words is said by that candidate
-var respond_to_names = {{respond_names|safe}}; // names of people that candidate responds to (or doesn't)
-var respond_to_counts = {{respond_values}};
 
 // DEMOCRAT NAMES
 var dem_names = ["clinton", "sanders", "o'malley", "chafee", "webb"];
 
 // REPUBLICAN NAMES
-var rep_names = ["cruz", "kasich", "trump", "rubio", "bush", "christie", "fiorina", "santorum", "paul", "huckabee", "pataki", "graham", "jindal", "walker", "perry"];
+var rep_names = ["cruz", "kasich", "trump", "rubio", "bush", "christie", "fiorina", "santorum", "paul", "huckabee", "pataki", "graham", "jindal", "walker", "perry", "carson"];
 
 // MAKE WORD CLOUD
 function makeWordCloud(w, frequencies) {
@@ -63,8 +52,7 @@ function makeWordCloud(w, frequencies) {
     
 
     function draw(words) {
-        d3.select("body").append("svg")
-        var svg = d3.select("body").append("svg")
+        var svg = d3.select(".candidate_viz").append("svg")
                 .attr("width", 700)
                 .attr("height", 350)
                 .attr("class", "wordcloud");
@@ -108,14 +96,36 @@ function imageExists(image_url){
 }
 
 // MAKE BAR GRAPH 
-/* x_values are labels for bar graphs, category is "Candidate mentions of" or "Debate mentions of"
+/* x_values are labels for bar graphs, category is "candidate" or "debate"
     bar plot help from https://bl.ocks.org/mbostock/3885304
 */
 function makeBarGraph(x_values, y_values, category) {
     // make json array
     var data = [];
-    for (var i = 0; i < x_values.length; i++) {
-        data.push({'x':x_values[i],'y':y_values[i]});
+    if (category == "candidate"){
+        var tmp = [];
+        for (var i = 0; i < x_values.length; i++) {
+            tmp.push([x_values[i],y_values[i]]);
+        }
+        tmp.sort();
+        for (var i = 0; i < tmp.length; i++) {
+            data.push({'x':tmp[i][0],'y':tmp[i][1]});
+        }
+    }
+    else{
+        var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+        var tmp = []
+        for (var i = 0; i < x_values.length; i++) {
+            var date_parts = x_values[i].split(" ");
+            var date = new Date(parseInt(date_parts[2]),months.indexOf(date_parts[0]),parseInt(date_parts[1].replace(/,/g, "")));
+            tmp.push([date,x_values[i],y_values[i]]);
+        }
+        tmp.sort(function(a,b){
+            return new Date(a[0]) - new Date(b[0]);
+        })
+        for (var i = 0; i < tmp.length; i++) {
+            data.push({'x':tmp[i][1],'y':tmp[i][2]});
+        }
     }
 
     var margin = {top: 40, right: 20, bottom: 30, left: 40},
@@ -336,50 +346,6 @@ function makeResponseGraph(candidate, names, counts) {
         });
 }
 
-var search_option = document.getElementsByTagName('h5')[0].innerText.split(" ")[2];
 
 
-// IF SEARCH BY TERM
-if (search_option == 'terms:') {
-    {% if mentions_by_debate %}
-        // query mentions by candidate
-        makeBarGraph(candidate_names, mentions_by_candidate, "candidate"); // candidate mentions of...
-        // query mentions by debate
-        makeBarGraph(debate_titles, mentions_by_debate, "debate"); // debate mentions of...
-    {% endif %}
-}
-// IF SEARCH BY CANDIDATE
-else if (search_option == 'candidates:') {
 
-    //add a picture of the candidate
-    var can = document.getElementsByTagName('h5')[0].innerText.split(" ")[3];
-    var candidate = can.substring(1, can.length-1);
-    
-    var imageurl = "/static/Images/" + candidate + ".jpg";
-    // console.log(imageurl);
-    // console.log(imageExists(imageurl));
-    
-    if(imageExists(imageurl)){
-        var img = document.createElement("img");
-        img.className = "img-circle";
-        img.src = imageurl;
-        var src = document.getElementById("selfie");
-        if(imageurl.split("/")[3].split(".")[0] == 'trump'){
-            var a = document.createElement("a");
-            a.href = 'http://trumpdonald.org/';
-            a.target = "_blank";
-            a.appendChild(img)
-            src.appendChild(a);
-        }
-        else{
-            src.appendChild(img);
-        }
-    }
-    
-    // make response graph
-    //console.log(candidate, respond_to_names, respond_to_counts);
-    //makeResponseGraph(candidate, respond_to_names, respond_to_counts);
-
-    // make top 10 word cloud for candidate
-    makeWordCloud(top_ten_words, top_ten_words_counts);
-}
