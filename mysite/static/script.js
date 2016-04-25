@@ -385,10 +385,19 @@ function makeResponseGraph(candidate, names, counts) {
     // shows candidate name when hover over node
     node.append("title")
         .text(function(d) { return d.name; });
+    
+    // always show candidate names
+    node.append("text")
+        // .attr("x", function(d) { return d.x+8; })
+        // .attr("y", function(d) { return d.y-8; })
+        .attr("dx", 12)
+        .attr("dy", "35em")
+        .text(function(d) { return d.name; })
+        .attr("fill", "black");
 
     // shows # responses when hover over link
     link.append("title")
-        .text(function(d) { return "responses: " + d.weight; });
+        .text(function(d) { return "Responses: " + d.weight; });
 
     // title for network graph
     svg.append("text")
@@ -407,7 +416,7 @@ function makeResponseGraph(candidate, names, counts) {
 
         node.attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; });
-        });
+    });
 }
 
 
