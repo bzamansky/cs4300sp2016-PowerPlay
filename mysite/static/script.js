@@ -7,6 +7,7 @@ var dem_names = ["clinton", "sanders", "o'malley", "chafee", "webb"];
 var rep_names = ["cruz", "kasich", "trump", "rubio", "bush", "christie", "fiorina", "santorum", "paul", "huckabee", "pataki", "graham", "jindal", "walker", "perry", "carson"];
 
 // MAKE WORD CLOUD
+/* w is top words by that candidate, frequencies is number of times each word in w is used by candidate */
 function makeWordCloud(w, frequencies) {
     var frequency_list = [];
     for (var i=0; i<w.length; i++) {
@@ -52,9 +53,11 @@ function makeWordCloud(w, frequencies) {
     
 
     function draw(words) {
+        var width = 700,
+            height = 350;
         var svg = d3.select(".candidate_viz").append("svg")
-                .attr("width", 700)
-                .attr("height", 350)
+                .attr("width", width)
+                .attr("height", height)
                 .attr("class", "wordcloud");
         var grouping = svg.append("g")
                 // without the transform, words words would get cutoff to the left and top, they would
@@ -80,6 +83,14 @@ function makeWordCloud(w, frequencies) {
                     d3.select(this).style("fill", "#000000")
                         .style("font-size", function(d) { return d.size + "px"; });
                 });
+        svg.append("text")
+            .attr("x", width / 2 )
+            .attr("y", -5)
+            .style("text-anchor", "middle")
+            .style("text-decoration", "underline")
+            .style("font-weight", "bold")
+            .text("Top Words Used");
+
     }
 }
 
@@ -255,6 +266,15 @@ function makeBarGraph(x_values, y_values, category) {
             .style("font-weight", "bold")
             .text("Number of Times Each DEBATE Mentions " + query);
     }
+    // else if (category == 'search_candidate') {
+    //     svg.append("text")
+    //         .attr("x", width / 2 )
+    //         .attr("y", -5)
+    //         .style("text-anchor", "middle")
+    //         .style("text-decoration", "underline")
+    //         .style("font-weight", "bold")
+    //         .text("Number of Times " + query + " Responds to Other Candidates");
+    // }
     
     d3.select("body").append("br");
     d3.select("body").append("br");
