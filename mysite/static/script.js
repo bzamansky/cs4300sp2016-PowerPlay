@@ -77,7 +77,7 @@ function makeWordCloud(candidate, w, frequencies) {
                 .text(function(d) { return d.text; })
                 .on("mouseover", function() {
                     d3.select(this).style("fill", "#4285F4")
-                        .style("font-size", "75px");
+                        .style("font-size", "50px");
                 })
                 .on("mouseout", function() {
                     d3.select(this).style("fill", "#000000")
@@ -339,7 +339,7 @@ function makeResponseGraph(candidate, names, counts) {
 
     var force = d3.layout.force()
         .charge(-120)
-        .linkDistance(75)
+        .linkDistance(90)
         .size([width, height]);
 
     var svg = d3.select("body").append("svg")
@@ -363,7 +363,15 @@ function makeResponseGraph(candidate, names, counts) {
         .data(graph.nodes)
         .enter().append("circle")
         .attr("class", "node")
-        .attr("r", 7)
+        //.attr("r", 9)
+        .attr("r", function(d) {
+            if (d.name == candidate) {
+                return 12;
+            }
+            else {
+                return 7;
+            }
+        })
         // .style("fill", function(d) { 
         //     if (d.group == 'dem') {
         //         return "blue";
