@@ -82,6 +82,9 @@ function makeWordCloud(candidate, w, frequencies) {
                 .on("mouseout", function() {
                     d3.select(this).style("fill", "#000000")
                         .style("font-size", function(d) { return d.size + "px"; });
+                })
+                .on("click",function(d){
+                    wordClick(d.text);
                 });
         svg.append("text")
             .attr("x", width / 2 )
@@ -93,6 +96,12 @@ function makeWordCloud(candidate, w, frequencies) {
 
     }
 }
+
+/* A function to display text including the word clicked on */
+function wordClick(word){
+    console.log(word);
+}
+
 
 /* A function to check if a file exists on the servor. In this case, we want to pull images if they exist for candidates.*/
 function imageExists(image_url){

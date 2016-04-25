@@ -99,6 +99,18 @@ def index(request):
         respond_to = responses.keys()
         respond_values = responses.values()
 
+
+        candidate_to_i = {}
+        for i,x in enumerate(candidates):
+          candidate_to_i[x] = i
+        all_debate_list_file = open('./test_code/all_debate_list.json')
+        all_debate_list = json.load(all_debate_list_file)
+        all_debate_text = [""] * len(candidates)
+        for x in all_debate_list:
+          if x['speaker'] not in candidates:
+            continue
+          all_debate_text[candidate_to_i[x['speakers']]] += x['speech']
+
     return render_to_response('project_template/index.html', 
                           {'output': output,
                           'search_option': search_option,
@@ -116,5 +128,6 @@ def index(request):
                            'ten_words': json.dumps(top_ten_words),
                            'ten_words_counts': top_ten_words_counts,
                            'respond_names': json.dumps(respond_to),
-                           'respond_values': respond_values
+                           'respond_values': respond_values,
+                           'all_debates':all_debate_text
                            })
