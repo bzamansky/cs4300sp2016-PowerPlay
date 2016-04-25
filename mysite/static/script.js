@@ -289,18 +289,34 @@ function makeResponseGraph(candidate, names, counts) {
     // SET UP NODES AND LINKS
     // nodes array
     var nodes = [];
+    var can_group = "";
+    if (dem_names.indexOf(candidate) != 0) {
+        can_group = 'dem';
+    }
+    else if (rep_names.indexOf(candidate) != 0) {
+        can_group = 'rep';
+    }
     nodes.push(
         {
             'name': candidate,
             'responses': 0,
-            'neighbors': []
+            'neighbors': [],
+            'group': can_group
         });
     for (var i=0; i<names.length; i++) {
+        var group = "";
+        if (dem_names.indexOf(names[i]) != 0) {
+            group = 'dem';
+        }
+        else if (rep_names.indexOf(names[i]) != 0) {
+            group = 'rep';
+        }
         nodes.push(
         {
             'name': names[i],
             'responses': counts[i],
-            'neighbors': []
+            'neighbors': [],
+            'group': group
         });
     }
 
@@ -313,19 +329,21 @@ function makeResponseGraph(candidate, names, counts) {
         'links': links
     };
 
-    // make links
-    for (var i=0; i<names.length; i++) {
-        var target = nodes[i];
-        var source = nodes[0]; 
-        source.neighbors.push(target);
-        target.neighbors.push(source);
-        links.push(
-        {
-            'source': nodes[0],
-            'target': nodes[i]
-        });
-    }
+    console.log(graph.nodes);
 
+    // make links
+    for (var i = 0; i < counts.length; i++) {
+        var target_node = graph.nodes[i+1]; // exclude the first node, which is the query candidate
+        var source_node = graph.nodes[0]; // first node is query candidate
+        source_node.neighbors.push(target_node);
+        links.push({
+            'source': source_node,
+            'target': target_node,
+            'weight': counts[i]
+        });
+    };
+
+    
 
 
     // MAKE GRAPH
@@ -336,7 +354,7 @@ function makeResponseGraph(candidate, names, counts) {
 
     var force = d3.layout.force()
         .charge(-120)
-        .linkDistance(30)
+        .linkDistance(75)
         .size([width, height]);
 
     var svg = d3.select("body").append("svg")
@@ -352,18 +370,30 @@ function makeResponseGraph(candidate, names, counts) {
         .data(graph.links)
         .enter().append("line")
         .attr("class", "link")
-        .style("stroke-width", function(d) { return Math.sqrt(d.responses); }); // make this constant line thickness, possibly?
+        .style("stroke-width", function(d) {
+            return Math.sqrt(d.weight);
+        })
+        .style("stroke", "gray");
 
     var node = svg.selectAll(".node")
         .data(graph.nodes)
         .enter().append("circle")
         .attr("class", "node")
-        .attr("r", 5)
-        //.style("fill", function(d) { return color(d.group); }) // color by political party?
+        .attr("r", 7)
+        // .style("fill", function(d) { 
+        //     if (d.group == 'dem') {
+        //         return "blue";
+        //     }
+        //     else if (d.group == 'rep') {
+        //         return "red";
+        //     }
+        // }) // color by political party
         .call(force.drag);
 
     node.append("title")
         .text(function(d) { return d.name; });
+    link.append("title")
+        .text(function(d) { return "responses: " + d.weight; });
 
     force.on("tick", function() {
         link.attr("x1", function(d) { return d.source.x; })
