@@ -186,11 +186,10 @@ def most_spoken_words_by_candidate(candidate,n=10):
   can_row = candidates_to_index[candidate]
   words = cand_array[can_row]
   top = sorted(range(len(words)), key=lambda i: words[i], reverse=True)[:n]
-  print(top)
   top_words = {}
   for x in top:
-    print(c_terms[x])
-    top_words[c_terms[x]] = cand_array[can_row,x]
+    if x < len(c_terms):
+      top_words[c_terms[x]] = cand_array[can_row,x]
     #top_words.append((c_terms[x],cand_array[can_row,x]))
   return top_words
 
@@ -201,7 +200,8 @@ def most_spoken_words_by_debate(debate,n=10):
   top = sorted(range(len(words)), key=lambda i: words[i], reverse=True)[:n]
   top_words = {}
   for x in top:
-    top_words[d_terms[x]] = deb_array[deb_row,x]
+    if x < len(d_terms):
+      top_words[d_terms[x]] = deb_array[deb_row,x]
     #top_words.append((d_terms[x],deb_array[deb_row,x]))
   return top_words
 
@@ -212,7 +212,8 @@ def word_spoken_most_by_candidate(word,n=10):
   top = sorted(range(len(word_col)), key=lambda i: word_col[i], reverse=True)[:n]
   top_candidates = []
   for x in top:
-    top_candidates.append((candidates[x],cand_array[x,word_ind]))
+    if x < len(c_terms):
+      top_candidates.append((candidates[x],cand_array[x,word_ind]))
   return top_candidates
 
 
@@ -259,7 +260,6 @@ for line in transcripts:
 with open('candidate_responses.json','w') as outfile:
   json.dump(candidate_responses, outfile, sort_keys=True, indent=4, separators=(',',': '))
 
-tf_idf
 ct_vectorizer = TfidfVectorizer(strip_accents='unicode',analyzer="word",lowercase=True, stop_words='english')
 ct_vectorizer.fit(speeches_by_candidate)
 ct_terms = ct_vectorizer.get_feature_names()
@@ -274,7 +274,8 @@ def most_spoken_words_by_candidate_tfidf(candidate,n=10):
   top = sorted(range(len(words)), key=lambda i: words[i], reverse=True)[:n]
   top_words = {}
   for x in top:
-    top_words[c_terms[x]] = cand_array[can_row,x]
+    if x < len(ct_terms):
+      top_words[ct_terms[x]] = cand_array[can_row,x]
     #top_words.append((c_terms[x],cand_array[can_row,x]))
   return top_words
 
