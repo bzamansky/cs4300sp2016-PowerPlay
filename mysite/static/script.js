@@ -272,31 +272,41 @@ function makeResponseGraph(candidate, names, counts) {
     nodes.push(
         {
             'name': candidate,
-            'responses': 0
+            'responses': 0,
+            'neighbors': []
         });
     for (var i=0; i<names.length; i++) {
         nodes.push(
         {
             'name': names[i],
-            'responses': counts[i]
+            'responses': counts[i],
+            'neighbors': []
         });
     }
 
     // links array
     var links = [];
-    for (var i=0; i<names.length; i++) {
-        links.push(
-        {
-            'source': candidate,
-            'target': names[i]
-        });
-    }
 
     // save nodes and links to graph
     var graph = {
         'nodes': nodes,
         'links': links
     };
+
+    // make links
+    for (var i=0; i<names.length; i++) {
+        var target = nodes[i];
+        var source = nodes[0]; 
+        source.neighbors.push(target);
+        target.neighbors.push(source);
+        links.push(
+        {
+            'source': nodes[0],
+            'target': nodes[i]
+        });
+    }
+
+
 
     // MAKE GRAPH
     var width = 960,
