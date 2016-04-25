@@ -7,7 +7,8 @@ var dem_names = ["clinton", "sanders", "o'malley", "chafee", "webb"];
 var rep_names = ["cruz", "kasich", "trump", "rubio", "bush", "christie", "fiorina", "santorum", "paul", "huckabee", "pataki", "graham", "jindal", "walker", "perry", "carson"];
 
 // MAKE WORD CLOUD
-function makeWordCloud(w, frequencies) {
+/* w is top words by that candidate, frequencies is number of times each word in w is used by candidate */
+function makeWordCloud(candidate, w, frequencies) {
     var frequency_list = [];
     for (var i=0; i<w.length; i++) {
         frequency_list.push({
@@ -52,9 +53,11 @@ function makeWordCloud(w, frequencies) {
     
 
     function draw(words) {
+        var width = 700,
+            height = 350;
         var svg = d3.select(".candidate_viz").append("svg")
-                .attr("width", 700)
-                .attr("height", 350)
+                .attr("width", width)
+                .attr("height", height)
                 .attr("class", "wordcloud");
         var grouping = svg.append("g")
                 // without the transform, words words would get cutoff to the left and top, they would
@@ -80,6 +83,14 @@ function makeWordCloud(w, frequencies) {
                     d3.select(this).style("fill", "#000000")
                         .style("font-size", function(d) { return d.size + "px"; });
                 });
+        svg.append("text")
+            .attr("x", width / 2 )
+            .attr("y", 50)
+            .style("text-anchor", "middle")
+            .style("text-decoration", "underline")
+            .style("font-weight", "bold")
+            .text("Top Words Used by " + candidate.toUpperCase());
+
     }
 }
 
@@ -262,40 +273,62 @@ function makeBarGraph(x_values, y_values, category) {
 }
 
 
-
 // MAKE RESPONSE GRAPH
 /* names is names of candidates respond to, counts is num times query candidate responds to each candidate */
 function makeResponseGraph(candidate, names, counts) {
     // SET UP NODES AND LINKS
     // nodes array
     var nodes = [];
+    var can_group = "";
+    if (dem_names.indexOf(candidate) != 0) {
+        can_group = 'dem';
+    }
+    else if (rep_names.indexOf(candidate) != 0) {
+        can_group = 'rep';
+    }
     nodes.push(
         {
             'name': candidate,
-            'responses': 0
+            'responses': 0,
+            'neighbors': [],
+            'group': can_group
         });
     for (var i=0; i<names.length; i++) {
+        var group = "";
+        if (dem_names.indexOf(names[i]) != 0) {
+            group = 'dem';
+        }
+        else if (rep_names.indexOf(names[i]) != 0) {
+            group = 'rep';
+        }
         nodes.push(
         {
             'name': names[i],
-            'responses': counts[i]
+            'responses': counts[i],
+            'neighbors': [],
+            'group': group
         });
     }
 
     // links array
     var links = [];
-    for (var i=0; i<names.length; i++) {
-        links.push(
-        {
-            'source': candidate,
-            'target': names[i]
-        });
-    }
 
     // save nodes and links to graph
     var graph = {
         'nodes': nodes,
         'links': links
+    };
+
+    // make links
+    for (var i = 0; i < counts.length; i++) {
+        var target_node = graph.nodes[i+1]; // exclude the first node, which is the query candidate
+        var source_node = graph.nodes[0]; // first node is query candidate
+        source_node.neighbors.push(target_node);
+        links.push({
+            'source': source_node,
+            'target': target_node,
+            'weight': counts[i]
+        });
     };
 
     // MAKE GRAPH
@@ -306,14 +339,13 @@ function makeResponseGraph(candidate, names, counts) {
 
     var force = d3.layout.force()
         .charge(-120)
-        .linkDistance(30)
+        .linkDistance(75)
         .size([width, height]);
 
     var svg = d3.select("body").append("svg")
         .attr("width", width)
         .attr("height", height);
 
-    
     force.nodes(graph.nodes)
         .links(graph.links)
         .start();
@@ -322,18 +354,42 @@ function makeResponseGraph(candidate, names, counts) {
         .data(graph.links)
         .enter().append("line")
         .attr("class", "link")
-        .style("stroke-width", function(d) { return Math.sqrt(d.responses); }); // make this constant line thickness, possibly?
+        .style("stroke-width", function(d) {
+            return Math.sqrt(d.weight);
+        })
+        .style("stroke", "gray");
 
     var node = svg.selectAll(".node")
         .data(graph.nodes)
         .enter().append("circle")
         .attr("class", "node")
-        .attr("r", 5)
-        //.style("fill", function(d) { return color(d.group); }) // color by political party?
+        .attr("r", 7)
+        // .style("fill", function(d) { 
+        //     if (d.group == 'dem') {
+        //         return "blue";
+        //     }
+        //     else if (d.group == 'rep') {
+        //         return "red";
+        //     }
+        // }) // color by political party
         .call(force.drag);
 
+    // shows candidate name when hover over node
     node.append("title")
         .text(function(d) { return d.name; });
+
+    // shows # responses when hover over link
+    link.append("title")
+        .text(function(d) { return "responses: " + d.weight; });
+
+    // title for network graph
+    svg.append("text")
+        .attr("x", width / 2 )
+        .attr("y", 100)
+        .style("text-anchor", "middle")
+        .style("text-decoration", "underline")
+        .style("font-weight", "bold")
+        .text("Number of Times " + candidate.toUpperCase() + " Responds to Other Candidates");
 
     force.on("tick", function() {
         link.attr("x1", function(d) { return d.source.x; })
