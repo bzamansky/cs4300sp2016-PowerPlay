@@ -27,8 +27,9 @@ for d in campaign_speeches:
   file = bs4.BeautifulSoup(r.data)
   file_table = file.find_all("td",{'class':"listdate"})
   candidate = file_table[0].text.split(" ")[1].lower()
-  speech_links = [x.find_all("a")[0]['href'] for x in file_table if len(x.find_all("a")) > 0]
-  speech_links = [x.strip("..") for x in speech_links]
+  speech_tags = [(x.find_all("a")[0].text,x.find_all("a")[0]['href']) for x in file_table if len(x.find_all("a")) > 0]
+  speech_tags = [x for x in speech_tags if x[0].split(" ")[0] == "Remarks" or x[0].split(" ")[0] == "Interview"]
+  speech_links = [x[1].strip("..") for x in speech_tags]
   speech_links = [("http://www.presidency.ucsb.edu" + x, candidate) for x in speech_links]
   campaign_speech_pages.extend(speech_links)
 
@@ -67,11 +68,12 @@ for d in campaign_speech_pages:
       line = re.sub('\[.*\]','',line)
     else:
       line = re.sub('\[.*\]','',line.text)     
-    # if speaker in candidate_data:
-    #   candidate_data[speaker].append(line)
-    # else:
-    #   candidate_data[speaker] = [line]
-    candidate_data[candidate].append(line)
+    if speaker in candidate_data:
+      line = line.replace(speaker.title() + ": ","")
+      line = line.replace(speaker.title() + ":","")
+      line = line.replace(speaker.upper() + ": ", "")
+      line = line.replace(speaker.upper() + ":", "")
+      candidate_data[speaker].append(line)
 
 
 for d in statements:
@@ -108,8 +110,6 @@ for d in statement_pages:
     else:
       line = re.sub('\[.*\]','',line.text)
     candidate_data[candidate].append(line)
-
-print(candidate_data.keys())
 
 with open('candidate_statements.json','w') as outfile:
   json.dump(candidate_data, outfile, sort_keys=True, indent=4,separators=(',', ': '))
