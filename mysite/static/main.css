@@ -148,6 +148,7 @@ color: #4285F4;
   shape-rendering: crispEdges;
 }
 
+/* highlight bar on hover */
 .bar {
   fill: gray;
 }
@@ -222,4 +223,3 @@ color: #4285F4;
 	bottom: 0;
 	right: 0;
 }*/
-
