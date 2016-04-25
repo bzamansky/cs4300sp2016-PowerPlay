@@ -141,6 +141,14 @@ for speech in transcripts:
     index = candidates_to_index[sp]
     speeches_by_candidate[index] += speech['speech']
 
+with open("candidate_statements.json",'r') as f:
+  s = json.load(f)
+for x in s.keys():
+  old_string = speeches_by_candidate[candidates_to_index[x]]
+  new_string = " ".join(s[x])
+  result_string = old_string + new_string
+  speeches_by_candidate[candidates_to_index[x]] = result_string
+
 #play with the max_df and min_df to get something we like.
 #add ngram_range=(1,2) back to paramaters if we want them
 c_vectorizer = CountVectorizer(strip_accents='unicode',analyzer="word",lowercase=True, stop_words='english')
@@ -178,8 +186,10 @@ def most_spoken_words_by_candidate(candidate,n=10):
   can_row = candidates_to_index[candidate]
   words = cand_array[can_row]
   top = sorted(range(len(words)), key=lambda i: words[i], reverse=True)[:n]
+  print(top)
   top_words = {}
   for x in top:
+    print(c_terms[x])
     top_words[c_terms[x]] = cand_array[can_row,x]
     #top_words.append((c_terms[x],cand_array[can_row,x]))
   return top_words
@@ -206,56 +216,56 @@ def word_spoken_most_by_candidate(word,n=10):
   return top_candidates
 
 
-# candidates_top_words = {}
-# for c in candidates:
-#   candidates_top_words[c] = most_spoken_words_by_candidate(c,len(c_terms))
+candidates_top_words = {}
+for c in candidates:
+  candidates_top_words[c] = most_spoken_words_by_candidate(c,len(c_terms))
 
-# with open('candidates_top_words.json','w') as outfile:
-#   json.dump(candidates_top_words, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+with open('candidates_top_words.json','w') as outfile:
+  json.dump(candidates_top_words, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
-# debates_top_words_d = {}
-# debates_top_words_r = {}
-# debates_top_words_r_u = {}
-# for d in debate_names:
-#   party = d.split(" ")[-1]
-#   und = d.split(" ")[-2]
-#   if party == "D":
-#     debates_top_words_d[d] = most_spoken_words_by_debate(d)
-#   elif und == "U":
-#     debates_top_words_r_u[d] = most_spoken_words_by_debate(d)
-#   else:
-#     debates_top_words_r[d] = most_spoken_words_by_debate(d)
+debates_top_words_d = {}
+debates_top_words_r = {}
+debates_top_words_r_u = {}
+for d in debate_names:
+  party = d.split(" ")[-1]
+  und = d.split(" ")[-2]
+  if party == "D":
+    debates_top_words_d[d] = most_spoken_words_by_debate(d,len(d_terms))
+  elif und == "U":
+    debates_top_words_r_u[d] = most_spoken_words_by_debate(d,len(d_terms))
+  else:
+    debates_top_words_r[d] = most_spoken_words_by_debate(d,len(d_terms))
 
-# with open('debates_top_words_d.json','w') as outfile:
-#   json.dump(debates_top_words_d, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+with open('debates_top_words_d.json','w') as outfile:
+  json.dump(debates_top_words_d, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
-# with open('debates_top_words_r.json','w') as outfile:
-#   json.dump(debates_top_words_r, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+with open('debates_top_words_r.json','w') as outfile:
+  json.dump(debates_top_words_r, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
-# with open('debates_top_words_r_u.json','w') as outfile:
-#   json.dump(debates_top_words_r_u, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+with open('debates_top_words_r_u.json','w') as outfile:
+  json.dump(debates_top_words_r_u, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
 
-# candidate_responses = {}
-# for c in candidates:
-#   candidate_responses[c] = {}
-#   for c2 in candidates:
-#     if c2 != c:
-#       candidate_responses[c][c2] = 0
-# for line in transcripts:
-#   if line['prev'] in candidates:
-#     candidate_responses[line['speaker']][line['prev']] += 1
+candidate_responses = {}
+for c in candidates:
+  candidate_responses[c] = {}
+  for c2 in candidates:
+    if c2 != c:
+      candidate_responses[c][c2] = 0
+for line in transcripts:
+  if line['prev'] in candidates:
+    candidate_responses[line['speaker']][line['prev']] += 1
 
-# with open('candidate_responses.json','w') as outfile:
-#   json.dump(candidate_responses, outfile, sort_keys=True, indent=4, separators=(',',': '))
+with open('candidate_responses.json','w') as outfile:
+  json.dump(candidate_responses, outfile, sort_keys=True, indent=4, separators=(',',': '))
 
-#tf_idf
-# ct_vectorizer = TfidfVectorizer(strip_accents='unicode',analyzer="word",lowercase=True, stop_words='english')
-# ct_vectorizer.fit(speeches_by_candidate)
-# ct_terms = ct_vectorizer.get_feature_names()
-# ct_terms.remove('ve')
-# ct_terms.remove('don')
-# candidate_term_t_matrix = ct_vectorizer.transform(speeches_by_candidate)
+tf_idf
+ct_vectorizer = TfidfVectorizer(strip_accents='unicode',analyzer="word",lowercase=True, stop_words='english')
+ct_vectorizer.fit(speeches_by_candidate)
+ct_terms = ct_vectorizer.get_feature_names()
+ct_terms.remove('ve')
+ct_terms.remove('don')
+candidate_term_t_matrix = ct_vectorizer.transform(speeches_by_candidate)
 
 def most_spoken_words_by_candidate_tfidf(candidate,n=10):
   cand_array = candidate_term_t_matrix.toarray()
@@ -268,12 +278,12 @@ def most_spoken_words_by_candidate_tfidf(candidate,n=10):
     #top_words.append((c_terms[x],cand_array[can_row,x]))
   return top_words
 
-# candidates_top_ten_words_tfidf = {}
-# for c in candidates:
-#   candidates_top_ten_words_tfidf[c] = most_spoken_words_by_candidate_tfidf(c)
+candidates_top_ten_words_tfidf = {}
+for c in candidates:
+  candidates_top_ten_words_tfidf[c] = most_spoken_words_by_candidate_tfidf(c)
 
-# with open('candidates_top_ten_words_tfidf.json', 'w') as outfile:
-#   json.dump(candidates_top_ten_words_tfidf, outfile, sort_keys=True, indent=4, separators=(',',': '))
+with open('candidates_top_ten_words_tfidf.json', 'w') as outfile:
+  json.dump(candidates_top_ten_words_tfidf, outfile, sort_keys=True, indent=4, separators=(',',': '))
 
 candidates_top_ten_words = {}
 for c in candidates:

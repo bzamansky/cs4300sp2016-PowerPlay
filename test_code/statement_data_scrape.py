@@ -3,17 +3,45 @@ import bs4, re, urllib3, time, os, json
 campaign_speeches = [
   "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=70&campaign=2016CLINTON&doctype=5000",
   "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=107&campaign=2016SANDERS&doctype=5000",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=112&campaign=2016OMALLEY&doctype=5000",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=113&campaign=2016CHAFEE&doctype=5000",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=118&campaign=2016WEBB&doctype=5000",
   "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=103&campaign=2016CRUZ&doctype=5000",
   "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=114&campaign=2016KASICH&doctype=5000",
-  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=115&campaign=2016TRUMP&doctype=5000" 
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=115&campaign=2016TRUMP&doctype=5000",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=105&campaign=2016RUBIO&doctype=5000",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=108&campaign=2016CARSON&doctype=5000",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=101&campaign=2016BUSH&doctype=5000",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=117&campaign=2016CHRISTIE&doctype=5000",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=106&campaign=2016FIORINA&doctype=5000",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=96&campaign=2016SANTORUM&doctype=5000",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=104&campaign=2016PAUL&doctype=5000",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=77&campaign=2016HUCKABEE&doctype=5000",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=111&campaign=2016PATAKI&doctype=5000",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=110&campaign=2016GRAHAM&doctype=5000",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=116&campaign=2016JINDAL&doctype=5000",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=109&campaign=2016WALKER&doctype=5000",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=78&campaign=2016PERRY&doctype=5000"
 ]
 campaign_speech_pages = []
 
 statements = [
   "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=107&campaign=2016SANDERS&doctype=5001",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=112&campaign=2016OMALLEY&doctype=5001",
+  'http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=118&campaign=2016WEBB&doctype=5001',
   "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=103&campaign=2016CRUZ&doctype=5001",
   "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=114&campaign=2016KASICH&doctype=5001",
-  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=115&campaign=2016TRUMP&doctype=5001"  
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=115&campaign=2016TRUMP&doctype=5001",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=108&campaign=2016CARSON&doctype=5001",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=101&campaign=2016BUSH&doctype=5001",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=96&campaign=2016SANTORUM&doctype=5001",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=104&campaign=2016PAUL&doctype=5001",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=77&campaign=2016HUCKABEE&doctype=5001",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=111&campaign=2016PATAKI&doctype=5001",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=110&campaign=2016GRAHAM&doctype=5001",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=116&campaign=2016JINDAL&doctype=5001",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=109&campaign=2016WALKER&doctype=5001",
+  "http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=78&campaign=2016PERRY&doctype=5001"
 ]
 
 statement_pages = []
