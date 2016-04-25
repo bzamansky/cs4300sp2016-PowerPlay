@@ -101,7 +101,7 @@ body {
 
 .img-circle {
     width: 100%;
-	margin-left: 50px;
+	margin-left: 100px;
     height: auto;
     border-radius: 50%;
 
@@ -127,8 +127,8 @@ padding-left: 0;
 
 .wordcloud{
 	float:right;
-	margin-top: -250px;
-	margin-right: 50px;
+
+	margin-right: 100px;
 	
 }
 .btn{
