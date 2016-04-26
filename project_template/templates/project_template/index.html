@@ -59,19 +59,23 @@
             <!-- {% for line in output %}
                 {{line}}<br>
             {% endfor %} -->
-
-            <h5>Searched in {{search_option}}s: '{{searched}}'</h5>
-            <br/><br/>
+            
+            {% if search_option %}
+                <h5>Searched in {{search_option}}s: "{{searched}}"</h5>
+                <br/><br/>
+            {% endif %}
             
             {% if search_option == 'candidate' and not ten_words_counts %}
-                <h5><b>Sorry, no candidate with that name found!</b></h5>
+                <h5><b>Sorry, no candidate with the last name "{{searched}}" found!</b></h5>
                 <br/>
             {% elif search_option == 'term' and not mentions_by_debate %}
-                <h5><b>Sorry, that term was not found in any of the debates!</b></h5>
+                <h5><b>Sorry, the term "{{searched}}" was not found in any of the debates!</b></h5>
                 <br/>
             {% endif %}
             
             <br/>
+            
+            <!--
             {% comment %}
             {% for value in plot %}
                 {% for part in value %}
@@ -86,9 +90,8 @@
                 {{key}} {{val}}<br>
             {% endfor %}
             {% endcomment %}
+            -->
             
-            
-
             <h3 id="fill_me"></h3>
 
             <!-- REMEMBER TO UNCOMMENT THIS IF NEED PAGINATOR -->
@@ -113,14 +116,16 @@
             
 
         </div>
-
-        <div class="candidate_viz">
-            <div id="selfie" class = "selfie"> </div>
-        </div>
-        <div id="used_words">
-            <ul id="used_words_list"></ul>
-            <input value="x" type="button" id="close" onclick="my_close()"/>
-        </div>
+        
+        {% if search_option == 'candidate' %}
+            <div class="candidate_viz">
+                <div id="selfie" class = "selfie"> </div>
+            </div>
+            <div id="used_words">
+                <ul id="used_words_list"></ul>
+                <input value="x" type="button" id="close" onclick="my_close()"/>
+            </div>
+        {% endif %}
 
         <script type="text/javascript">
             var candidate_names = {{candidate_names|safe}}; // array of candidate names
@@ -160,37 +165,38 @@
             }
             // IF SEARCH BY CANDIDATE
             else if (search_option == 'candidates:') {
-
-                //add a picture of the candidate
-                var can = document.getElementsByTagName('h5')[0].innerText.split(" ")[3];
-                var candidate = can.substring(1, can.length-1);
-                
-                var imageurl = "/static/Images/" + candidate + ".jpg";
-                // console.log(imageurl);
-                // console.log(imageExists(imageurl));
-                
-                if(imageExists(imageurl)){
-                    var img = document.createElement("img");
-                    img.className = "img-circle";
-                    img.src = imageurl;
-                    var src = document.getElementById("selfie");
-                    if(imageurl.split("/")[3].split(".")[0] == 'trump'){
-                        var a = document.createElement("a");
-                        a.href = 'http://trumpdonald.org/';
-                        a.target = "_blank";
-                        a.appendChild(img)
-                        src.appendChild(a);
+                {% if ten_words_counts %}
+                    //add a picture of the candidate
+                    var can = document.getElementsByTagName('h5')[0].innerText.split(" ")[3];
+                    var candidate = can.substring(1, can.length-1);
+                    
+                    var imageurl = "/static/Images/" + candidate + ".jpg";
+                    // console.log(imageurl);
+                    // console.log(imageExists(imageurl));
+                    
+                    if(imageExists(imageurl)){
+                        var img = document.createElement("img");
+                        img.className = "img-circle";
+                        img.src = imageurl;
+                        var src = document.getElementById("selfie");
+                        if(imageurl.split("/")[3].split(".")[0] == 'trump'){
+                            var a = document.createElement("a");
+                            a.href = 'http://trumpdonald.org/';
+                            a.target = "_blank";
+                            a.appendChild(img)
+                            src.appendChild(a);
+                        }
+                        else{
+                            src.appendChild(img);
+                        }
                     }
-                    else{
-                        src.appendChild(img);
-                    }
-                }
-                
-                // make response graph for candidate
-                makeResponseGraph(candidate, respond_to_names, respond_to_counts);
+                    
+                    // make response graph for candidate
+                    makeResponseGraph(candidate, respond_to_names, respond_to_counts);
 
-                // make top 10 word cloud for candidate
-                makeWordCloud(candidate, top_ten_words, top_ten_words_counts);
+                    // make top 10 word cloud for candidate
+                    makeWordCloud(candidate, top_ten_words, top_ten_words_counts);
+                {% endif %}
             }
 
         </script>
