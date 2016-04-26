@@ -8,6 +8,7 @@
         <!-- load script.js here -->
         <!-- main javascript -->
         <link rel='shortcut icon' href='/static/Images/favicon.ico' type='image/x-icon'/ >
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
         <title>Power of Speech</title>
         
     </head>
@@ -113,6 +114,10 @@
 
         <div class="candidate_viz">
             <div id="selfie" class = "selfie"> </div>
+        </div>
+        <div id="used_words">
+            <ul id="used_words_list"></ul>
+            <input value="x" type="button" id="close" onclick="my_close()"/>
         </div>
 
         <script type="text/javascript">

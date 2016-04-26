@@ -223,3 +223,28 @@ color: #4285F4;
 	bottom: 0;
 	right: 0;
 }*/
+
+/*used_words context div*/
+#used_words{
+  visibility: hidden;
+  background-color: white;
+  width: 70%;
+  position:fixed;
+  right:0;
+  left:0;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+#used_words ul{
+  list-style-type: none;
+}
+#used_words li{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+#used_words #close{
+  position:absolute;
+  top:0;
+  right:4px;
+}

@@ -111,11 +111,30 @@ function wordClick(word,candidate){
     var text = all_text_dict[candidate].split(" ");
     var indices = getAllIndices(text, word, false);
     var span = 15;
-    for (var i = 0; i < indices.length; i++) {
+    var outputs = [];
+    var l = indices.length;
+    if(l > 4){ l = 4; }
+    for (var i = 0; i < l; i++) {
         if(indices[i]>span && indices[i] < text.length - span){
-            console.log(text.slice(indices[i] - span,indices[i] + span))
+            output_str = text.slice(indices[i] - span,indices[i] + span)
+            outputs.push("..." + output_str.join(" ") + "...");
         }
-    }   
+    }  
+
+    var used_words_list = document.getElementById("used_words_list");
+    for (var i = 0; i < outputs.length; i++) {
+        var list = document.createElement("li");
+        var node = document.createTextNode(outputs[i]);
+        list.appendChild(node);
+        used_words_list.appendChild(list);
+    }
+    var used_words = document.getElementById("used_words");
+    used_words.style.visibility='visible';
+}
+
+function my_close(){
+    used_words.style.visibility="hidden";
+    used_words_list.innerHTML="";
 }
 
 
