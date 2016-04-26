@@ -76,12 +76,15 @@ function makeWordCloud(candidate, w, frequencies) {
                 //.attr("transform", "translate(320,200)") // transform text
                 .text(function(d) { return d.text; })
                 .on("mouseover", function() {
+                    text.style("fill","gray");
                     d3.select(this).style("fill", "#4285F4")
-                        .style("font-size", "50px");
+                        .style("font-size", "50px").moveToFront();
                 })
                 .on("mouseout", function() {
+                    text.style("fill","black");
                     d3.select(this).style("fill", "#000000")
-                        .style("font-size", function(d) { return d.size + "px"; });
+                        .style("font-size", function(d) { return d.size + "px"; })
+                        .moveToBack();
                 })
                 .on("click",function(d){
                     wordClick(d.text,candidate);
@@ -264,12 +267,15 @@ function makeBarGraph(x_values, y_values, category) {
         .enter().append("rect")
         // set class, in main.css make color of bar accordingly
         .attr("class", function(d) {
+            name = d.x;
+            split_name = name.split(" ");
+            name_len = split_name.length
             // if candidate is a democrat
-            if (dem_names.indexOf(d.x) != -1){
+            if (dem_names.indexOf(name) != -1 || split_name[name_len-1] == "D"){
                 class_text = "bar-dem";
             }
             // if candidate is a republican
-            else if (rep_names.indexOf(d.x) != -1) {
+            else if (rep_names.indexOf(name) != -1 || split_name[name_len-1] == "R") {
                 class_text = "bar-rep";
             }
             // if it's a debate date and location
