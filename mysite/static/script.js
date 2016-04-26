@@ -399,7 +399,9 @@ function makeResponseGraph(candidate, names, counts) {
         .linkDistance(90)
         .size([width, height]);
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("body")
+        .append("div").attr("class","force_graph")
+        .append("svg")
         .attr("width", width)
         .attr("height", height);
 
