@@ -43,42 +43,6 @@ candidate_top_ten_data = json.load(candidate_top_words_file)
 candidate_response_file = open("./test_code/candidate_responses.json")
 candidate_responses = json.load(candidate_response_file)
 
-# COME BACK TO THIS
-# def search_results_candidate(query, search_option):
-# 	if search_option == "candidate":
-# 		# query is the key
-# 		# pull the dictionary of words for that candidate
-# 		top_ten_words = candidate_top_ten_data[query]
-
-# 		# candidate responses
-# 		responses = candidate_responses[query]
-
-# 		return (top_ten_words, responses)
-
-# def search_results_term(query, search_option):
-# 	if search_option == "term":
-# 		# get Total Mentions by Debate
-# 		# debate date, location is key and term count is value
-# 		total_mentions_debate = {}
-# 		for key in debate_data_d.keys():
-# 			total_mentions_debate[key] = debate_data_d[key][query]
-# 		for key in debate_data_r.keys():
-# 			total_mentions_debate[key] = debate_data_r[key][query]
-# 		for key in debate_data_r_u.keys(): 
-# 			total_mentions_debate[key] = debate_data_r_u[key][query]
-
-# 		# get Total Mentions by Candidate
-# 		# candidate is key and term count is value
-# 		total_mentions_candidate = {}
-# 		for key in candidate_data.keys():
-# 			total_mentions_candidate[key] = candidate_data[key][query]
-		
-# 		# get Arguments and Interactions
-# 		interactions = {}
-# 		return (total_mentions_debate, total_mentions_candidate, interactions)
-	
-# 	return ({'nothing here':'hi'},{'nope':'nope'},{})
-
 
 def search_results(query, search_option):
     if search_option == 'candidate':
