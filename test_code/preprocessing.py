@@ -126,7 +126,7 @@ terms = vectorizer.get_feature_names()
 term_document_matrix = vectorizer.transform(speeches)
 
 #Modifying stopwords
-my_additional_stop_words = ['ve','don']
+my_additional_stop_words = ['ve','don','t']
 stop_words = text.ENGLISH_STOP_WORDS.union(my_additional_stop_words)
 
 #Sorting the term-doc stuff by candidate

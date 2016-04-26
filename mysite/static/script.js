@@ -99,6 +99,7 @@ function makeWordCloud(candidate, w, frequencies) {
 
 /* A function to display text including the word clicked on */
 function wordClick(word,candidate){
+    my_close();
     //found on stack overflow
     function getAllIndices(arr, val) {
         var indexes = [], i = -1;
@@ -107,9 +108,15 @@ function wordClick(word,candidate){
         }
         return indexes;
     }
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 
     var text = all_text_dict[candidate].split(" ");
     var indices = getAllIndices(text, word, false);
+    if(indices.length < 4){
+        indices = indices.concat(getAllIndices(text,capitalizeFirstLetter(word),false));
+    }
     var span = 15;
     var outputs = [];
     var l = indices.length;
