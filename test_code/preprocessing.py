@@ -270,7 +270,6 @@ def most_spoken_words_by_candidate_tfidf(candidate,n=10):
   for x in top:
     if x < len(ct_terms):
       top_words[ct_terms[x]] = cand_array[can_row,x]
-    #top_words.append((c_terms[x],cand_array[can_row,x]))
   return top_words
 
 candidates_top_ten_words_tfidf = {}
