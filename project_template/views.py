@@ -116,7 +116,6 @@ def index(request):
         for x in statements.keys():
           s = " ".join(statements[x])
           all_debate_text[candidate_to_i[x]] += s.encode('ascii','ignore')
-        print(all_debate_text[candidate_to_i["clinton"]])
     return render_to_response('project_template/index.html', 
                           {'output': output,
                           'search_option': search_option,

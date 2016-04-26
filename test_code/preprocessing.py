@@ -6,6 +6,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.naive_bayes import BernoulliNB
 from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.feature_extraction import text 
 
 candidates = [
   'clinton',
@@ -124,6 +125,10 @@ terms = vectorizer.get_feature_names()
 #Document here is one line by a speaker, in any debate.
 term_document_matrix = vectorizer.transform(speeches)
 
+#Modifying stopwords
+my_additional_stop_words = ['ve','don']
+stop_words = text.ENGLISH_STOP_WORDS.union(my_additional_stop_words)
+
 #Sorting the term-doc stuff by candidate
 
 candidate_json = {}
@@ -151,11 +156,9 @@ for x in s.keys():
 
 #play with the max_df and min_df to get something we like.
 #add ngram_range=(1,2) back to paramaters if we want them
-c_vectorizer = CountVectorizer(strip_accents='unicode',analyzer="word",lowercase=True, stop_words='english')
+c_vectorizer = CountVectorizer(strip_accents='unicode',analyzer="word",lowercase=True, stop_words=stop_words)
 c_vectorizer.fit(speeches_by_candidate)
 c_terms = c_vectorizer.get_feature_names()
-c_terms.remove('ve')
-c_terms.remove('don')
 candidate_term_matrix = c_vectorizer.transform(speeches_by_candidate)
 
 #WE NEED TO STEM BECAUSE MEXICAN != MEXICANS
@@ -174,11 +177,9 @@ for i,d in enumerate(debates_list):
     tran += x['speech']
   debates.append(tran)
 
-d_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words='english')
+d_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words=stop_words)
 d_vectorizer.fit(debates)
 d_terms = d_vectorizer.get_feature_names()
-d_terms.remove('ve')
-d_terms.remove('don')
 debate_term_matrix = d_vectorizer.transform(debates)
 
 def most_spoken_words_by_candidate(candidate,n=10):
@@ -188,9 +189,7 @@ def most_spoken_words_by_candidate(candidate,n=10):
   top = sorted(range(len(words)), key=lambda i: words[i], reverse=True)[:n]
   top_words = {}
   for x in top:
-    if x < len(c_terms):
-      top_words[c_terms[x]] = cand_array[can_row,x]
-    #top_words.append((c_terms[x],cand_array[can_row,x]))
+    top_words[c_terms[x]] = cand_array[can_row,x]
   return top_words
 
 def most_spoken_words_by_debate(debate,n=10):
@@ -200,9 +199,7 @@ def most_spoken_words_by_debate(debate,n=10):
   top = sorted(range(len(words)), key=lambda i: words[i], reverse=True)[:n]
   top_words = {}
   for x in top:
-    if x < len(d_terms):
-      top_words[d_terms[x]] = deb_array[deb_row,x]
-    #top_words.append((d_terms[x],deb_array[deb_row,x]))
+    top_words[d_terms[x]] = deb_array[deb_row,x]
   return top_words
 
 def word_spoken_most_by_candidate(word,n=10):
@@ -212,8 +209,7 @@ def word_spoken_most_by_candidate(word,n=10):
   top = sorted(range(len(word_col)), key=lambda i: word_col[i], reverse=True)[:n]
   top_candidates = []
   for x in top:
-    if x < len(c_terms):
-      top_candidates.append((candidates[x],cand_array[x,word_ind]))
+    top_candidates.append((candidates[x],cand_array[x,word_ind]))
   return top_candidates
 
 
@@ -260,11 +256,9 @@ for line in transcripts:
 with open('candidate_responses.json','w') as outfile:
   json.dump(candidate_responses, outfile, sort_keys=True, indent=4, separators=(',',': '))
 
-ct_vectorizer = TfidfVectorizer(strip_accents='unicode',analyzer="word",lowercase=True, stop_words='english')
+ct_vectorizer = TfidfVectorizer(strip_accents='unicode',analyzer="word",lowercase=True, stop_words=stop_words)
 ct_vectorizer.fit(speeches_by_candidate)
 ct_terms = ct_vectorizer.get_feature_names()
-ct_terms.remove('ve')
-ct_terms.remove('don')
 candidate_term_t_matrix = ct_vectorizer.transform(speeches_by_candidate)
 
 def most_spoken_words_by_candidate_tfidf(candidate,n=10):
