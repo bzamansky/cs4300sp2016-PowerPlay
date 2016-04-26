@@ -42,29 +42,6 @@ def index(request):
         search = request.GET['search'].lower() # make case insensitive
         search_option = request.GET.get('search_option')
         
-        # CHECK THIS: problem here? dunno...
-        # if search_option == "term":
-            # (total_mentions_debate, total_mentions_candidate, interactions) = search_results_term(search,opt1,opt2)
-            # # # THIS IS BATYA'S MOSTLY WORKING CODE
-            # # output = total_mentions_candidate
-            # # candidates = total_mentions_candidate.keys()
-            # # for i,k in enumerate(total_mentions_candidate.keys()):
-            # #     cand_nums.append([k, total_mentions_candidate[k]])
-            # # cand_nums.sort(key=lambda x: x[1], reverse=True)
-            # values_by_candidate = total_mentions_candidate.values()
-            # values_by_debate = total_mentions_debate.values()
-            # debate_titles = total_mentions_debate.keys()
-            # values_interactions = interactions.values()
-        # elif search_option == "candidate":
-            # (top_ten, responses) = search_results_candidate(search, opt1, opt2)
-            # top_ten_words = top_ten.keys()
-            # top_ten_words_counts = top_ten.values()
-            # respond_to = responses.keys()
-            # respond_values = responses.values()
-            
-        # print(type(output)) # make sure it's a dict for JsonResponse
-        #http://stackoverflow.com/questions/30531990/matplotlib-into-a-django-template
-
         #(total_mentions_debate, total_mentions_candidate, interactions) = search_results_term(search, search_option)
         (total_mentions_debate, total_mentions_candidate, interactions) = search_results(search, search_option)
         #(top_ten, responses) = search_results_candidate(search, search_option)
@@ -77,9 +54,7 @@ def index(request):
         for i,k in enumerate(total_mentions_candidate.keys()):
             cand_nums.append([k, total_mentions_candidate[k]])
         cand_nums.sort(key=lambda x: x[1], reverse=True)
-        
-        # with open('project_template/cand_hist_data.json','w') as outfile:
-        #     json.dump(cand_nums, outfile)
+      
         
         # paginator = Paginator(output_list, 10)
         # page = request.GET.get('page')
