@@ -4,7 +4,6 @@ import Levenshtein
 import json
 from collections import defaultdict
 
-
 def read_file(n):
 	path = Docs.objects.get(id = n).address;
 	file = open(path)
