@@ -33,6 +33,8 @@ def index(request):
     top_ten_words_counts = None
     respond_to = None
     respond_values = None
+    all_debate_text = None
+    all_candidates = None
     # total_mentions_debate, total_mentions_candidate, interactions = None, None, None
     # top_ten, responses = None, None
 
