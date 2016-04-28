@@ -121,12 +121,18 @@
         </div>
         
         {% if search_option == 'candidate' %}
-            <div class="candidate_viz">
-                <div id="selfie" class = "selfie"> </div>
+            <div class="candidate_viz row">
+                <div id="selfie_div" class = "col-xs-6">
+                    <span id="selfie" class="selfie"></span>
+                </div>
+                <div id="word_cloud" class="col-xs-6"></div>
             </div>
-            <div id="used_words">
-                <ul id="used_words_list"></ul>
-                <input value="x" type="button" id="close" onclick="my_close()"/>
+            <div class="candidate_viz_two row">
+                <div class="force_graph col-xs-6"></div>
+                <div id="used_words" class="col-xs-6">
+                    <h3 id="word"></h3>
+                    <ul id="used_words_list"></ul>
+                </div>
             </div>
         {% endif %}
 
