@@ -141,14 +141,25 @@
             var mentions_by_candidate = {{mentions_by_candidate}}; // array of ints, which are the number of times each candidate mentions the query
             var debate_titles = {{debate_titles|safe}};
             var mentions_by_debate = {{mentions_by_debate}}; // array of ints, which are the number of times each query is mentioned in each debate
-            var interactions = {{interactions}};
+            // interactions -- might not do this
 
             // SEARCH BY CANDIDATE DATA
             var top_ten_words = {{ten_words|safe}}; // actual words
             var top_ten_words_counts = {{ten_words_counts}}; // num times each of top 10 words is said by that candidate
             var respond_to_names = {{respond_names|safe}}; // names of people that candidate responds to (or doesn't)
             var respond_to_counts = {{respond_values}};
+            // candidates each have list of debates they participated in
+            var candidate_num_debates_names = {{candidate_num_debates_names|safe}};
+            console.log(candidate_num_debates_names);
+            var candidate_num_debates_values = {{candidate_num_debates}};
+            console.log(candidate_num_debates_values);
 
+            var candidate_num_debates = {};
+            for (var i=0; i<candidate_num_debates_names.length; i++) {
+                var name = candidate_num_debates_names[i];
+                var value = candidate_num_debates_values[i].length;
+                candidate_num_debates[name] = value;
+            }
 
             var all_text = {{all_debates|safe}};
             var all_candidates = {{all_candidates|safe}};
@@ -167,9 +178,11 @@
             if (search_option == 'terms:') {
                 {% if mentions_by_debate %}
                     // query mentions by candidate
-                    makeBarGraph(candidate_names, mentions_by_candidate, "candidate"); // candidate mentions of...
+                    // num_debates for normalized
+                    makeBarGraph(candidate_names, mentions_by_candidate, "candidate", candidate_num_debates); // candidate mentions of...
                     // query mentions by debate
-                    makeBarGraph(debate_titles, mentions_by_debate, "debate"); // debate mentions of...
+                    // 1 for unnormalized
+                    makeBarGraph(debate_titles, mentions_by_debate, "debate", {}); // debate mentions of...
                 {% endif %}
             }
             // IF SEARCH BY CANDIDATE
@@ -190,7 +203,7 @@
                             var a = document.createElement("a");
                             a.href = 'http://trumpdonald.org/';
                             a.target = "_blank";
-                            a.appendChild(img)
+                            a.appendChild(img);
                             src.appendChild(a);
                         }
                         else{

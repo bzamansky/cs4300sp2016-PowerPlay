@@ -42,6 +42,8 @@ candidate_top_words_file = open("./test_code/candidates_top_ten_words_tfidf.json
 candidate_top_ten_data = json.load(candidate_top_words_file)
 candidate_response_file = open("./test_code/candidate_responses.json")
 candidate_responses = json.load(candidate_response_file)
+candidate_which_debates = open("./test_code/candidates_which_debates.json")
+candidate_num_debates = json.load(candidate_which_debates)
 
 
 def search_results(query, search_option):
@@ -54,7 +56,7 @@ def search_results(query, search_option):
             # candidate responses
             responses = candidate_responses[query]
 
-            return (top_ten_words, responses, {}) # {} is a dummy
+            return (top_ten_words, responses, {}) # {} is dummy dict
         except KeyError:
             return {}, {}, {}
 
@@ -78,7 +80,7 @@ def search_results(query, search_option):
         if any(total_mentions_debate.values()):
             # get Arguments and Interactions
             interactions = {}
-            return (total_mentions_debate, total_mentions_candidate, interactions)
+            return (total_mentions_debate, total_mentions_candidate, candidate_num_debates) # interactions
         else:
             return {}, {}, {}
     

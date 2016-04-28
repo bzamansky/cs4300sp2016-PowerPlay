@@ -173,14 +173,49 @@ function imageExists(image_url){
 // MAKE BAR GRAPH 
 /* x_values are labels for bar graphs, category is "candidate" or "debate"
     bar plot help from https://bl.ocks.org/mbostock/3885304
+    can_num_debates is dict of candidates and number of debates they speak in
 */
-function makeBarGraph(x_values, y_values, category) {
+function makeBarGraph(x_values, y_values, category, can_num_debates) {
+    // construct candidate_num_debates dict
+    // var candidate_num_debates = {};
+    // for (var i=0; i<can_num_debates_names.length; i++) {
+    //     var name = can_num_debates_names[i];
+    //     var value = can_num_debates_values[i].length;
+    //     candidate_num_debates[name] = value;
+    // }
+
     // make json array
     var data = [];
+    var norm = 1; // default normalization
+    var norm_text = "";
     if (category == "candidate"){
         var tmp = [];
         for (var i = 0; i < x_values.length; i++) {
-            tmp.push([x_values[i],y_values[i]]);
+            var cand_name = x_values[i];
+            // if dict not empty, then we want to normalize
+            console.log(can_num_debates);
+            if (can_num_debates) {
+                norm = can_num_debates[cand_name].length;
+                var normalized = y_values[i]/norm;
+                tmp.push([cand_name,normalized]);
+                norm_text = " Normalized";
+            }
+            // if dict not empty, so if we want to normalize
+            // if (candidate_debates) {
+            //     var debate_names = candidate_debates[cand_name];
+            //     norm = debate_names.length;
+            //     var normalized = y_values[i]/norm;
+            //     tmp.push([x_values[i],normalized]);
+            //     norm_text = " Normalized";
+            // }
+            // if (normalize != 0) {
+            //     normalized = y_values[i]/normalize;
+            //     tmp.push([x_values[i],normalized]);
+            //     norm_text = " Normalized";
+            // }
+            else {
+                tmp.push([x_values[i],y_values[i]]);
+            } 
         }
         tmp.sort();
         for (var i = 0; i < tmp.length; i++) {
@@ -270,7 +305,7 @@ function makeBarGraph(x_values, y_values, category) {
         .attr("y", 6)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text("Number of Mentions");
+        .text("Number of Mentions" + norm_text);
 
     svg.selectAll(".bar")
         .data(data)

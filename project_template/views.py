@@ -28,13 +28,14 @@ def index(request):
     values_by_candidate = None
     values_by_debate = None
     debate_titles = None
-    values_interactions = None
+    #values_interactions = None
     top_ten_words = None
     top_ten_words_counts = None
     respond_to = None
     respond_values = None
     all_debate_text = None
     all_candidates = None
+    num_debates = None
     # total_mentions_debate, total_mentions_candidate, interactions = None, None, None
     # top_ten, responses = None, None
 
@@ -43,7 +44,7 @@ def index(request):
         search_option = request.GET.get('search_option')
         
         #(total_mentions_debate, total_mentions_candidate, interactions) = search_results_term(search, search_option)
-        (total_mentions_debate, total_mentions_candidate, interactions) = search_results(search, search_option)
+        (total_mentions_debate, total_mentions_candidate, candidate_num_debates) = search_results(search, search_option)
         #(top_ten, responses) = search_results_candidate(search, search_option)
         (top_ten, responses, dummy) = search_results(search, search_option)
         # print(top_ten)
@@ -70,7 +71,9 @@ def index(request):
         values_by_candidate = total_mentions_candidate.values()
         values_by_debate = total_mentions_debate.values()
         debate_titles = total_mentions_debate.keys()
-        values_interactions = interactions.values()
+        num_debates_names = candidate_num_debates.keys()
+        num_debates_values = candidate_num_debates.values()
+        #values_interactions = interactions.values()
         top_ten_words = top_ten.keys()
         top_ten_words_counts = top_ten.values()
         respond_to = responses.keys()
@@ -106,12 +109,14 @@ def index(request):
                            'mentions_by_candidate': values_by_candidate,
                            'debate_titles': json.dumps(debate_titles),
                            'mentions_by_debate': values_by_debate,
-                           'interactions': values_interactions,
                            'ten_words': json.dumps(top_ten_words),
                            'ten_words_counts': top_ten_words_counts,
                            'respond_names': json.dumps(respond_to),
                            'respond_values': respond_values,
+                           'candidate_num_debates_names': json.dumps(num_debates_names),
+                           'candidate_num_debates:': num_debates_values,
                            'all_debates':all_debate_text,
                            'all_candidates':all_candidates
                            })
+                          #'interactions': values_interactions,
 
