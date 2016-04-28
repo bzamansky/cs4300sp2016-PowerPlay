@@ -1,6 +1,6 @@
 import bs4
 import re
-import urllib3
+import requests
 import time
 import os
 import json
@@ -43,8 +43,7 @@ import json
 # transcript_files = []
 # #Working through the debate links and pulling the file
 # for d in all_debates:
-#   http = urllib3.PoolManager()
-#   r = http.request('GET', d['link'])
+#   r = request.get(d['link'])
 #   if r.status != 200:
 #     break
 #   file = bs4.BeautifulSoup(r.data)

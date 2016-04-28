@@ -114,3 +114,4 @@ def index(request):
                            'all_debates':all_debate_text,
                            'all_candidates':all_candidates
                            })
+
