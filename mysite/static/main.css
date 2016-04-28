@@ -14,8 +14,13 @@ form {
 }
 
 div {
+<<<<<<< HEAD
   /*clear: both;*/
   /*margin: 0 35px;*/
+=======
+	/*clear: both;*/
+	/*margin: 0 35px;*/
+>>>>>>> 9de6bf02c21f4e6e50c09adb74a627df8ac91727
 }
 
 label {

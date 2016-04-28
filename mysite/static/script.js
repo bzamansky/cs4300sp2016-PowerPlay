@@ -193,22 +193,8 @@ function makeBarGraph(x_values, y_values, category) {
         for (var i = 0; i < x_values.length; i++) {
             var cand_name = x_values[i];
             // if dict not empty, then we want to normalize
-            // if dict not empty, so if we want to normalize
-            // if (candidate_debates) {
-            //     var debate_names = candidate_debates[cand_name];
-            //     norm = debate_names.length;
-            //     var normalized = y_values[i]/norm;
-            //     tmp.push([x_values[i],normalized]);
-            //     norm_text = " Normalized";
-            // }
-            // if (normalize != 0) {
-            //     normalized = y_values[i]/normalize;
-            //     tmp.push([x_values[i],normalized]);
-            //     norm_text = " Normalized";
-            // }
             
             tmp.push([x_values[i],y_values[i]]);
-             
         }
         tmp.sort();
         for (var i = 0; i < tmp.length; i++) {
