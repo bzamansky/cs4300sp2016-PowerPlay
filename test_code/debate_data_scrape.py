@@ -1,6 +1,6 @@
 import bs4
 import re
-import requests
+#import requests
 import time
 import os
 import json
@@ -85,6 +85,12 @@ candidates = [
   'perry'
 ]
 
+# normalize
+candidate_which_debates = {}
+for c in candidates:
+  candidate_which_debates[c] = []
+
+
 #Going through the folder of downloaded debates
 for file in os.listdir('debates'):
   transcript_filename = os.path.join('debates',file)
@@ -151,6 +157,9 @@ for file in os.listdir('debates'):
           prev = curr_speaker
         curr_speaker = speaker
       parsed.append({'speaker':speaker,'speech':t, 'date':date, 'moderator':mod,'party':party,'location':loc, 'prev':prev})
+      if speaker in candidates:
+        if name not in candidate_which_debates[speaker]:
+          candidate_which_debates[speaker].append(name)
     else:
       #Add the text to the speaker
       parsed[-1]['speech'] = parsed[-1]['speech'] + t
@@ -170,3 +179,7 @@ for x in transcripts:
 
 with open('all_debate_list.json','w') as outfile:
   json.dump(all_debate_list, outfile, indent=4, separators=(',', ': '))
+
+# Dump candidates_which_debate into json file to read which debates each candidate participated in
+with open('candidates_which_debates', 'w') as outfile:
+  json.dump(candidate_which_debates, outfile)
