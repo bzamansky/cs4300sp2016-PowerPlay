@@ -1,6 +1,10 @@
 import bs4
 import re
+<<<<<<< HEAD
 #import requests
+=======
+import urllib3
+>>>>>>> parent of 902050b... working on trying to fix the heroku issue, also removed urllib3 from being used
 import time
 import os
 import json
@@ -43,7 +47,8 @@ import json
 # transcript_files = []
 # #Working through the debate links and pulling the file
 # for d in all_debates:
-#   r = request.get(d['link'])
+#   http = urllib3.PoolManager()
+#   r = http.request('GET', d['link'])
 #   if r.status != 200:
 #     break
 #   file = bs4.BeautifulSoup(r.data)

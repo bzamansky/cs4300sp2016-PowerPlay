@@ -117,6 +117,10 @@ def index(request):
                            'candidate_num_debates:': num_debates_values,
                            'all_debates':all_debate_text,
                            'all_candidates':all_candidates
+<<<<<<< HEAD
                            })
                           #'interactions': values_interactions,
 
+=======
+                           })
+>>>>>>> parent of 902050b... working on trying to fix the heroku issue, also removed urllib3 from being used
