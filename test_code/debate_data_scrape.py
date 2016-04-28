@@ -1,10 +1,6 @@
 import bs4
 import re
-<<<<<<< HEAD
 #import requests
-=======
-import urllib3
->>>>>>> parent of 902050b... working on trying to fix the heroku issue, also removed urllib3 from being used
 import time
 import os
 import json
@@ -162,9 +158,9 @@ for file in os.listdir('debates'):
           prev = curr_speaker
         curr_speaker = speaker
       parsed.append({'speaker':speaker,'speech':t, 'date':date, 'moderator':mod,'party':party,'location':loc, 'prev':prev})
-      if speaker in candidates:
-        if name not in candidate_which_debates[speaker]:
-          candidate_which_debates[speaker].append(name)
+      # if speaker in candidates:
+      #   if name not in candidate_which_debates[speaker]:
+      #     candidate_which_debates[speaker].append(name)
     else:
       #Add the text to the speaker
       parsed[-1]['speech'] = parsed[-1]['speech'] + t
