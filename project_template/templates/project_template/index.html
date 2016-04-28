@@ -4,7 +4,7 @@
         <link rel="stylesheet" href="/static/main.css">
         <script src="//d3js.org/d3.v3.min.js"></script> <!-- d3 -->
         <script src="/static/d3.tip.v0.6.3.js"></script> <!-- tooltip -->
-		<script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> <!-- word cloud -->
+    <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> <!-- word cloud -->
         <script src="https://sdk.amazonaws.com/js/aws-sdk-2.3.6.min.js"></script><!--AWS S3 Server-->
         <script type="text/javascript">
             
@@ -13,61 +13,41 @@
         <link rel='shortcut icon' href='/static/Images/favicon.ico' type='image/x-icon'/ >
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
         <title>Power of Speech</title>
-        
     </head>
-
-	
     <body>
-	<div class="header"> </div>
+  <div class="header"> </div>
        <div class="topcorner">
             <p>Rebecca Mozdy (rlm393), Daniel Rong (ddr42), Jacqueline Viola (jlv78), Batya Zamansky (bz82)</p>
-			<p>Power Of Speech</p>
+      <p>Power Of Speech</p>
         </div>
-	<br>         
+  <br>         
         <form class="form-inline global-search" method='GET'>
             <a href="/pt/">
             <h1 style="font-size: 55px; font-family:Futura; color: #4285F4">
                 Power o <h1 style="color:red; font-size: 55px; font-family:Futura;">f Speech</h1>
             </h1>
             </a>
-            
             <br><br>
-            
             <div class="form-group">
                 <input id="input" type="text" name="search" class="form-control" placeholder="Search by TERM or candidate LAST NAME" value="{{searched}}">
                 <button type="submit" class="btn btn-info"> Go! </button>
                 <!-- JACKIE'S NEW CODE -->
                 <br>
-				<div>
+        <div>
                     <input type="radio" name="search_option" value="candidate" id="radio2" class="radio" {% if search_option != 'term' %}checked{% endif %}/>
-    				<label for="radio2"> Search by Candidate </label>
-				</div>
-				
-				<div>
+            <label for="radio2"> Search by Candidate </label>
+        </div>
+        <div>
                     <input type="radio" name="search_option" value="term" id="radio3" class="radio" {% if search_option == 'term' %}checked{% endif %}/>
                     <label for="radio3"> Search by Term </label>
-				</div> 
-
+        </div> 
             </div>
-
         </form>
-        
-        <div class="form-inline global-search">
-            <!-- <h4>Output</h4><br> -->
-            {% comment %}
-            {{output}}
-            {% endcomment %}
-            
-            <!-- PAGINATOR STUFF -->
-            <!-- {% for line in output %}
-                {{line}}<br>
-            {% endfor %} -->
-            
+        <div class="form-inline global-search">            
             {% if search_option %}
                 <h5>Searched in {{search_option}}s: "{{searched}}"</h5>
                 <br/><br/>
             {% endif %}
-            
             {% if search_option == 'candidate' and not ten_words_counts %}
                 <h5><b>Sorry, no candidate with the last name "{{searched}}" found!</b></h5>
                 <br/>
@@ -75,82 +55,41 @@
                 <h5><b>Sorry, the term "{{searched}}" was not found in any of the debates!</b></h5>
                 <br/>
             {% endif %}
-            
             <br/>
-            
-            <!--
-            {% comment %}
-            {% for value in plot %}
-                {% for part in value %}
-                {{part}}
-                {% endfor %}
-                <br/>
-            {% endfor %}
-            {% endcomment %}
-
-            {% comment %}
-            {% for key,val in output.items %}
-                {{key}} {{val}}<br>
-            {% endfor %}
-            {% endcomment %}
-            -->
-            
-            <h3 id="fill_me"></h3>
-
-            <!-- REMEMBER TO UNCOMMENT THIS IF NEED PAGINATOR -->
-            <!-- <div class="pagination">
-                <span class="step-links">
-                    {% comment %}
-                    {% if output.has_previous %}
-                    <a href= "{{magic_url}}&page={{ output.previous_page_number }}">previous</a>
-                    {% endif %} -->
-                    
-                    <!-- Showing the page numbers in Html Page -->
-                    <!-- <span class="current">
-                    Page _{{ output.number }}_ of _{{ output.paginator.num_pages }}_
-                    </span>
-                    
-                    {% if output.has_next %}
-                    <a href= "{{magic_url}}&page={{ output.next_page_number }}">next</a>
-                    {% endif %}
-                    {% endcomment %}
-                </span>
-            </div> -->
-            
-
         </div>
-        
         {% if search_option == 'candidate' %}
-            <div class="candidate_viz">
-                <div id="selfie" class = "selfie"> </div>
+            <div class="candidate_viz row">
+                <div id="selfie_div" class = "col-xs-6">
+                    <span id="selfie" class="selfie"></span>
+                </div>
+                <div id="word_cloud" class="col-xs-6"></div>
             </div>
-            <div id="used_words">
-                <ul id="used_words_list"></ul>
-                <input value="x" type="button" id="close" onclick="my_close()"/>
+            <div class="candidate_viz_two row">
+                <div class="force_graph col-xs-6"></div>
+                <div id="used_words" class="col-xs-6">
+                    <h3 id="word"></h3>
+                    <ul id="used_words_list"></ul>
+                </div>
             </div>
         {% endif %}
-
         <script type="text/javascript">
             var candidate_names = {{candidate_names|safe}}; // array of candidate names
             var mentions_by_candidate = {{mentions_by_candidate}}; // array of ints, which are the number of times each candidate mentions the query
             var debate_titles = {{debate_titles|safe}};
             var mentions_by_debate = {{mentions_by_debate}}; // array of ints, which are the number of times each query is mentioned in each debate
-            var interactions = {{interactions}};
-
+            // interactions -- might not do this
             // SEARCH BY CANDIDATE DATA
             var top_ten_words = {{ten_words|safe}}; // actual words
             var top_ten_words_counts = {{ten_words_counts}}; // num times each of top 10 words is said by that candidate
             var respond_to_names = {{respond_names|safe}}; // names of people that candidate responds to (or doesn't)
             var respond_to_counts = {{respond_values}};
-
-
+            // candidates each have list of debates they participated in
             var all_text = {{all_debates|safe}};
             var all_candidates = {{all_candidates|safe}};
             var all_text_dict = {};
             for (var i = 0; i < all_text.length; i++) {
                 all_text_dict[all_candidates[i]] = all_text[i];
             }
-
         </script>
         <script type="text/javascript" src="/static/script.js"></script>
         <script type="text/javascript">
@@ -161,9 +100,11 @@
             if (search_option == 'terms:') {
                 {% if mentions_by_debate %}
                     // query mentions by candidate
+                    // num_debates for normalized
                     makeBarGraph(candidate_names, mentions_by_candidate, "candidate"); // candidate mentions of...
                     // query mentions by debate
-                    makeBarGraph(debate_titles, mentions_by_debate, "debate"); // debate mentions of...
+                    // 1 for unnormalized
+                    makeBarGraph(debate_titles, mentions_by_debate, "debate", {}); // debate mentions of...
                 {% endif %}
             }
             // IF SEARCH BY CANDIDATE
@@ -184,7 +125,7 @@
                             var a = document.createElement("a");
                             a.href = 'http://trumpdonald.org/';
                             a.target = "_blank";
-                            a.appendChild(img)
+                            a.appendChild(img);
                             src.appendChild(a);
                         }
                         else{

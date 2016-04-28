@@ -55,7 +55,7 @@ function makeWordCloud(candidate, w, frequencies) {
     function draw(words) {
         var width = 700,
             height = 350;
-        var svg = d3.select(".candidate_viz").append("svg")
+        var svg = d3.select("#word_cloud").append("svg")
                 .attr("width", width)
                 .attr("height", height)
                 .attr("class", "wordcloud");
@@ -75,19 +75,25 @@ function makeWordCloud(candidate, w, frequencies) {
                 })
                 //.attr("transform", "translate(320,200)") // transform text
                 .text(function(d) { return d.text; })
-                .on("mouseover", function() {
-                    text.style("fill","gray");
-                    d3.select(this).style("fill", "#4285F4")
-                        .style("font-size", "50px").moveToFront();
+                .on("mouseover", function(d) {
+                    text.style("fill","gray")
+                        .style('opacity',0.5);
+                    d3.select(this).style("fill", "purple")
+                        .style("font-size", "50px")
+                        .style("opacity",1);
+                    wordClick(d.text,candidate);
                 })
                 .on("mouseout", function() {
-                    text.style("fill","black");
+                    text.style("fill","black")
+                        .style("opacity",1);
                     d3.select(this).style("fill", "#000000")
-                        .style("font-size", function(d) { return d.size + "px"; })
-                        .moveToBack();
+                        .style("font-size", function(d) { return d.size + "px"; });
+                    //my_close();
                 })
-                .on("click",function(d){
-                    wordClick(d.text,candidate);
+                .on("click",function(d){   
+                    var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.text + "&search_option=term"
+                    console.log(destination)
+                    window.location.href = (destination);
                 });
         svg.append("text")
             .attr("x", width / 2 )
@@ -131,6 +137,10 @@ function wordClick(word,candidate){
         }
     }  
 
+    document.getElementById("word").innerHTML = word;
+    // var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + word + "&search_option=term"
+    // document.getElementById("word_tag").href=destination;
+
     var used_words_list = document.getElementById("used_words_list");
     for (var i = 0; i < outputs.length; i++) {
         var list = document.createElement("li");
@@ -163,14 +173,42 @@ function imageExists(image_url){
 // MAKE BAR GRAPH 
 /* x_values are labels for bar graphs, category is "candidate" or "debate"
     bar plot help from https://bl.ocks.org/mbostock/3885304
+    can_num_debates is dict of candidates and number of debates they speak in
 */
 function makeBarGraph(x_values, y_values, category) {
+    // construct candidate_num_debates dict
+    // var candidate_num_debates = {};
+    // for (var i=0; i<can_num_debates_names.length; i++) {
+    //     var name = can_num_debates_names[i];
+    //     var value = can_num_debates_values[i].length;
+    //     candidate_num_debates[name] = value;
+    // }
+
     // make json array
     var data = [];
+    var norm = 1; // default normalization
+    var norm_text = "";
     if (category == "candidate"){
         var tmp = [];
         for (var i = 0; i < x_values.length; i++) {
+            var cand_name = x_values[i];
+            // if dict not empty, then we want to normalize
+            // if dict not empty, so if we want to normalize
+            // if (candidate_debates) {
+            //     var debate_names = candidate_debates[cand_name];
+            //     norm = debate_names.length;
+            //     var normalized = y_values[i]/norm;
+            //     tmp.push([x_values[i],normalized]);
+            //     norm_text = " Normalized";
+            // }
+            // if (normalize != 0) {
+            //     normalized = y_values[i]/normalize;
+            //     tmp.push([x_values[i],normalized]);
+            //     norm_text = " Normalized";
+            // }
+            
             tmp.push([x_values[i],y_values[i]]);
+             
         }
         tmp.sort();
         for (var i = 0; i < tmp.length; i++) {
@@ -215,7 +253,7 @@ function makeBarGraph(x_values, y_values, category) {
 
     var tip = d3.tip()
         .attr('class', 'd3-tip')
-        .offset([-10, -50])
+        .offset([-10, 0])
         .html(function(d) {
             // if candidate is a democrat
             if (dem_names.indexOf(d.x) != -1){
@@ -260,7 +298,7 @@ function makeBarGraph(x_values, y_values, category) {
         .attr("y", 6)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text("Number of Mentions");
+        .text("Number of Mentions" + norm_text);
 
     svg.selectAll(".bar")
         .data(data)
@@ -399,8 +437,7 @@ function makeResponseGraph(candidate, names, counts) {
         .linkDistance(90)
         .size([width, height]);
 
-    var svg = d3.select("body")
-        .append("div").attr("class","force_graph")
+    var svg = d3.select(".force_graph")
         .append("svg")
         .attr("width", width)
         .attr("height", height);
