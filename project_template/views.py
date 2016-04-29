@@ -8,12 +8,12 @@ from .test import find_similar
 # COME BACK TO THIS
 #from .test import search_results_candidate, search_results_term
 from .test import search_results
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+#from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.staticfiles.templatetags.staticfiles import static
-import numpy as np
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
+#import numpy as np
+# import matplotlib
+# matplotlib.use('Agg')
+# import matplotlib.pyplot as plt
 import json
 
 # Create your views here.

@@ -8,6 +8,7 @@ from sklearn.naive_bayes import BernoulliNB
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.feature_extraction import text 
 
+
 candidates = [
   'clinton',
   'sanders',

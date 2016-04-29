@@ -1,10 +1,8 @@
 from .models import Docs
 import os
-import Levenshtein
+# import Levenshtein
 import json
-from collections import defaultdict
-from django.core.cache import cache
-
+#from collections import defaultdict
 
 def read_file(n):
 	path = Docs.objects.get(id = n).address;
@@ -12,18 +10,18 @@ def read_file(n):
 	transcripts = json.load(file)
 	return transcripts
 
-def _edit(query, msg):
-    return Levenshtein.distance(query.lower(), msg.lower())
+# def _edit(query, msg):
+#     return Levenshtein.distance(query.lower(), msg.lower())
 
-def find_similar(q):
-	transcripts = read_file(1)
-	result = []
-	for transcript in transcripts:
-		for item in transcript:
-			m = item['text']
-			result.append(((_edit(q, m)), m))
+# def find_similar(q):
+# 	transcripts = read_file(1)
+# 	result = []
+# 	for transcript in transcripts:
+# 		for item in transcript:
+# 			m = item['text']
+# 			result.append(((_edit(q, m)), m))
 
-	return sorted(result, key=lambda tup: tup[0])
+	# return sorted(result, key=lambda tup: tup[0])
 
 # JACKIE'S NEW CODE
 
