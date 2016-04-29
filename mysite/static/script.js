@@ -444,8 +444,27 @@ function makeResponseGraph(candidate, names, counts) {
     var node = svg.selectAll(".node")
         .data(graph.nodes)
         .enter().append("circle")
-        .attr("class", "node")
-        //.attr("r", 9)
+        // set class to be dem-node, rep-node, or node - use this to color node by political party
+        .attr("class", function(d) {
+            var name = d.name;
+            var split_name = name.split(" ");
+            var name_len = split_name.length;
+            var class_text = "node"; // default
+            // if candidate is a democrat
+            if (dem_names.indexOf(name) != -1 || split_name[name_len-1] == "D"){
+                class_text = "node-dem";
+            }
+            // if candidate is a republican
+            else if (rep_names.indexOf(name) != -1 || split_name[name_len-1] == "R") {
+                class_text = "node-rep";
+            }
+            // if it's a debate date and location
+            else {
+                class_text = "node";
+            }
+            return class_text;
+        })
+        // make center node bigger
         .attr("r", function(d) {
             if (d.name == candidate) {
                 return 12;
@@ -454,21 +473,9 @@ function makeResponseGraph(candidate, names, counts) {
                 return 7;
             }
         })
-        // .style("fill", function(d) { 
-        //     if (d.group == 'dem') {
-        //         return "blue";
-        //     }
-        //     else if (d.group == 'rep') {
-        //         return "red";
-        //     }
-        // }) // color by political party
         .call(force.drag);
 
-    // shows candidate name when hover over node
-    node.append("title")
-        .text(function(d) { return d.name; });
-
-    // tooltip for hover node, link
+    // create tooltip for node
     var tip_node = d3.tip()
         .attr('class', 'd3-tip')
         .offset([-10, 0])
@@ -476,32 +483,24 @@ function makeResponseGraph(candidate, names, counts) {
             var tool_text = "<strong>" + d.name.toUpperCase() + "</strong>";
             return tool_text;
         });
+
+    // create tooltip for link
     var tip_link = d3.tip()
         .attr('class', 'd3-tip')
         .offset([-10, 0])
         .html(function(d) {
-            var tool_text = "<strong>" + d.weight + "</strong>";
+            var tool_text = "<strong>" + d.weight + "</strong> responses";
             return tool_text;
         });
 
-    // node.on('mouseover', tip_node.show)
-    //     .on('mouseout', tip_node.hide);
-    // link.on('mouseover', tip_link.show)
-    //     .on('mouseout', tip_link.hide);
+    // call tooltips
+    node.on('mouseover', tip_node.show)
+        .on('mouseout', tip_node.hide);
+    link.on('mouseover', tip_link.show)
+        .on('mouseout', tip_link.hide);
+    svg.call(tip_node);
+    svg.call(tip_link);
     
-    // always show candidate names
-    // node.append("text")
-    //     // .attr("x", function(d) { return d.x+8; })
-    //     // .attr("y", function(d) { return d.y-8; })
-    //     .attr("dx", 12)
-    //     .attr("dy", "35em")
-    //     .text(function(d) { return d.name; })
-    //     .attr("fill", "black");
-
-    // shows # responses when hover over link
-    link.append("title")
-        .text(function(d) { return "Responses: " + d.weight; });
-
     // title for network graph
     svg.append("text")
         .attr("x", width / 2 )

@@ -13,16 +13,6 @@ form {
   margin: 40px 0;
 }
 
-div {
-<<<<<<< HEAD
-  /*clear: both;*/
-  /*margin: 0 35px;*/
-=======
-	/*clear: both;*/
-	/*margin: 0 35px;*/
->>>>>>> 9de6bf02c21f4e6e50c09adb74a627df8ac91727
-}
-
 label {
   width: 200px;
   border-radius: 3px;
@@ -231,9 +221,6 @@ color: #4285F4;
 
 
 /*used_words context div*/
-#used_words{
- 
-}
 #used_words ul{
   list-style-type: none;
   color:black;
@@ -246,4 +233,15 @@ color: #4285F4;
 #used_words h3{
   text-align: center;
   margin-top:75px;
+}
+
+/* style response graph */
+.node-dem {
+  fill: #4285F4;
+}
+.node-rep {
+  fill: #d93232;
+}
+.node {
+  fille: black;
 }
