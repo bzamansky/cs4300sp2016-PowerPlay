@@ -52,43 +52,35 @@ with open("./test_code/candidates_which_debates.json") as candidate_which_debate
     candidate_num_debates = json.load(candidate_which_debates)
     candidate_which_debates.close()
 
+def search_candidate(query):
+    try:
+        top_ten_words = candidate_top_ten_data[query]
 
-def search_results(query, search_option):
-    if search_option == 'candidate':
-        # query is the key
-        # pull the dictionary of words for that candidate
-        try:
-            top_ten_words = candidate_top_ten_data[query]
+        # candidate responses
+        responses = candidate_responses[query]
 
-            # candidate responses
-            responses = candidate_responses[query]
+        return (top_ten_words, responses) 
+    except KeyError:
+        return {}, {}
 
-            return (top_ten_words, responses, {}) # {} is dummy dict
-        except KeyError:
-            return {}, {}, {}
+def search_term(query):
+    total_mentions_debate = {}
+    for key in debate_data_d:
+        total_mentions_debate[key] = debate_data_d[key].get(query, 0)
+    for key in debate_data_r:
+        total_mentions_debate[key] = debate_data_r[key].get(query, 0)
+    for key in debate_data_r_u: 
+        total_mentions_debate[key] = debate_data_r_u[key].get(query, 0)
 
-    elif search_option == 'term':
-        # get Total Mentions by Debate
-        # debate date, location is key and term count is value
-        total_mentions_debate = {}
-        for key in debate_data_d:
-            total_mentions_debate[key] = debate_data_d[key].get(query, 0)
-        for key in debate_data_r:
-            total_mentions_debate[key] = debate_data_r[key].get(query, 0)
-        for key in debate_data_r_u: 
-            total_mentions_debate[key] = debate_data_r_u[key].get(query, 0)
-
-        # get Total Mentions by Candidate
-        # candidate is key and term count is value
-        total_mentions_candidate = {}
-        for key in candidate_data:
-            total_mentions_candidate[key] = candidate_data[key].get(query, 0)
-        
-        if any(total_mentions_debate.values()):
-            # get Arguments and Interactions
-            interactions = {}
-            return (total_mentions_debate, total_mentions_candidate, candidate_num_debates) # interactions
-        else:
-            return {}, {}, {}
+    # get Total Mentions by Candidate
+    # candidate is key and term count is value
+    total_mentions_candidate = {}
+    for key in candidate_data:
+        total_mentions_candidate[key] = candidate_data[key].get(query, 0)
     
-    return ({'nothing here':'hi'},{'nope':'nope'},{})
+    if any(total_mentions_debate.values()):
+        # get Arguments and Interactions
+        interactions = {}
+        return (total_mentions_debate, total_mentions_candidate, candidate_num_debates) # interactions
+    else:
+        return {}, {}, {}
