@@ -169,7 +169,7 @@ for file in os.listdir('debates'):
   transcript['tran'] = parsed
   transcripts.append(transcript)
 
-
+#Removing the moderator's stuff because file space
 actual_transcripts = []
 # all_words = []
 # x = 0
