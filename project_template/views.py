@@ -16,24 +16,24 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import json
 
-output_list = ''
-output=''
-search = ''
-search_option = ''
-cand_nums = []
-new_file_path = ''
-candidates = None
-values_by_candidate = None
-values_by_debate = None
-debate_titles = None
+global output_list = ''
+global output=''
+global search = ''
+global search_option = ''
+global cand_nums = []
+global new_file_path = ''
+global candidates = None
+global values_by_candidate = None
+global values_by_debate = None
+global debate_titles = None
 #values_interactions = None
-top_ten_words = None
-top_ten_words_counts = None
-respond_to = None
-respond_values = None
-all_debate_text = None
-all_candidates = None
-num_debates = None
+global top_ten_words = None
+global top_ten_words_counts = None
+global respond_to = None
+global respond_values = None
+global all_debate_text = None
+global all_candidates = None
+global num_debates = None
 
 # Create your views here.
 def index(request):
