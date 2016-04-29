@@ -467,15 +467,36 @@ function makeResponseGraph(candidate, names, counts) {
     // shows candidate name when hover over node
     node.append("title")
         .text(function(d) { return d.name; });
+
+    // tooltip for hover node, link
+    var tip_node = d3.tip()
+        .attr('class', 'd3-tip')
+        .offset([-10, 0])
+        .html(function(d) {
+            var tool_text = "<strong>" + d.name.toUpperCase() + "</strong>";
+            return tool_text;
+        });
+    var tip_link = d3.tip()
+        .attr('class', 'd3-tip')
+        .offset([-10, 0])
+        .html(function(d) {
+            var tool_text = "<strong>" + d.weight + "</strong>";
+            return tool_text;
+        });
+
+    // node.on('mouseover', tip_node.show)
+    //     .on('mouseout', tip_node.hide);
+    // link.on('mouseover', tip_link.show)
+    //     .on('mouseout', tip_link.hide);
     
     // always show candidate names
-    node.append("text")
-        // .attr("x", function(d) { return d.x+8; })
-        // .attr("y", function(d) { return d.y-8; })
-        .attr("dx", 12)
-        .attr("dy", "35em")
-        .text(function(d) { return d.name; })
-        .attr("fill", "black");
+    // node.append("text")
+    //     // .attr("x", function(d) { return d.x+8; })
+    //     // .attr("y", function(d) { return d.y-8; })
+    //     .attr("dx", 12)
+    //     .attr("dy", "35em")
+    //     .text(function(d) { return d.name; })
+    //     .attr("fill", "black");
 
     // shows # responses when hover over link
     link.append("title")
