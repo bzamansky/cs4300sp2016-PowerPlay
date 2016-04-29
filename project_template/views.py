@@ -26,6 +26,7 @@ def index(request):
     respond_values = None
     all_debate_text = None
     num_debates = None
+    snippits = None
 
 
     if 'search' in request.GET:
