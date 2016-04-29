@@ -119,7 +119,8 @@ with open("all_debate_list.json", "r") as f:
 speeches = [x['speech'] for x in transcripts]
 
 ## getting term-doc matrix
-vectorizer = CountVectorizer(ngram_range=(1, 2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words="english")  # for  unigrams only use ngram_range=(1, 1)
+#ngram_range=(1, 2),
+vectorizer = CountVectorizer(strip_accents='unicode',analyzer="word",lowercase=True, stop_words="english")  # for  unigrams only use ngram_range=(1, 1)
 vectorizer.fit(speeches)
 
 terms = vectorizer.get_feature_names()
@@ -183,7 +184,8 @@ for i,d in enumerate(debates_list):
 #   x += len(d.split(" "))
 # print(x)
 
-d_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words=stop_words)
+#ngram_range=(1,2),
+d_vectorizer = CountVectorizer(strip_accents='unicode',analyzer="word",lowercase=True, stop_words=stop_words)
 d_vectorizer.fit(debates)
 d_terms = d_vectorizer.get_feature_names()
 debate_term_matrix = d_vectorizer.transform(debates)
