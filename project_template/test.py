@@ -3,6 +3,7 @@ import os
 import Levenshtein
 import json
 from collections import defaultdict
+from django.core.cache import cache
 
 
 def read_file(n):
