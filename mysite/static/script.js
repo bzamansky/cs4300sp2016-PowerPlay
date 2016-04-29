@@ -8,36 +8,15 @@ var rep_names = ["cruz", "kasich", "trump", "rubio", "bush", "christie", "fiorin
 
 // MAKE WORD CLOUD
 /* w is top words by that candidate, frequencies is number of times each word in w is used by candidate */
-function makeWordCloud(candidate, w, frequencies) {
-    var frequency_list = [];
-    for (var i=0; i<w.length; i++) {
+function makeWordCloud(candidate, w) {
+    var frequency_list = []; 
+    var w_keys = Object.keys(w);
+    for (var i=0; i<w_keys.length; i++) {
         frequency_list.push({
-            'text': w[i],
-            'size': frequencies[i]
+            'text': w_keys[i],
+            'size': w[w_keys[i]]
         });
     }
-
-    // custom color scale domain values
-    var max_freq = Math.max.apply(Math, frequencies); 
-    var min_freq = Math.min.apply(Math, frequencies); 
-    var domain_values = [];
-    var num_steps = 10;
-    var fraction = (max_freq - min_freq)/num_steps;
-    for (var i=1; i<num_steps+1; i++) {
-        domain_values.push(Math.round(fraction*i)); // whole number
-    }
-
-    //var colors = ["#B3B3B3", "#868686", "#595959", "#2C2C2C", "#000000"];
-    //console.log(domain_values);
-
-    // COLOR SCALE FOR WORDS
-    var color = d3.scale.linear()
-            // .domain([0,10,20,30,40,50,60,100,150,300,400]) // domain for non-tfidf values
-            .domain([0.10, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.20, 0.22, 0.30]) // for tfidf values
-            //.domain([0,10,30,40,60,100,150,300,400])
-            //.domain(domain_values)
-            .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
-            //.range(colors);
 
     var scale_value = 150; // make size of words smaller
 
@@ -50,7 +29,6 @@ function makeWordCloud(candidate, w, frequencies) {
             .on("end", draw)
             .start();
 
-    
 
     function draw(words) {
         var width = 700,

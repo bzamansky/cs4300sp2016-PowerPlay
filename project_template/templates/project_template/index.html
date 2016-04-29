@@ -78,7 +78,6 @@
 
             // SEARCH BY CANDIDATE DATA
             var top_ten_words = {{ten_words|safe}}; // actual words
-            var top_ten_words_counts = {{ten_words_counts}}; // num times each of top 10 words is said by that candidate
             var respond_to_names = {{respond_names|safe}}; // names of people that candidate responds to (or doesn't)
             var respond_to_counts = {{respond_values}};
             // candidates each have list of debates they participated in
@@ -104,7 +103,7 @@
             }
             // IF SEARCH BY CANDIDATE
             else if (search_option == 'candidates:') {
-                {% if ten_words_counts %}
+                {% if ten_words %}
                     //add a picture of the candidate
                     var can = document.getElementsByTagName('h5')[0].innerText.split(" ")[3];
                     var candidate = can.substring(1, can.length-1);
@@ -132,7 +131,7 @@
                     makeResponseGraph(candidate, respond_to_names, respond_to_counts);
 
                     // make top 10 word cloud for candidate
-                    makeWordCloud(candidate, top_ten_words, top_ten_words_counts);
+                    makeWordCloud(candidate, top_ten_words);
                 {% endif %}
             }
 

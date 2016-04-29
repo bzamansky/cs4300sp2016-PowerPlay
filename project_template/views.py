@@ -26,6 +26,7 @@ def index(request):
     respond_values = None
     all_debate_text = None
     num_debates = None
+    snippits = None
 
 
     if 'search' in request.GET:
@@ -39,8 +40,6 @@ def index(request):
 
         if search_option == 'candidate':
           (top_ten, responses) = search_candidate(search)
-          top_ten_words = top_ten.keys()
-          top_ten_words_counts = top_ten.values()
           respond_to = responses.keys()
           respond_values = responses.values()
 
@@ -64,8 +63,7 @@ def index(request):
                            'mentions_by_candidate': json.dumps(values_by_candidate),
                            'debate_titles': json.dumps(debate_titles),
                            'mentions_by_debate': json.dumps(values_by_debate),
-                           'ten_words': json.dumps(top_ten_words),
-                           'ten_words_counts': top_ten_words_counts,
+                           'ten_words': json.dumps(top_ten),
                            'respond_names': json.dumps(respond_to),
                            'respond_values': json.dumps(respond_values),
                            'all_debates':json.dumps(snippits)

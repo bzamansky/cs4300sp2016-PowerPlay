@@ -10,23 +10,6 @@ def read_file(n):
 	transcripts = json.load(file)
 	return transcripts
 
-# def _edit(query, msg):
-#     return Levenshtein.distance(query.lower(), msg.lower())
-
-# def find_similar(q):
-# 	transcripts = read_file(1)
-# 	result = []
-# 	for transcript in transcripts:
-# 		for item in transcript:
-# 			m = item['text']
-# 			result.append(((_edit(q, m)), m))
-
-	# return sorted(result, key=lambda tup: tup[0])
-
-# JACKIE'S NEW CODE
-
-# PUT THIS IN PREPROCESSING SO DON'T NEED TO DO IT EVERY TIME
-# debate data, so available throughout this script
 # NOTE: debate word data is in 3 files (dem, rep, rep undercard) because one file too bit for GitHub :(
 with open("./test_code/debates_top_words_d.json") as debate_data_file_dem:
     debate_data_d = json.load(debate_data_file_dem)
@@ -41,7 +24,6 @@ with open("./test_code/debates_top_words_r_u.json") as debate_data_file_rep_unde
 with open("./test_code/candidates_top_words.json") as candidate_data_file:
     candidate_data = json.load(candidate_data_file)
     candidate_data_file.close()
-# candidate_top_words_file = open("./test_code/candidates_top_ten_words.json") # this file is only word counts, not tfidf
 with open("./test_code/candidates_top_ten_words_tfidf.json") as candidate_top_words_file:
     candidate_top_ten_data = json.load(candidate_top_words_file)
     candidate_top_words_file.close()
