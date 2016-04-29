@@ -29,21 +29,29 @@ def find_similar(q):
 # PUT THIS IN PREPROCESSING SO DON'T NEED TO DO IT EVERY TIME
 # debate data, so available throughout this script
 # NOTE: debate word data is in 3 files (dem, rep, rep undercard) because one file too bit for GitHub :(
-debate_data_file_dem = open("./test_code/debates_top_words_d.json") # democratic debates
-debate_data_file_rep = open("./test_code/debates_top_words_r.json") # republican debates
-debate_data_file_rep_under = open("./test_code/debates_top_words_r_u.json") # republican undercard debates
-debate_data_d = json.load(debate_data_file_dem)
-debate_data_r = json.load(debate_data_file_rep)
-debate_data_r_u = json.load(debate_data_file_rep_under)
-candidate_data_file = open("./test_code/candidates_top_words.json")
-candidate_data = json.load(candidate_data_file)
+with open("./test_code/debates_top_words_d.json") as debate_data_file_dem:
+    debate_data_d = json.load(debate_data_file_dem)
+    debate_data_file_dem.close() # democratic debates
+with open("./test_code/debates_top_words_r.json") as debate_data_file_rep:
+    debate_data_r = json.load(debate_data_file_rep)
+    debate_data_file_rep.close() # republican debates
+with open("./test_code/debates_top_words_r_u.json") as debate_data_file_rep_under:
+    # republican undercard debates
+    debate_data_r_u = json.load(debate_data_file_rep_under)
+    debate_data_file_rep_under.close()
+with open("./test_code/candidates_top_words.json") as candidate_data_file:
+    candidate_data = json.load(candidate_data_file)
+    candidate_data_file.close()
 # candidate_top_words_file = open("./test_code/candidates_top_ten_words.json") # this file is only word counts, not tfidf
-candidate_top_words_file = open("./test_code/candidates_top_ten_words_tfidf.json")
-candidate_top_ten_data = json.load(candidate_top_words_file)
-candidate_response_file = open("./test_code/candidate_responses.json")
-candidate_responses = json.load(candidate_response_file)
-candidate_which_debates = open("./test_code/candidates_which_debates.json")
-candidate_num_debates = json.load(candidate_which_debates)
+with open("./test_code/candidates_top_ten_words_tfidf.json") as candidate_top_words_file:
+    candidate_top_ten_data = json.load(candidate_top_words_file)
+    candidate_top_words_file.close()
+with open("./test_code/candidate_responses.json") as candidate_response_file:
+    candidate_responses = json.load(candidate_response_file)
+    candidate_response_file.close()
+with open("./test_code/candidates_which_debates.json") as candidate_which_debates:
+    candidate_num_debates = json.load(candidate_which_debates)
+    candidate_which_debates.close()
 
 
 def search_results(query, search_option):

@@ -84,15 +84,17 @@ def index(request):
         candidate_to_i = {}
         for i,x in enumerate(all_candidates):
           candidate_to_i[x] = i
-        all_debate_list_file = open('./test_code/all_debate_list.json')
-        all_debate_list = json.load(all_debate_list_file)
+        with open('./test_code/all_debate_list.json') as all_debate_list_file:
+          all_debate_list = json.load(all_debate_list_file)
+          all_debate_list_file.close()
         all_debate_text = [""] * len(all_candidates)
         for x in all_debate_list:
           if x['speaker'] not in all_candidates:
             continue
           all_debate_text[candidate_to_i[x['speaker']]] += x['speech'].encode('ascii','ignore')
-        statement_file = open('./test_code/candidate_statements.json')
-        statements = json.load(statement_file)
+        with open('./test_code/candidate_statements.json') as statement_file:
+          statements = json.load(statement_file)
+          statement_file.close()
         for x in statements.keys():
           s = " ".join(statements[x])
           all_debate_text[candidate_to_i[x]] += s.encode('ascii','ignore')
