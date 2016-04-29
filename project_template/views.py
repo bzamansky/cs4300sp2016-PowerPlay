@@ -113,9 +113,7 @@ def index(request):
                            'ten_words_counts': top_ten_words_counts,
                            'respond_names': json.dumps(respond_to),
                            'respond_values': respond_values,
-                           'candidate_num_debates_names': json.dumps(num_debates_names),
-                           'candidate_num_debates:': num_debates_values,
-                           'all_debates':all_debate_text,
+                            'all_debates':all_debate_text,
                            'all_candidates':all_candidates
 
                            })
