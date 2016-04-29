@@ -28,6 +28,7 @@ def index(request):
     num_debates = None
     snippits = None
 
+
     if 'search' in request.GET:
         search = request.GET['search'].lower() # make case insensitive
         search_option = request.GET.get('search_option')
