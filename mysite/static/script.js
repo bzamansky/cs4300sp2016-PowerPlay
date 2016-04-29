@@ -81,7 +81,7 @@ function makeWordCloud(candidate, w, frequencies) {
                     d3.select(this).style("fill", "purple")
                         .style("font-size", "50px")
                         .style("opacity",1);
-                    wordClick(d.text,candidate);
+                    wordHover(d.text,candidate);
                 })
                 .on("mouseout", function() {
                     text.style("fill","black")
@@ -92,7 +92,6 @@ function makeWordCloud(candidate, w, frequencies) {
                 })
                 .on("click",function(d){   
                     var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.text + "&search_option=term"
-                    console.log(destination)
                     window.location.href = (destination);
                 });
         svg.append("text")
@@ -106,8 +105,8 @@ function makeWordCloud(candidate, w, frequencies) {
     }
 }
 
-/* A function to display text including the word clicked on */
-function wordClick(word,candidate){
+/* A function to display text including the word hovered over */
+function wordHover(word,candidate){
     my_close();
     //found on stack overflow
     function getAllIndices(arr, val) {
@@ -321,8 +320,14 @@ function makeBarGraph(x_values, y_values, category) {
                 return 5;
             }
         })
+        // show tooltip when hover over bar
         .on('mouseover', tip.show)
-        .on('mouseout', tip.hide);
+        .on('mouseout', tip.hide)
+        // bring to candidate page when bar is clicked
+        .on("click",function(d){   
+            var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.x + "&search_option=candidate";
+            window.location.href = (destination);
+        });
 
     // get query
     var q = document.getElementsByTagName('h5')[0].innerText.split(" ")[3];
