@@ -324,9 +324,11 @@ function makeBarGraph(x_values, y_values, category) {
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide)
         // bring to candidate page when bar is clicked
-        .on("click",function(d){   
-            var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.x + "&search_option=candidate";
-            window.location.href = (destination);
+        .on("click",function(d){
+            if (category == 'candidate') {
+                var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.x + "&search_option=candidate";
+                window.location.href = (destination);
+            }
         });
 
     // get query
