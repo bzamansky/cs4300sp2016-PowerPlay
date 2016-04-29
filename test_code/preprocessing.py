@@ -177,6 +177,11 @@ for i,d in enumerate(debates_list):
   for x in d['tran']:
     tran += x['speech']
   debates.append(tran)
+# total # of words
+# x = 0
+# for d in debates:
+#   x += len(d.split(" "))
+# print(x)
 
 d_vectorizer = CountVectorizer(ngram_range=(1,2),strip_accents='unicode',analyzer="word",lowercase=True, stop_words=stop_words)
 d_vectorizer.fit(debates)
@@ -297,7 +302,7 @@ def snippits(word,candidate):
   text = speeches_by_candidate[ind].split(" ")
   indices = [i for i,x in enumerate(text) if x == word or x == word.title()]
   if len(indices) < 4:
-    print("do a thing later")
+    indices = indices
   else:
     indices = indices[:4]
   for x in indices:
