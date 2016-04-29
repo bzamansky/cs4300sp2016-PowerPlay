@@ -20,8 +20,8 @@ def index(request):
     values_by_candidate = None
     values_by_debate = None
     debate_titles = None
-    top_ten_words = None
-    top_ten_words_counts = None
+    top_ten = None
+    #top_ten_words_counts = None
     respond_to = None
     respond_values = None
     all_debate_text = None
