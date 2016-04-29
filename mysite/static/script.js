@@ -324,9 +324,11 @@ function makeBarGraph(x_values, y_values, category) {
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide)
         // bring to candidate page when bar is clicked
-        .on("click",function(d){   
-            var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.x + "&search_option=candidate";
-            window.location.href = (destination);
+        .on("click",function(d){
+            if (category == 'candidate') {
+                var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.x + "&search_option=candidate";
+                window.location.href = (destination);
+            }
         });
 
     // get query
@@ -500,7 +502,15 @@ function makeResponseGraph(candidate, names, counts) {
 
     // call tooltips
     node.on('mouseover', tip_node.show)
-        .on('mouseout', tip_node.hide);
+        .on('mouseout', tip_node.hide)
+        // bring to candidate page when node is clicked
+        .on("click",function(d){
+            // don't reload page if click center node
+            if (d.name != candidate) {
+                var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.name + "&search_option=candidate";
+                window.location.href = (destination);
+            }
+        });
     link.on('mouseover', tip_link.show)
         .on('mouseout', tip_link.hide);
     svg.call(tip_node);
