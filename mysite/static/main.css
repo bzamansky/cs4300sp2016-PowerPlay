@@ -236,6 +236,7 @@ color: #4285F4;
 }
 
 /* style response graph */
+/* color nodes by party */
 .node-dem {
   fill: #4285F4;
 }
@@ -243,5 +244,13 @@ color: #4285F4;
   fill: #d93232;
 }
 .node {
-  fille: black;
+  fill: black;
 }
+
+/* highlight node and link on hover */
+.node-dem:hover, .node-rep:hover, .node:hover {
+  fill: orange;
+}/*
+.link {
+  stroke: orange;
+}*/
