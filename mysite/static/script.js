@@ -108,34 +108,8 @@ function makeWordCloud(candidate, w, frequencies) {
 /* A function to display text including the word hovered over */
 function wordHover(word,candidate){
     my_close();
-    //found on stack overflow
-    function getAllIndices(arr, val) {
-        var indexes = [], i = -1;
-        while ((i = arr.indexOf(val, i+1)) != -1){
-            indexes.push(i);
-        }
-        return indexes;
-    }
-    function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
 
-    var text = all_text_dict[candidate].split(" ");
-    var indices = getAllIndices(text, word, false);
-    if(indices.length < 4){
-        indices = indices.concat(getAllIndices(text,capitalizeFirstLetter(word),false));
-    }
-    var span = 15;
-    var outputs = [];
-    var l = indices.length;
-    if(l > 4){ l = 4; }
-    for (var i = 0; i < l; i++) {
-        if(indices[i]>span && indices[i] < text.length - span){
-            output_str = text.slice(indices[i] - span,indices[i] + span)
-            outputs.push("..." + output_str.join(" ") + "...");
-        }
-    }  
-
+    var outputs = all_text_dict[candidate][word];
     document.getElementById("word").innerHTML = word;
     // var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + word + "&search_option=term"
     // document.getElementById("word_tag").href=destination;

@@ -25,7 +25,6 @@ def index(request):
     respond_to = None
     respond_values = None
     all_debate_text = None
-    all_candidates = None
     num_debates = None
 
 
@@ -54,25 +53,10 @@ def index(request):
           num_debates_names = candidate_num_debates.keys()
           num_debates_values = candidate_num_debates.values()        
 
-        all_candidates = ['clinton','sanders',"o'malley",'chafee','webb','cruz','kasich','trump','rubio','carson','bush','christie','fiorina','santorum','paul','huckabee','pataki','graham','jindal','walker','perry']
+        with open("./test_code/cand_top_ten_snippits.json") as snippits_file:
+            snippits = json.load(snippits_file)
+            snippits_file.close()
 
-        candidate_to_i = {}
-        for i,x in enumerate(all_candidates):
-          candidate_to_i[x] = i
-        with open('./test_code/all_debate_list.json') as all_debate_list_file:
-          all_debate_list = json.load(all_debate_list_file)
-          all_debate_list_file.close()
-        all_debate_text = [""] * len(all_candidates)
-        for x in all_debate_list:
-          if x['speaker'] not in all_candidates:
-            continue
-          all_debate_text[candidate_to_i[x['speaker']]] += x['speech'].encode('ascii','ignore')
-        with open('./test_code/candidate_statements.json') as statement_file:
-          statements = json.load(statement_file)
-          statement_file.close()
-        for x in statements.keys():
-          s = " ".join(statements[x])
-          all_debate_text[candidate_to_i[x]] += s.encode('ascii','ignore')
     return render_to_response('project_template/index.html', 
                           {'search_option': search_option,
                           'searched': search,
@@ -84,6 +68,5 @@ def index(request):
                            'ten_words_counts': top_ten_words_counts,
                            'respond_names': json.dumps(respond_to),
                            'respond_values': json.dumps(respond_values),
-                           'all_debates':json.dumps(all_debate_text),
-                           'all_candidates':json.dumps(all_candidates)
+                           'all_debates':json.dumps(snippits)
                            })

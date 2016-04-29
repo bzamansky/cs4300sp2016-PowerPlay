@@ -83,12 +83,7 @@
             var respond_to_counts = {{respond_values}};
             // candidates each have list of debates they participated in
 
-            var all_text = {{all_debates|safe}};
-            var all_candidates = {{all_candidates|safe}};
-            var all_text_dict = {};
-            for (var i = 0; i < all_text.length; i++) {
-                all_text_dict[all_candidates[i]] = all_text[i];
-            }
+            var all_text_dict = {{all_debates|safe}};
         </script>
         <script type="text/javascript" src="/static/script.js"></script>
         <script type="text/javascript">
