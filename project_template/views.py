@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from .models import Docs
 from django.template import loader
 from .form import QueryForm
-from .test import find_similar
+#from .test import find_similar
 # COME BACK TO THIS
 #from .test import search_results_candidate, search_results_term
 from .test import search_results
