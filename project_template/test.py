@@ -84,3 +84,35 @@ def search_term(query):
         return (total_mentions_debate, total_mentions_candidate, candidate_num_debates) # interactions
     else:
         return {}, {}, {}
+
+		
+def format_candidate_name(query):
+#replaces the query word with the appropriate lowercase last name if any of these names exist in the query
+	names = { 'clinton': ['hillary', 'clinton', 'hillary 	clinton','secretary clinton'],
+			  'sanders': ['bernie','sanders','bernie sanders', 'senator sanders'],
+			  "o'malley": ['martin', "o'malley","martin o'malley"],
+			  'chafee': ['chafee', 'lincoln chafee'],
+			  'webb': ['jim','webb','jim webb'],
+			  'cruz': ['ted','cruz','ted cruz','senator cruz'],
+			  'kasich': ['john','kasich','john kasich','governor kasich'],
+			  'trump': ['donald','trump','donald trump'],
+			  'rubio': ['marco','rubio','marco rubio','senator rubio'],
+			  'carson': ['ben','carson','ben carson'],
+			  'bush': ['jeb','bush','jeb bush'],
+			  'christie': ['chris','christie','chris christie','governor christie'],
+			  'fiorina': ['carly','fiorina','carly fiorina'],
+			  'santorum': ['rick','santorum','rick santorum'],
+			  'paul': ['rand','paul','rand paul','senator paul'],
+			  'huckabee': ['mike','huckabee','mike huckabee','senator huckabee'],
+			  'pataki': ['george','pataki','george pataki'],
+			  'graham': ['lindsey','graham','lindsey graham','senator graham'],
+			  'jindal': ['bobby','jindal','bobby jindal','governor jindal'],
+			  'walker': ['scott','walker','scott walker','governor walker'],
+			  'perry': ['rick','perry','rick perry']
+			}
+	thename = query
+	for term in names.keys():
+		for alt in names[term]:
+			if query.lower() in alt:
+				thename = term
+	return thename

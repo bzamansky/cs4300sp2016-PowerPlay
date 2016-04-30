@@ -46,7 +46,7 @@
                 <br/><br/>
             {% endif %}
             {% if search_option == 'candidate' and not ten_words_counts %}
-                <h5><b>Sorry, no candidate with the last name "{{searched}}" found!</b></h5>
+                <h5><b>Sorry, no candidate with the name "{{searched}}" found!</b></h5>
                 <br/>
             {% elif search_option == 'term' and not mentions_by_debate %}
                 <h5><b>Sorry, the term "{{searched}}" was not found in any of the debates!</b></h5>
@@ -106,8 +106,7 @@
             else if (search_option == 'candidates:') {
                 {% if ten_words_counts %}
                     //add a picture of the candidate
-                    var can = document.getElementsByTagName('h5')[0].innerText.split(" ")[3];
-                    var candidate = can.substring(1, can.length-1);
+                    var candidate = {{adjustedsearch|safe}};
                     
                     var imageurl = "/static/Images/" + candidate + ".jpg";
    

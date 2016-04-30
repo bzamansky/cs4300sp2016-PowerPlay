@@ -6,6 +6,7 @@ from django.template import loader
 from .form import QueryForm
 from .test import search_candidate
 from .test import search_term
+from .test import format_candidate_name
 from django.contrib.staticfiles.templatetags.staticfiles import static
 import json
 
@@ -39,7 +40,9 @@ def index(request):
         candidate_num_debates = None
 
         if search_option == 'candidate':
-          (top_ten, responses) = search_candidate(search)
+          thequery = search
+          adjusted = format_candidate_name(search)
+          (top_ten, responses) = search_candidate(adjusted)
           top_ten_words = top_ten.keys()
           top_ten_words_counts = top_ten.values()
           respond_to = responses.keys()
@@ -60,7 +63,8 @@ def index(request):
 
     return render_to_response('project_template/index.html', 
                           {'search_option': search_option,
-                          'searched': search,
+                           'adjustedsearch': '"'+ adjusted +'"',
+                           'searched': thequery,
                            'candidate_names': json.dumps(candidates),
                            'mentions_by_candidate': json.dumps(values_by_candidate),
                            'debate_titles': json.dumps(debate_titles),
