@@ -8,8 +8,9 @@ from .test import search_candidate
 from .test import search_term
 from django.contrib.staticfiles.templatetags.staticfiles import static
 import json
+from .svd import OurSVD
 
-# Create your views here.
+
 def index(request):
     output_list = ''
     output=''
@@ -27,8 +28,8 @@ def index(request):
     all_debate_text = None
     num_debates = None
     snippits = None
-
-
+    
+    
     if 'search' in request.GET:
         search = request.GET['search'].lower() # make case insensitive
         search_option = request.GET.get('search_option')
@@ -39,23 +40,22 @@ def index(request):
         candidate_num_debates = None
 
         if search_option == 'candidate':
-          (top_ten, responses) = search_candidate(search)
-          respond_to = responses.keys()
-          respond_values = responses.values()
-
+            (top_ten, responses) = search_candidate(search)
+            respond_to = responses.keys()
+            respond_values = responses.values()
         else: #if search_option == 'term'
-          (total_mentions_debate, total_mentions_candidate, candidate_num_debates) = search_term(search)
-          candidates = total_mentions_candidate.keys()
-          values_by_candidate = total_mentions_candidate.values()
-          values_by_debate = total_mentions_debate.values()
-          debate_titles = total_mentions_debate.keys()
-          num_debates_names = candidate_num_debates.keys()
-          num_debates_values = candidate_num_debates.values()        
-
+            (total_mentions_debate, total_mentions_candidate, candidate_num_debates) = search_term(search)
+            candidates = total_mentions_candidate.keys()
+            values_by_candidate = total_mentions_candidate.values()
+            values_by_debate = total_mentions_debate.values()
+            debate_titles = total_mentions_debate.keys()
+            num_debates_names = candidate_num_debates.keys()
+            num_debates_values = candidate_num_debates.values()
+        
         with open("./test_code/cand_top_ten_snippits.json") as snippits_file:
             snippits = json.load(snippits_file)
             snippits_file.close()
-
+    
     return render_to_response('project_template/index.html', 
                           {'search_option': search_option,
                           'searched': search,
