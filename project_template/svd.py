@@ -18,10 +18,10 @@ class OurSVD(object):
     index_to_word: dict mapping indices to vocab words
     """
     def __init__(self, k=40, terms_per_doc=150):
-        self.naive_parse(terms_per_doc)
-        self.perform_svd_and_get_vocab(k)
+        self._naive_parse(terms_per_doc)
+        self._perform_svd_and_get_vocab(k)
     
-    def naive_parse(self, terms_per_doc):
+    def _naive_parse(self, terms_per_doc):
         """Goes through all of the words in all of the debates, in order, and
         naively splits them up into sequential 'documents' of size
         `terms_per_doc`. Sets the document_list attribute.
@@ -44,7 +44,7 @@ class OurSVD(object):
         
         self.document_list = document_list
 
-    def perform_svd_and_get_vocab(self, num_topics):
+    def _perform_svd_and_get_vocab(self, num_topics):
         """Sets the words_compressed, s, docs_compressed, word_to_index, and
         index_to_word attributes."""
         vectorizer = TfidfVectorizer(stop_words='english', min_df=10)
@@ -58,10 +58,7 @@ class OurSVD(object):
         self.index_to_word = {i:t for t,i in self.word_to_index.iteritems()}
     
     def closest_words(self, input, n=10):
-        """The only function in this class that should be called on a repeated
-        basis and isn't called by __init__; takes a string input and attempts to
-        parse it as a sequence of words.
-        
+        """Takes a string input and attempts to parse it as a sequence of words.
         Returns TWO lists:
         a list of up to `n` words that are closest in meaning to the input
         word(s), and list of words that failed to be parsed because they were
@@ -84,5 +81,20 @@ class OurSVD(object):
             u_row_sum += self.words_compressed[self.word_to_index[w],:]
         
         sims = self.words_compressed.dot(u_row_sum)
-        asort = np.argsort(-sims)[:n+1]
-        return [(self.index_to_word[i]) for i in asort[1:]], bad_words
+        asort = np.argsort(-sims)
+        # word(s) may be most similar to itself/themselves; remove
+        asort = list(asort)
+        for w in good_words:
+            index = self.word_to_index[w]
+            asort.remove(index)
+        return [(self.index_to_word[i]) for i in asort[:n]], bad_words
+    
+    def get_topics(self, n=20):
+        """Returns the first `n` words of all k topics found by this SVD, as a
+        list of k lists each `n` elements long."""
+        topics = []
+        k = self.s.shape[0]
+        for i in range(k):
+            sorted_word_inds = np.argsort(self.words_compressed[:,i])[::-1]
+            topics.append([self.index_to_word[i] for i in sorted_word_inds[:n]])
+        return topics
