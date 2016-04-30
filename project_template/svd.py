@@ -17,7 +17,7 @@ class OurSVD(object):
     word_to_index: dict mapping vocab words to indices from 0 to |V|-1
     index_to_word: dict mapping indices to vocab words
     """
-    def __init__(self, k=40, terms_per_doc=150):
+    def __init__(self, k=20, terms_per_doc=150):
         self._naive_parse(terms_per_doc)
         self._perform_svd_and_get_vocab(k)
     

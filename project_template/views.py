@@ -28,10 +28,11 @@ def index(request):
     all_debate_text = None
     num_debates = None
     snippits = None
+    closest_words, error_words = None, None
     
     
     if 'search' in request.GET:
-        search = request.GET['search'].lower() # make case insensitive
+        search = request.GET['search'].lower().strip()  # make case insensitive
         search_option = request.GET.get('search_option')
         top_ten = None
         responses = None
@@ -51,6 +52,9 @@ def index(request):
             debate_titles = total_mentions_debate.keys()
             num_debates_names = candidate_num_debates.keys()
             num_debates_values = candidate_num_debates.values()
+            
+            our_svd = OurSVD()  # default params
+            closest_words, error_words = our_svd.closest_words(search)
         
         with open("./test_code/cand_top_ten_snippits.json") as snippits_file:
             snippits = json.load(snippits_file)
@@ -66,5 +70,8 @@ def index(request):
                            'ten_words': json.dumps(top_ten),
                            'respond_names': json.dumps(respond_to),
                            'respond_values': json.dumps(respond_values),
-                           'all_debates':json.dumps(snippits)
+                           'all_debates':json.dumps(snippits),
+                           
+                           'closest_words': closest_words,
+                           'error_words': error_words,
                            })
