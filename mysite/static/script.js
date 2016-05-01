@@ -139,7 +139,9 @@ function makeBarGraph(x_values, y_values, category) {
     var data = [];
     var norm = 1; // default normalization
     var norm_text = "";
+    var cla = "svg_div"
     if (category == "candidate"){
+        cla += " candidate_bars"
         var tmp = [];
         for (var i = 0; i < x_values.length; i++) {
             var cand_name = x_values[i];
@@ -210,7 +212,7 @@ function makeBarGraph(x_values, y_values, category) {
 
     var svg = d3.select("body")
                 .append("div")
-                .attr("class","svg_div")
+                .attr("class",cla)
                 .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)

@@ -34,9 +34,6 @@ candidates = [
 ]
 
 names = [
-  'barack',
-  'obama',
-  'barak obama'
   'hillary',
   'clinton',
   'hillary clinton',
@@ -112,6 +109,7 @@ names = [
   'perry',
   'rick perry'
 ]
+moderators = ["andrea","moderators", "hemmer", "gilmore", "maccallum", "dickerson", "cordes", "cooney", "obradovich", "cavuto", "bartiromo", "baker", "unknown", "ramos", "salinas ", "ramos ", "salinas", "tumulty", "question ", "question", "smith", "unknown [through translator", "unknown: ", "blitzer", "bash", "hewitt", "hannah debella, college student", "holt", "franchesca ramsey", "mitchell", "franta", "announcer", "brownlee", "tapper", " ", "tapper(?)", "unidentified male", "male", "regan", "cooper", "lemon", "kelly", "baier", "wallace", "", "...", "unidentified female", " kasich", "kasich: ", "moderator", "cuomo", "hannity", "unidentifiable", "woodruff", "ifill", "dinan", "quick", "harwood", "quintanilla", "cramer", "santelli", "epperson", "todd", "maddow", "strassel", "garrett", "audience", "wilkins", "lopez", "seib", "unidentified", "muir", "raddatz", "ham", "mcelveen", "o'connor", "josh jacob, college student", "louis", "audience member", "quick: ", "levesque", "???", "trump(?)", "cruz(?)", "arraras"]
 
 with open("all_debate_list.json", "r") as f:
     transcripts = json.load(f)
@@ -130,6 +128,7 @@ term_document_matrix = vectorizer.transform(speeches)
 #Modifying stopwords
 my_additional_stop_words = ['ve','don','t','um','uh']
 stop_words = text.ENGLISH_STOP_WORDS.union(my_additional_stop_words)
+stop_words = stop_words.union(moderators)
 
 #Sorting the term-doc stuff by candidate
 

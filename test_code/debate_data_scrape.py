@@ -201,3 +201,4 @@ with open('all_debate_list.json','w') as outfile:
 # Dump candidates_which_debate into json file to read which debates each candidate participated in
 with open('candidates_which_debates', 'w') as outfile:
   json.dump(candidate_which_debates, outfile)
+
