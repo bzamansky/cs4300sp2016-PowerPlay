@@ -31,7 +31,7 @@ def index(request):
     snippits = None
     closest_words, error_words = None, None
     adjusted = ''
-    thequery = None
+    thequery = ''
     
     
     if 'search' in request.GET:
