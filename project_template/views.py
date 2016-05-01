@@ -68,7 +68,7 @@ def index(request):
             snippits = json.load(snippits_file)
             snippits_file.close()
     
-    return render_to_response('project_template/index.html', 
+        return render_to_response('project_template/index.html', 
                           {'search_option': search_option,
                            'adjustedsearch': '"'+ adjusted +'"',
                            'searched': thequery,
@@ -84,3 +84,10 @@ def index(request):
                            'closest_words': closest_words,
                            'error_words': error_words,
                            })
+    # suggest terms/candidates to search for on the homepage
+    else:
+        return render_to_response('project_template/index.html', 
+                          {'suggested_candidates': ['clinton', 'sanders', 'trump', 'cruz', 'kasich'],
+                           'suggested_terms': ['immigration', 'health', 'education'],
+                           'check_homepage': 'yes' # yes it's the homepage
+                          })
