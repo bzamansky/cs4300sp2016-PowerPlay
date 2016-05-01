@@ -122,10 +122,9 @@ padding-left: 0;
 
 .wordcloud{
   float:right;
-
   margin-right: 100px;
-  
 }
+
 .btn{
 background-color: #4285F4;
 border: none
@@ -254,3 +253,8 @@ color: #4285F4;
 .link {
   stroke: orange;
 }*/
+
+/* Mouse Pointer on clickable hover */
+.wordcloud_text, .force_graph circle, .candidate_bars rect {
+  cursor: pointer;
+}
