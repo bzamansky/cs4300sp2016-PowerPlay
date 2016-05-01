@@ -111,8 +111,7 @@
             else if (search_option == 'candidates:') {
                 {% if ten_words != '{}' %}
                     //add a picture of the candidate
-                    var can = document.getElementsByTagName('h5')[0].innerText.split(" ")[3];
-                    var candidate = can.substring(1, can.length-1);
+                    var candidate = {{adjustedsearch|safe}};
                     
                     var imageurl = "/static/Images/" + candidate + ".jpg";
    
