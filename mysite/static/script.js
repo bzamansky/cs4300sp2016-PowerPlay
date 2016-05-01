@@ -433,8 +433,8 @@ function makeResponseGraph(candidate, names, counts) {
             else {
                 return 7;
             }
-        })
-        .call(force.drag);
+        });
+        //.call(force.drag);
 
     // create tooltip for node
     var tip_node = d3.tip()
