@@ -42,9 +42,15 @@ def index(request):
         candidate_num_debates = None
 
         if search_option == 'candidate':
-            (top_ten, responses) = search_candidate(search)
-            respond_to = responses.keys()
-            respond_values = responses.values()
+          thequery = search
+          adjusted = format_candidate_name(search)
+          (top_ten, responses) = search_candidate(adjusted)
+          top_ten_words = top_ten.keys()
+          top_ten_words_counts = top_ten.values()
+          respond_to = responses.keys()
+          respond_values = responses.values()
+
+
         else: #if search_option == 'term'
             (total_mentions_debate, total_mentions_candidate, candidate_num_debates) = search_term(search)
             candidates = total_mentions_candidate.keys()
