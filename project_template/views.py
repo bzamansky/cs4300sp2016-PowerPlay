@@ -52,6 +52,7 @@ def index(request):
           respond_to = responses.keys()
           respond_values = responses.values()
         else: #if search_option == 'term'
+            thequery = search
             (total_mentions_debate, total_mentions_candidate, candidate_num_debates) = search_term(search)
             candidates = total_mentions_candidate.keys()
             values_by_candidate = total_mentions_candidate.values()
