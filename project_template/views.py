@@ -30,6 +30,8 @@ def index(request):
     num_debates = None
     snippits = None
     closest_words, error_words = None, None
+    adjusted = ''
+    thequery = None
     
     
     if 'search' in request.GET:
@@ -49,8 +51,6 @@ def index(request):
           top_ten_words_counts = top_ten.values()
           respond_to = responses.keys()
           respond_values = responses.values()
-
-
         else: #if search_option == 'term'
             (total_mentions_debate, total_mentions_candidate, candidate_num_debates) = search_term(search)
             candidates = total_mentions_candidate.keys()
