@@ -37,6 +37,7 @@ def index(request):
     if 'search' in request.GET:
         search = request.GET['search'].lower().strip()  # make case insensitive
         search_option = request.GET.get('search_option')
+        eval_type = request.GET.get('eval')
         top_ten = None
         responses = None
         total_mentions_debate = None
@@ -61,8 +62,12 @@ def index(request):
             num_debates_names = candidate_num_debates.keys()
             num_debates_values = candidate_num_debates.values()
             
+            # print(eval_type)
+            # if eval_type == 'ml':
+            #   print("HIII")
             our_svd = OurSVD()  # default params
-            closest_words, error_words = our_svd.closest_words(search)
+            if eval_type == 'ml':
+              closest_words, error_words = our_svd.closest_words(search)
         
         with open("./test_code/cand_top_ten_snippits.json") as snippits_file:
             snippits = json.load(snippits_file)
@@ -83,6 +88,7 @@ def index(request):
                            
                            'closest_words': closest_words,
                            'error_words': error_words,
+                           'eval':eval_type
                            })
     # suggest terms/candidates to search for on the homepage
     else:

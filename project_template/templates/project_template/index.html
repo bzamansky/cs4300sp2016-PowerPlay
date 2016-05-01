@@ -37,6 +37,15 @@
                     <input type="radio" name="search_option" value="term" id="radio3" class="radio" {% if search_option == 'term' %}checked{% endif %}/>
                     <label for="radio3"> Search by Term </label>
         </div> 
+        <br/>
+        <div>
+            <input type="radio" name="eval" value="naive" id="radio4" class="radio evaluation" {% if eval != 'ml' %}checked{% endif %} />
+            <label for="radio4">Naive</label>
+        </div>
+        <div>
+            <input type="radio" name="eval" value="ml" id="radio5" class="radio evaluation" {% if eval == "ml" %}checked{% endif %} />
+            <label for="radio5">ML</label>
+        </div>
             </div>
         </form>
         <div class="form-inline global-search">   

@@ -78,6 +78,10 @@ input.radio:focus ~ label:before {
   box-shadow: 0 0 0 3px #999;
 }
 
+input.evaluation{
+  //width: 1.5em;
+}
+
 body {
   font-family: sans-serif;
   font-weight: normal;
