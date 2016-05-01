@@ -169,13 +169,30 @@ for file in os.listdir('debates'):
   transcript['tran'] = parsed
   transcripts.append(transcript)
 
+#Removing the moderator's stuff because file space
+actual_transcripts = []
+# all_words = []
+# x = 0
+for tran in transcripts:
+  actual_tran = {'date':tran['date'],'file':tran['file'],'name':tran['name'],'tran':[]}
+  for file in tran['tran']:
+    # words = file['speech'].split(" ")
+    # x += len(words)
+    # all_words.extend(words)
+    if file['speaker'] in candidates:
+      actual_tran['tran'].append(file)
+  actual_transcripts.append(actual_tran)
+# print(x)
+# print(len(set(all_words)))
+# print(actual_transcripts)
+
 #Dump all the debates into a json file for ease of access
 with open('debate_data.json', 'w') as outfile:
-    json.dump(transcripts, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+    json.dump(actual_transcripts, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
 #Dump all the debates into one single list and into another document
 all_debate_list = []
-for x in transcripts:
+for x in actual_transcripts:
   all_debate_list = all_debate_list + x['tran']
 
 with open('all_debate_list.json','w') as outfile:

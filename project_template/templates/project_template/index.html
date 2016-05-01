@@ -8,7 +8,6 @@
         <script src="https://sdk.amazonaws.com/js/aws-sdk-2.3.6.min.js"></script><!--AWS S3 Server-->
         <!-- main javascript -->
         <link rel='shortcut icon' href='/static/Images/favicon.ico' type='image/x-icon'/ >
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
         <title>Power of Speech</title>
     </head>
     <body>
@@ -45,14 +44,13 @@
                 <h5>Searched in {{search_option}}s: "{{searched}}"</h5>
                 <br/><br/>
             {% endif %}
-            {% if search_option == 'candidate' and not ten_words_counts %}
-                <h5><b>Sorry, no candidate with the name "{{searched}}" found!</b></h5>
+            {% if search_option == 'candidate' and ten_words == '{}' %}
+                <h5><b>Sorry, no candidate with the last name "{{searched}}" found!</b></h5>
                 <br/>
-            {% elif search_option == 'term' and not mentions_by_debate %}
-                <h5><b>Sorry, the term "{{searched}}" was not found in any of the debates!</b></h5>
+            {% elif search_option == 'term' and error_words %}
+                <h5><b>Sorry, the following terms were not found in any of the debates: {{error_words|join:", " }}</b></h5>
                 <br/>
             {% endif %}
-            <br/>
         </div>
         {% if search_option == 'candidate' %}
             <div class="candidate_viz row">
@@ -68,6 +66,14 @@
                     <ul id="used_words_list"></ul>
                 </div>
             </div>
+        {% elif search_option == 'term' and closest_words %}
+            <div class="global-search">
+                <b><i>See also (related words):</i></b>
+                {% for word in closest_words %}
+                    <a href="?search={{word}}&search_option=term">{{word}}</a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </div>
+            <br/>
         {% endif %}
         <script type="text/javascript">
             var candidate_names = {{candidate_names|safe}}; // array of candidate names
@@ -78,7 +84,6 @@
 
             // SEARCH BY CANDIDATE DATA
             var top_ten_words = {{ten_words|safe}}; // actual words
-            var top_ten_words_counts = {{ten_words_counts}}; // num times each of top 10 words is said by that candidate
             var respond_to_names = {{respond_names|safe}}; // names of people that candidate responds to (or doesn't)
             var respond_to_counts = {{respond_values}};
             // candidates each have list of debates they participated in
@@ -92,7 +97,7 @@
 
             // IF SEARCH BY TERM
             if (search_option == 'terms:') {
-                {% if mentions_by_debate %}
+                {% if mentions_by_debate != '[]' %}
                     // query mentions by candidate
                     // num_debates for normalized
                     makeBarGraph(candidate_names, mentions_by_candidate, "candidate"); // candidate mentions of...
@@ -104,7 +109,7 @@
             }
             // IF SEARCH BY CANDIDATE
             else if (search_option == 'candidates:') {
-                {% if ten_words_counts %}
+                {% if ten_words != '{}' %}
                     //add a picture of the candidate
                     var candidate = {{adjustedsearch|safe}};
                     
@@ -131,7 +136,7 @@
                     makeResponseGraph(candidate, respond_to_names, respond_to_counts);
 
                     // make top 10 word cloud for candidate
-                    makeWordCloud(candidate, top_ten_words, top_ten_words_counts);
+                    makeWordCloud(candidate, top_ten_words);
                 {% endif %}
             }
 
