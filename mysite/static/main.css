@@ -92,13 +92,18 @@ body {
   text-align: center;
 }
 #selfie{
-  width: 300px;
-  height: 180px;
+    height: auto; 
+    width: auto; 
+    max-width: 300px; 
+    max-height: 300px;
 }
 
 .img-circle {
-  height: auto;
   border-radius: 50%;
+  height: auto; 
+  width: auto; 
+  max-width: 300px; 
+  max-height: 300px;
 
 }
 
