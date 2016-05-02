@@ -100,7 +100,7 @@
             <div class="global-search">
                 <b><i>See also (related words):</i></b>
                 {% for word in closest_words %}
-                    <a href="?search={{word}}&search_option=term">{{word}}</a>{% if not forloop.last %}, {% endif %}
+                    <a href="?search={{word}}&search_option=term&eval=ml">{{word}}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
             </div>
             <br/><br/>

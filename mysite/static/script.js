@@ -81,7 +81,7 @@ function makeWordCloud(candidate, w) {
                     //my_close();
                 })
                 .on("click",function(d){   
-                    var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.text + "&search_option=term"
+                    var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.text + "&search_option=term" + "&eval=ml"
                     window.location.href = (destination);
                 });
         svg.append("text")
