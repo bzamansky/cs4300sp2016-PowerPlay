@@ -396,7 +396,7 @@ function makeResponseGraph(candidate, names, counts) {
 
     var force = d3.layout.force()
         .charge(-120)
-        .linkDistance(90)
+        .linkDistance(120)
         .size([width, height]);
 
     var svg = d3.select(".force_graph")
@@ -443,10 +443,10 @@ function makeResponseGraph(candidate, names, counts) {
         // make center node bigger
         .attr("r", function(d) {
             if (d.name == candidate) {
-                return 12;
+                return 15;
             }
             else {
-                return 7;
+                return 10;
             }
         });
         //.call(force.drag);
@@ -488,7 +488,7 @@ function makeResponseGraph(candidate, names, counts) {
     // title for network graph
     svg.append("text")
         .attr("x", width / 2 )
-        .attr("y", 100)
+        .attr("y", 50)
         .style("text-anchor", "middle")
         .style("text-decoration", "underline")
         .style("font-weight", "bold")
@@ -506,7 +506,7 @@ function makeResponseGraph(candidate, names, counts) {
 
     svg.append("text")
         .attr("x", width / 2 )
-        .attr("y", 120)
+        .attr("y", 70)
         .style("text-anchor", "middle")
         .text("In a debate, the number of times the candidate speaks directly after another candidate");
 
