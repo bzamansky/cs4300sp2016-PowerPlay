@@ -106,9 +106,8 @@ body {
   border-radius: 50%;
   height: auto; 
   width: auto; 
-  max-width: 300px; 
-  max-height: 300px;
-
+  width: 300px; 
+  height: 300px;
 }
 
 .global-search {
@@ -213,20 +212,6 @@ color: #4285F4;
 .svg_div{
   text-align: center;
 }
-/*
-.candidate_viz {
-  position: absolute;
-}
-
-.candidate_viz .selfie {
-  display: inline;
-}
-
-.wordcloud {
-  bottom: 0;
-  right: 0;
-}*/
-
 
 /*used_words context div*/
 #used_words ul{
