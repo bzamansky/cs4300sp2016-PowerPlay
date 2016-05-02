@@ -160,7 +160,7 @@ function makeBarGraph(x_values, y_values, category, num_debates) {
             var cand_name = x_values[i];
             // if dict not empty, then we want to normalize
             var cand_norm = num_debates[cand_name].length;
-            var percent = parseInt(y_values[i]/cand_norm);
+            var percent = +(y_values[i]/cand_norm).toFixed(1);
             tmp.push([x_values[i],percent]);
         }
         tmp.sort();
