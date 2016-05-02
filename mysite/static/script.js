@@ -18,6 +18,11 @@ function makeWordCloud(candidate, w) {
         });
     }
 
+    frequency_list.sort(function(a,b){
+        return b.size - a.size;
+    });
+    wordHover(frequency_list[0]['text'],candidate);
+
     var scale_value = 150; // make size of words smaller
 
     d3.layout.cloud().size([850, 350])
@@ -47,7 +52,14 @@ function makeWordCloud(candidate, w) {
                 .style("font-size", function(d) { return d.size + "px"; })
                 //.style("fill", function(d, i) { return color(i); })
                 //.style("fill", function(d, i) { return color(i); }) // COLOR SCALE
-                .style("fill", "#000000")
+                .style("fill", function(d){
+                    if(d.text==frequency_list[0]['text']){
+                        return 'purple';
+                    }
+                    else{
+                        return "#000000";
+                    }
+                })
                 .attr("transform", function(d) {
                     return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
                 })
