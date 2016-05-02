@@ -37,7 +37,6 @@ with open("./test_code/candidates_which_debates.json") as candidate_which_debate
 def search_candidate(query):
     try:
         top_ten_words = candidate_top_ten_data[query]
-
         # candidate responses
         responses = candidate_responses[query]
 
@@ -59,7 +58,7 @@ def search_term(query):
     total_mentions_candidate = {}
     for key in candidate_data:
         total_mentions_candidate[key] = candidate_data[key].get(query, 0)
-    
+
     if any(total_mentions_debate.values()):
         # get Arguments and Interactions
         interactions = {}

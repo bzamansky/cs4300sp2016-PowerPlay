@@ -126,7 +126,7 @@ function imageExists(image_url){
     bar plot help from https://bl.ocks.org/mbostock/3885304
     can_num_debates is dict of candidates and number of debates they speak in
 */
-function makeBarGraph(x_values, y_values, category) {
+function makeBarGraph(x_values, y_values, category, num_debates) {
     // construct candidate_num_debates dict
     // var candidate_num_debates = {};
     // for (var i=0; i<can_num_debates_names.length; i++) {
@@ -139,15 +139,17 @@ function makeBarGraph(x_values, y_values, category) {
     var data = [];
     var norm = 1; // default normalization
     var norm_text = "";
-    var cla = "svg_div"
+    var cla = "svg_div";
     if (category == "candidate"){
-        cla += " candidate_bars"
+        norm_text = " / Debates Attended";
+        cla += " candidate_bars";
         var tmp = [];
         for (var i = 0; i < x_values.length; i++) {
             var cand_name = x_values[i];
             // if dict not empty, then we want to normalize
-            
-            tmp.push([x_values[i],y_values[i]]);
+            var cand_norm = num_debates[cand_name].length;
+            var percent = parseInt(y_values[i]/cand_norm);
+            tmp.push([x_values[i],percent]);
         }
         tmp.sort();
         for (var i = 0; i < tmp.length; i++) {
@@ -231,13 +233,14 @@ function makeBarGraph(x_values, y_values, category) {
 
     svg.append("g")
         .attr("class", "y axis")
+        //.attr("transform","translate(-50)")
         .call(yAxis)
         .append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", 6)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text("Number of Mentions" + norm_text);
+        .text("Mentions" + norm_text);
 
     svg.selectAll(".bar")
         .data(data)
@@ -297,7 +300,7 @@ function makeBarGraph(x_values, y_values, category) {
             .style("text-anchor", "middle")
             .style("text-decoration", "underline")
             .style("font-weight", "bold")
-            .text("Number of Times Each CANDIDATE Mentions " + query);
+            .text("Number of Times Each CANDIDATE Mentions " + query + " over the number of debates they attended");
     }
     else if (category == 'debate') {
         svg.append("text")

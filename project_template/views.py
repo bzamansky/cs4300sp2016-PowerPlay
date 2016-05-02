@@ -23,7 +23,6 @@ def index(request):
     values_by_debate = None
     debate_titles = None
     top_ten = None
-    #top_ten_words_counts = None
     respond_to = None
     respond_values = None
     all_debate_text = None
@@ -32,6 +31,8 @@ def index(request):
     closest_words, error_words = None, None
     adjusted = ''
     thequery = ''
+    #this is where the normalization begins
+    num_debates = None
     
     
     if 'search' in request.GET:
@@ -42,7 +43,6 @@ def index(request):
         responses = None
         total_mentions_debate = None
         total_mentions_candidate = None
-        candidate_num_debates = None
 
         if search_option == 'candidate':
           thequery = search
@@ -51,7 +51,7 @@ def index(request):
           top_ten_words = top_ten.keys()
           top_ten_words_counts = top_ten.values()
           respond_to = responses.keys()
-          respond_values = responses.values()
+          respond_values = responses.values()    
         else: #if search_option == 'term'
             thequery = search
             (total_mentions_debate, total_mentions_candidate, candidate_num_debates) = search_term(search)
@@ -59,8 +59,7 @@ def index(request):
             values_by_candidate = total_mentions_candidate.values()
             values_by_debate = total_mentions_debate.values()
             debate_titles = total_mentions_debate.keys()
-            num_debates_names = candidate_num_debates.keys()
-            num_debates_values = candidate_num_debates.values()
+            num_debates = candidate_num_debates
             
             # print(eval_type)
             # if eval_type == 'ml':
@@ -85,7 +84,7 @@ def index(request):
                            'respond_names': json.dumps(respond_to),
                            'respond_values': json.dumps(respond_values),
                            'all_debates':json.dumps(snippits),
-                           
+                           'num_debates':json.dumps(num_debates),
                            'closest_words': closest_words,
                            'error_words': error_words,
                            'eval':eval_type

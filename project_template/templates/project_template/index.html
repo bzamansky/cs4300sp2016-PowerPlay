@@ -107,6 +107,9 @@
             // candidates each have list of debates they participated in
 
             var all_text_dict = {{all_debates|safe}};
+
+            //Num Debates Candidate In
+            var num_debates = {{num_debates|safe}}
         </script>
         <script type="text/javascript" src="/static/script.js"></script>
         <script type="text/javascript">
@@ -118,7 +121,7 @@
                 {% if mentions_by_debate != '[]' %}
                     // query mentions by candidate
                     // num_debates for normalized
-                    makeBarGraph(candidate_names, mentions_by_candidate, "candidate"); // candidate mentions of...
+                    makeBarGraph(candidate_names, mentions_by_candidate, "candidate", num_debates); // candidate mentions of...
 
                     // query mentions by debate
                     // 1 for unnormalized
