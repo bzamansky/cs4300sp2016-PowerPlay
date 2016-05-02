@@ -491,6 +491,14 @@ function makeResponseGraph(candidate, names, counts) {
         node.attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; });
     });
+
+    svg.append("text")
+        .attr("x", width / 2 )
+        .attr("y", 120)
+        .style("text-anchor", "middle")
+        .text("In a debate, the number of times the candidate speaks directly after another candidate");
+
+
 }
 
 

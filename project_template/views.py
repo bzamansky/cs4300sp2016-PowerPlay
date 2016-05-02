@@ -87,7 +87,9 @@ def index(request):
                            'num_debates':json.dumps(num_debates),
                            'closest_words': closest_words,
                            'error_words': error_words,
-                           'eval':eval_type
+                           'eval':eval_type,
+                           'suggested_candidates': ['clinton', 'sanders', 'trump', 'cruz', 'kasich'],
+                           'suggested_terms': ['immigration', 'health', 'education'],
                            })
     # suggest terms/candidates to search for on the homepage
     else:
