@@ -47,7 +47,7 @@ class OurSVD(object):
     def _perform_svd_and_get_vocab(self, num_topics):
         """Sets the words_compressed, s, docs_compressed, word_to_index, and
         index_to_word attributes."""
-        vectorizer = TfidfVectorizer(stop_words='english', min_df=10)
+        vectorizer = TfidfVectorizer(stop_words='english')
         tfidf = vectorizer.fit_transform(self.document_list).transpose()
         u, s, v_t = svds(tfidf, num_topics)
         self.words_compressed = normalize(abs(u), axis=1)  # row normalize

@@ -11,9 +11,8 @@
         <title>Power of Speech</title>
     </head>
     <body>
-  <div class="header"> </div>
-       
-  <br>         
+        <div class="header"></div>
+        <br/><br/><br/>
         <form class="form-inline global-search" method='GET'>
             <a href="/pt/">
             <h1 style="font-size: 55px; font-family:Futura; color: #4285F4">
@@ -52,31 +51,32 @@
             {% endif %}
             {% if search_option == 'candidate' and ten_words == '{}' %}
                 <h5><b>Sorry, no candidate with the last name "{{searched}}" found!</b></h5>
-                <br/>
+                <br/><br/><br/>
                 <i>Suggested candidate searches:</i>
                 {% for cand in suggested_candidates %}
                     <a href="?search={{cand}}&search_option=candidate">{{cand}}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
-                <br>
+                <br/><br/>
             {% elif search_option == 'term' and error_words %}
                 <h5><b>Sorry, the following terms were not found in any of the debates: {{error_words|join:", " }}</b></h5>
-                <br/>
+                <br/><br/><br/>
                 <i>Suggested term searches:</i>
                 {% for term in suggested_terms %}
                     <a href="?search={{term}}&search_option=term">{{term}}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
+                <br/><br/><br/>
             {% endif %}
             {% if check_homepage == 'yes' %}
                 <i>Suggested candidate searches:</i>
                 {% for cand in suggested_candidates %}
                     <a href="?search={{cand}}&search_option=candidate">{{cand}}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
-                <br>
+                <br/><br/>
                 <i>Suggested term searches:</i>
                 {% for term in suggested_terms %}
                     <a href="?search={{term}}&search_option=term">{{term}}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
-                <br>
+                <br/><br/><br/>
             {% endif %}
         </div>
         {% if search_option == 'candidate' %}

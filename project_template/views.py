@@ -47,26 +47,26 @@ def index(request):
         if search_option == 'candidate':
           thequery = search
           adjusted = format_candidate_name(search)
-          (top_ten, responses) = search_candidate(adjusted)
+          top_ten, responses = search_candidate(adjusted)
           top_ten_words = top_ten.keys()
           top_ten_words_counts = top_ten.values()
           respond_to = responses.keys()
           respond_values = responses.values()    
         else: #if search_option == 'term'
             thequery = search
-            (total_mentions_debate, total_mentions_candidate, candidate_num_debates) = search_term(search)
+            total_mentions_debate, total_mentions_candidate, candidate_num_debates = search_term(search)
             candidates = total_mentions_candidate.keys()
             values_by_candidate = total_mentions_candidate.values()
             values_by_debate = total_mentions_debate.values()
             debate_titles = total_mentions_debate.keys()
             num_debates = candidate_num_debates
             
-            # print(eval_type)
-            # if eval_type == 'ml':
-            #   print("HIII")
-            our_svd = OurSVD()  # default params
             if eval_type == 'ml':
-              closest_words, error_words = our_svd.closest_words(search)
+                our_svd = OurSVD()  # default params passed to constructor
+                closest_words, error_words = our_svd.closest_words(search)
+            elif eval_type == 'naive':
+                if not total_mentions_debate:
+                    error_words = [search]
         
         with open("./test_code/cand_top_ten_snippits.json") as snippits_file:
             snippits = json.load(snippits_file)

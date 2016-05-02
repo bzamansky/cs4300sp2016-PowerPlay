@@ -40,7 +40,7 @@ def search_candidate(query):
         # candidate responses
         responses = candidate_responses[query]
 
-        return (top_ten_words, responses) 
+        return top_ten_words, responses
     except KeyError:
         return {}, {}
 
@@ -62,7 +62,7 @@ def search_term(query):
     if any(total_mentions_debate.values()):
         # get Arguments and Interactions
         interactions = {}
-        return (total_mentions_debate, total_mentions_candidate, candidate_num_debates) # interactions
+        return total_mentions_debate, total_mentions_candidate, candidate_num_debates  # interactions
     else:
         return {}, {}, {}
 
