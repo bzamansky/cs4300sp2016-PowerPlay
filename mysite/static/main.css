@@ -9,10 +9,22 @@ padding: 20px 0;
 text-align:center;
 }
 
+#searchbar {
+    background-color: #37474F;
+    margin-top: -10;
+    margin-left: -10;
+    margin-right: -10;
+    color: white;
+	box-shadow: 0px 0px 10px 0px #202020;
+}
+
+
 label {
-  width: 200px;
-  border-radius: 3px;
-  border: 1px solid #D1D3D4
+	width: 200px;
+    border-radius: 3px;
+    border: 1px solid #31373a;
+    background-color: #5d686d;
+	color: #b3b4b4;
 }
 
 /* hide input */
@@ -42,8 +54,9 @@ input.radio:empty ~ label:before {
   left: 0;
   content: '';
   width: 2.5em;
-  background: #D1D3D4;
+  background: #919394;
   border-radius: 3px 0 0 3px;
+  
 }
 
 /* toggle hover */
@@ -66,7 +79,7 @@ input.radio:checked ~ label:before {
 }
 
 input.radio:checked ~ label {
-  color: #777;
+  color: white;
 }
 
 /* radio focus */
@@ -85,6 +98,7 @@ body {
   color: #999;
   background-color: #eee;
 }
+
 
 /* make images round*/
 
@@ -234,6 +248,7 @@ color: #4285F4;
 .node {
   fill: black;
 }
+
 
 /* highlight node and link on hover */
 .node-dem:hover, .node-rep:hover, .node:hover {
