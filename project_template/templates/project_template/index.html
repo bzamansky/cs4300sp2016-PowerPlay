@@ -35,11 +35,11 @@
                     <label for="radio3"> Search by Term </label>
         </div> 
         <div id="ml_div">
-            <input type="radio" name="eval" value="naive" id="radio4" class="radio evaluation" {% if eval_type != 'ml' %}checked{% endif %} />
+            <input type="radio" name="eval" value="naive" id="radio4" class="radio evaluation" {% if eval_type == 'naive' %}checked{% endif %} />
             <label for="radio4">Naive</label>
         </div>
         <div>
-            <input type="radio" name="eval" value="ml" id="radio5" class="radio evaluation" {% if eval_type == "ml" %}checked{% endif %} />
+            <input type="radio" name="eval" value="ml" id="radio5" class="radio evaluation" {% if eval_type != "naive" %}checked{% endif %} />
             <label for="radio5">ML</label>
         </div>
             </div>
