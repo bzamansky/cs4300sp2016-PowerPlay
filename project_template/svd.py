@@ -6,6 +6,16 @@ from sklearn.preprocessing import normalize
 import json
 import numpy as np
 
+from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
+MORE_STOPS = ['ve','don','t','um','uh']
+EVEN_MORE_STOPS = [
+    'people','time','mrs','long','ought','sure','new','thing','things','yes',
+    'no','think','know','just','want','lot','going','really','make','say',
+    'said','got','need','right','tell','like','ll','let','way','look','great',
+    'did'
+]
+ALL_OUR_STOP_WORDS = list(ENGLISH_STOP_WORDS) + MORE_STOPS + EVEN_MORE_STOPS
+
 
 class OurSVD(object):
     """Attributes:
@@ -47,7 +57,7 @@ class OurSVD(object):
     def _perform_svd_and_get_vocab(self, num_topics):
         """Sets the words_compressed, s, docs_compressed, word_to_index, and
         index_to_word attributes."""
-        vectorizer = TfidfVectorizer(stop_words='english')
+        vectorizer = TfidfVectorizer(stop_words=ALL_OUR_STOP_WORDS)
         tfidf = vectorizer.fit_transform(self.document_list).transpose()
         u, s, v_t = svds(tfidf, num_topics)
         self.words_compressed = abs(u)
@@ -110,4 +120,5 @@ class OurSVD(object):
     
     def get_one_candidate_terms(self, candidate):
         """"""  # STUB STUB
-    
+        
+        #ALL_OUR_STOP_WORDS
