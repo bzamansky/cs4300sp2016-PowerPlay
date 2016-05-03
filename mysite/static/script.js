@@ -81,7 +81,7 @@ function makeWordCloud(candidate, w) {
                     //my_close();
                 })
                 .on("click",function(d){   
-                    var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.text + "&search_option=term" + "&eval=ml"
+                    var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.text + "&search_option=term&eval=ml"
                     window.location.href = (destination);
                 });
         svg.append("text")
@@ -298,7 +298,7 @@ function makeBarGraph(x_values, y_values, category, num_debates) {
         // bring to candidate page when bar is clicked
         .on("click",function(d){
             if (category == 'candidate') {
-                var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.x + "&search_option=candidate";
+                var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.x + "&search_option=candidate&eval=ml";
                 window.location.href = (destination);
             }
         });
@@ -490,7 +490,7 @@ function makeResponseGraph(candidate, names, counts) {
         .on("click",function(d){
             // don't reload page if click center node
             if (d.name != candidate) {
-                var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.name + "&search_option=candidate";
+                var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.name + "&search_option=candidate&eval=ml";
                 window.location.href = (destination);
             }
         });

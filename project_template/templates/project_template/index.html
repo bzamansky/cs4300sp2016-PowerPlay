@@ -113,6 +113,24 @@
                 </div>
             </div>
         {% endif %}
+        {% if topics %}
+            <div class="global-search">
+                <span style="color:black;"><b><u>Topics {{searched|capfirst}} Frequently Covers:</u></b></span>
+                <br/>
+                <ul>
+                {% for topic in topics %}
+                    <li>
+                        <span style="color:black;">&bull;</span>
+                        {% for word in topic %}
+                            <a href="?search={{word}}&search_option=term&eval=ml">{{word}}</a>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </li>
+                    <br/>
+                {% endfor %}
+                </ul>
+                <br/>
+            </div>
+        {% endif %}
 		<br/>
         <script type="text/javascript">
             var candidate_names = {{candidate_names|safe}}; // array of candidate names

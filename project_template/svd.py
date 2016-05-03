@@ -27,21 +27,28 @@ class OurSVD(object):
     word_to_index: dict mapping vocab words to indices from 0 to |V|-1
     index_to_word: dict mapping indices to vocab words
     """
-    def __init__(self, k=20, terms_per_doc=150):
-        self._naive_parse(terms_per_doc)
+    def __init__(self, candidate=None, k=20, terms_per_doc=150):
+        """If `candidate` is None, gets topics for all of the debate speeches
+        combined; otherwise only gets topics for that candidate's speeches"""
+        self._naive_parse(candidate, terms_per_doc)
         self._perform_svd_and_get_vocab(k)
-    
-    def _naive_parse(self, terms_per_doc):
-        """Goes through all of the words in all of the debates, in order, and
-        naively splits them up into sequential 'documents' of size
+        
+    def _naive_parse(self, candidate, terms_per_doc):
+        """Goes through all of the words in all of the relevant debates, in
+        order, and naively splits them up into sequential 'documents' of size
         `terms_per_doc`. Sets the document_list attribute.
         
         Cannot just use or reuse a vectorizer here since word order is highly
         important.
         """
         with open("test_code/all_debate_list.json") as f:
-            debate_transcripts = json.load(f)
-        speeches = [s['speech'] for s in debate_transcripts]
+            transcripts = json.load(f)
+        if not candidate:
+            speeches = [s['speech'] for s in transcripts]
+        else:
+            speeches = [
+                s['speech'] for s in transcripts if s['speaker'] == candidate
+            ]
         giant_word_list = ' '.join(speeches).split()
         
         num_documents = len(giant_word_list) // terms_per_doc
@@ -103,22 +110,16 @@ class OurSVD(object):
             asort.remove(index)
         return [(self.index_to_word[i]) for i in asort[:n]], bad_words
     
-    def get_topics(self):
-        """Returns the vocab indices of all k topics found by this SVD, as a
-        list of k lists each |V| elements long."""
+    def get_topics_readable(self, n=10):
+        """Returns the top `n` words of all k topics found by this SVD, as a
+        list of k lists of `n` strings."""
         topics = []
         k = self.s.shape[0]
         for i in range(k):
-            sorted_word_inds = np.argsort(self.words_compressed[:,i])[::-1]
-            topics.append(sorted_word_inds)
-        return topics
-    
-    def get_readable_topic(self, list_of_indices, n=10):
-        """Converts a topic (list of vocab indices) into a readable form (list
-        of words, truncated at the first `n` words."""
-        return [self.index_to_word[i] for i in list_of_indices[:n]]
-    
-    def get_one_candidate_terms(self, candidate):
-        """"""  # STUB STUB
-        
-        #ALL_OUR_STOP_WORDS
+            topics.append(np.argsort(self.words_compressed[:,i])[::-1])
+        readable_topics = []
+        for t in topics:
+            readable_topics.append(
+                [self.index_to_word[vocab_index] for vocab_index in t[:n]]
+            )
+        return readable_topics

@@ -32,8 +32,8 @@ def index(request):
     closest_words, error_words = None, None
     adjusted = ''
     thequery = ''
-    #this is where the normalization begins
-    num_debates = None
+    num_debates = None  # this is where the normalization begins
+    topics = None
     
     
     if 'search' in request.GET:
@@ -54,12 +54,10 @@ def index(request):
             respond_to = responses.keys()
             respond_values = responses.values()
             
-            # do not display related words on search for nonexistent candidate
+            # do not attempt to construct SVD on nonexistent candidate search
             if eval_type == 'ml' and top_ten:
-                our_svd = OurSVD()
-                closest_words, error_words = our_svd.closest_words(adjusted)
-                
-                
+                this_candidates_svd = OurSVD(adjusted, k=10)
+                topics = this_candidates_svd.get_topics_readable()
             
         else: #if search_option == 'term'
             thequery = search
@@ -111,12 +109,13 @@ def index(request):
                            'eval':json.dumps(eval_type),
                            'suggested_candidates': ['clinton', 'sanders', 'trump', 'cruz', 'kasich'],
                            'suggested_terms': ['immigration', 'health', 'education'],
-						   'candidate_info': json.dumps(candidate_info)
+						   'candidate_info': json.dumps(candidate_info),
+                           'topics': topics,
                            })
     # suggest terms/candidates to search for on the homepage
     else:
         return render_to_response('project_template/index.html', 
                           {'suggested_candidates': ['clinton', 'sanders', 'trump', 'cruz', 'kasich'],
                            'suggested_terms': ['immigration', 'health', 'education'],
-                           'check_homepage': 'yes' # yes it's the homepage
+                           'check_homepage': 'yes',  # yes it's the homepage
                           })
