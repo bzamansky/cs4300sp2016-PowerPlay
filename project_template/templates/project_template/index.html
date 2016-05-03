@@ -88,6 +88,15 @@
                 <br/><br/><br/>
             {% endif %}
         </div>
+        {% if closest_words %}
+            <div class="global-search">
+                <b><i>See also (related terms):</i></b>
+                {% for word in closest_words %}
+                    <a href="?search={{word}}&search_option=term&eval=ml">{{word}}</a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </div>
+            <br/><br/>
+        {% endif %}
         {% if search_option == 'candidate' %}
             <div class="candidate_viz row">
                 <div id="selfie_div" class = "col-lg-6 col-md-12">
@@ -102,14 +111,6 @@
                     <ul id="used_words_list"></ul>
                 </div>
             </div>
-        {% elif search_option == 'term' and closest_words %}
-            <div class="global-search">
-                <b><i>See also (related words):</i></b>
-                {% for word in closest_words %}
-                    <a href="?search={{word}}&search_option=term&eval=ml">{{word}}</a>{% if not forloop.last %}, {% endif %}
-                {% endfor %}
-            </div>
-            <br/><br/>
         {% endif %}
 		<br/>
         <script type="text/javascript">

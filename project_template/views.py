@@ -45,13 +45,19 @@ def index(request):
         total_mentions_candidate = None
 
         if search_option == 'candidate':
-          thequery = search
-          adjusted = format_candidate_name(search)
-          top_ten, responses = search_candidate(adjusted)
-          top_ten_words = top_ten.keys()
-          top_ten_words_counts = top_ten.values()
-          respond_to = responses.keys()
-          respond_values = responses.values()    
+            thequery = search
+            adjusted = format_candidate_name(search)
+            top_ten, responses = search_candidate(adjusted)
+            top_ten_words = top_ten.keys()
+            top_ten_words_counts = top_ten.values()
+            respond_to = responses.keys()
+            respond_values = responses.values()
+            
+            # do not display related words on search for nonexistent candidate
+            if eval_type == 'ml' and top_ten:
+                our_svd = OurSVD()
+                closest_words, error_words = our_svd.closest_words(search)
+            
         else: #if search_option == 'term'
             thequery = search
             total_mentions_debate, total_mentions_candidate, candidate_num_debates = search_term(search)
