@@ -55,8 +55,6 @@ def index(request):
         else: #if search_option == 'term'
             thequery = search
             total_mentions_debate, total_mentions_candidate, candidate_num_debates = search_term(search)
-            values_by_debate = total_mentions_debate.values()
-            debate_titles = total_mentions_debate.keys()
             num_debates = candidate_num_debates
             
             if eval_type == 'ml':
@@ -64,16 +62,19 @@ def index(request):
                 closest_words, error_words = our_svd.closest_words(search)
                 
                 for word in closest_words:
-                  (_,tmp_total_mentions,_) = search_term(word)
+                  (tmp_total_debates,tmp_total_mentions,_) = search_term(word)
                   for k in tmp_total_mentions.keys():
                     total_mentions_candidate[k] += tmp_total_mentions[k]
-
+                  for k in tmp_total_debates.keys():
+                    total_mentions_debate[k] += tmp_total_debates[k]
             elif eval_type == 'naive':
                 if not total_mentions_debate:
                     error_words = [search]
 
             candidates = total_mentions_candidate.keys()
             values_by_candidate = total_mentions_candidate.values()
+            values_by_debate = total_mentions_debate.values()
+            debate_titles = total_mentions_debate.keys()
         
         with open("./test_code/cand_top_ten_snippits.json") as snippits_file:
             snippits = json.load(snippits_file)

@@ -307,12 +307,13 @@ function makeBarGraph(x_values, y_values, category, num_debates) {
     var q = document.getElementsByTagName('h5')[0].innerText.split(" ")[3];
     var query = q.substring(1, q.length-1).toUpperCase();
     
+    var ml_text = '';
+    if (eval_type == "ml"){
+        ml_text = " (and related terms) ";
+    }
+
     // set graph title
     if (category == 'candidate') {
-        var ml_text = '';
-        if (eval_type == "ml"){
-            ml_text = " (and related terms) ";
-        }
         svg.append("text")
             .attr("x", width / 2 )
             .attr("y", -5)
@@ -334,7 +335,7 @@ function makeBarGraph(x_values, y_values, category, num_debates) {
             .style("text-anchor", "middle")
             .style("text-decoration", "underline")
             .style("font-weight", "bold")
-            .text("Number of Times Each DEBATE Mentions " + query);
+            .text("Number of Times Each DEBATE Mentions " + query + ml_text);
     }
     
     d3.select("body").append("br");
