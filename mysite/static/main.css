@@ -103,13 +103,29 @@ body {
 /* make images round*/
 
 #selfie_div {
-  text-align: center;
+  
+}
+
+h2{
+	margin-bottom: 10px;
 }
 #selfie{
     height: auto; 
     width: auto; 
     width: 300px; 
     height: 300px;
+	float: left;
+	margin-left: 50px;
+}
+
+#selfieception{
+	float: right;
+    width: 500px;
+}
+
+.cinfo{
+	padding-top: 10px;
+    width: 75%;
 }
 
 .img-circle {

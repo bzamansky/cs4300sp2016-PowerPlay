@@ -101,6 +101,7 @@
             <div class="candidate_viz row">
                 <div id="selfie_div" class = "col-lg-6 col-md-12">
                     <span id="selfie" class="selfie"></span>
+					<div id="selfieception"> </div>
                 </div>
                 <div class="force_graph col-lg-6 col-md-12"></div>
             </div>
@@ -167,25 +168,31 @@
                         img.className = "img-circle";
                         img.src = imageurl;
                         var src = document.getElementById("selfie");
-                        if(imageurl.split("/")[3].split(".")[0] == 'trump'){
+						var selfiediv = document.getElementById("selfie_div");
+						var ception = document.getElementById("selfieception");
+
+						var candidatename = document.createElement("h2");
+						candidatename.innerHTML = candidate_info[candidate][0];
+						var cinfo = document.createElement("p")
+						cinfo.className = "cinfo";
+						cinfo.innerHTML = candidate_info[candidate][1];
+						var currentlyrunning = document.createElement("h3");
+						currentlyrunning.innerHTML = candidate_info[candidate][2];
+						if(currentlyrunning.innerHTML == "Running"){
+							currentlyrunning.style.color = 'green';
+						}
+						else{
+							currentlyrunning.style.color = 'red';
+						}
+						ception.appendChild(candidatename);
+						ception.appendChild(cinfo);
+						ception.appendChild(currentlyrunning);
+						
+						if(imageurl.split("/")[3].split(".")[0] == 'trump'){
                             var a = document.createElement("a");
                             a.href = 'http://trumpdonald.org/';
                             a.target = "_blank";
                             a.appendChild(img);
-							
-							var candidatename = document.createElement("h2");
-							candidatename.text = candidate_info[candidate][0];
-							var cinfo = document.createElement("h3")
-							cinfo.text = candidate_info[candidate][1];
-							var currentlyrunning = document.createElement("h3");
-							currentlyrunning.text = candidate_info[candidate][2];
-							if(currentlyrunning.text == "Running"){
-								currentlyrunning.color = 'green';
-							}
-							else{
-								currentlyrunning.color = 'red';
-							}
-							src.appendChild(candidatename);
                             src.appendChild(a);
                         }
                         else{
@@ -206,6 +213,7 @@
         <footer>
             <div class="topcorner">
             <p>Rebecca Mozdy (rlm393), Daniel Rong (ddr42), Jacqueline Viola (jlv78), Batya Zamansky (bz82)</p>
+			<p>Candidate information retrieved from this <a href="http://graphics.wsj.com/elections/2016/candidate-tracker/#/announced">website</a>. </p>
         </div>
         </footer>
     </body>
