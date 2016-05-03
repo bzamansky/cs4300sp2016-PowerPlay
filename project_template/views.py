@@ -57,7 +57,9 @@ def index(request):
             # do not display related words on search for nonexistent candidate
             if eval_type == 'ml' and top_ten:
                 our_svd = OurSVD()
-                closest_words, error_words = our_svd.closest_words(search)
+                closest_words, error_words = our_svd.closest_words(adjusted)
+                
+                
             
         else: #if search_option == 'term'
             thequery = search

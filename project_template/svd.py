@@ -50,7 +50,7 @@ class OurSVD(object):
         vectorizer = TfidfVectorizer(stop_words='english')
         tfidf = vectorizer.fit_transform(self.document_list).transpose()
         u, s, v_t = svds(tfidf, num_topics)
-        self.words_compressed = normalize(abs(u), axis=1)  # row normalize
+        self.words_compressed = abs(u)
         self.s = s
         self.docs_compressed = v_t.transpose()
         
@@ -74,13 +74,17 @@ class OurSVD(object):
         if not good_words:
             return [], bad_words  # no result due to all words not found
         
+        # use normalized rows from this point onward
+        normalized_words_compressed = normalize(self.words_compressed, axis=1)
+        
+        # if multiple terms searched, average their *normalized* rows
         u_row_sum = np.copy(
-            self.words_compressed[self.word_to_index[good_words[0]],:]
+            normalized_words_compressed[self.word_to_index[good_words[0]],:]
         )
         for w in good_words[1:]:
-            u_row_sum += self.words_compressed[self.word_to_index[w],:]
+            u_row_sum = normalized_words_compressed[self.word_to_index[w],:]
         
-        sims = self.words_compressed.dot(u_row_sum)
+        sims = normalized_words_compressed.dot(u_row_sum)
         asort = np.argsort(-sims)
         # word(s) may be most similar to itself/themselves; remove
         asort = list(asort)
@@ -89,12 +93,21 @@ class OurSVD(object):
             asort.remove(index)
         return [(self.index_to_word[i]) for i in asort[:n]], bad_words
     
-    def get_topics(self, n=20):
-        """Returns the first `n` words of all k topics found by this SVD, as a
-        list of k lists each `n` elements long."""
+    def get_topics(self):
+        """Returns the vocab indices of all k topics found by this SVD, as a
+        list of k lists each |V| elements long."""
         topics = []
         k = self.s.shape[0]
         for i in range(k):
             sorted_word_inds = np.argsort(self.words_compressed[:,i])[::-1]
-            topics.append([self.index_to_word[i] for i in sorted_word_inds[:n]])
+            topics.append(sorted_word_inds)
         return topics
+    
+    def get_readable_topic(self, list_of_indices, n=10):
+        """Converts a topic (list of vocab indices) into a readable form (list
+        of words, truncated at the first `n` words."""
+        return [self.index_to_word[i] for i in list_of_indices[:n]]
+    
+    def get_one_candidate_terms(self, candidate):
+        """"""  # STUB STUB
+    
