@@ -69,7 +69,7 @@ def search_term(query):
 		
 def format_candidate_name(query):
 #replaces the query word with the appropriate lowercase last name if any of these names exist in the query
-	names = { 'clinton': ['hillary', 'clinton', 'hillary 	clinton','secretary clinton'],
+	names = { 'clinton': ['hillary', 'clinton', 'hillary clinton','secretary clinton'],
 			  'sanders': ['bernie','sanders','bernie sanders', 'senator sanders'],
 			  "o'malley": ['martin', "o'malley","martin o'malley"],
 			  'chafee': ['chafee', 'lincoln chafee'],

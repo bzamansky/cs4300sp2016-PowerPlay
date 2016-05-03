@@ -28,6 +28,7 @@ def index(request):
     all_debate_text = None
     num_debates = None
     snippits = None
+    candidate_info = None
     closest_words, error_words = None, None
     adjusted = ''
     thequery = ''
@@ -85,7 +86,9 @@ def index(request):
         with open("./test_code/cand_top_ten_snippits.json") as snippits_file:
             snippits = json.load(snippits_file)
             snippits_file.close()
-    
+        with open("./test_code/candidate_info.json") as candidate_info_file:
+            candidate_info = json.load(candidate_info_file)
+            candidate_info_file.close()
         return render_to_response('project_template/index.html', 
                           {'search_option': search_option,
                            'adjustedsearch': '"'+ adjusted +'"',
@@ -106,6 +109,7 @@ def index(request):
                            'eval':json.dumps(eval_type),
                            'suggested_candidates': ['clinton', 'sanders', 'trump', 'cruz', 'kasich'],
                            'suggested_terms': ['immigration', 'health', 'education'],
+						   'candidate_info': json.dumps(candidate_info)
                            })
     # suggest terms/candidates to search for on the homepage
     else:

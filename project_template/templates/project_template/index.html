@@ -127,6 +127,9 @@
             // candidates each have list of debates they participated in
 
             var all_text_dict = {{all_debates|safe}};
+			
+			//candidate information
+			var candidate_info = {{candidate_info|safe}};
 
             //Num Debates Candidate In
             var num_debates = {{num_debates|safe}};
@@ -169,6 +172,20 @@
                             a.href = 'http://trumpdonald.org/';
                             a.target = "_blank";
                             a.appendChild(img);
+							
+							var candidatename = document.createElement("h2");
+							candidatename.text = candidate_info[candidate][0];
+							var cinfo = document.createElement("h3")
+							cinfo.text = candidate_info[candidate][1];
+							var currentlyrunning = document.createElement("h3");
+							currentlyrunning.text = candidate_info[candidate][2];
+							if(currentlyrunning.text == "Running"){
+								currentlyrunning.color = 'green';
+							}
+							else{
+								currentlyrunning.color = 'red';
+							}
+							src.appendChild(candidatename);
                             src.appendChild(a);
                         }
                         else{
