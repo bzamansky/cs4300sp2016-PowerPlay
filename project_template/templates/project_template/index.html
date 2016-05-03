@@ -33,8 +33,7 @@
                     <input type="radio" name="search_option" value="term" id="radio3" class="radio" {% if search_option == 'term' %}checked{% endif %}/>
                     <label for="radio3"> Search by Term </label>
         </div> 
-        <br/>
-        <div>
+        <div id="ml_div">
             <input type="radio" name="eval" value="naive" id="radio4" class="radio evaluation" {% if eval != 'ml' %}checked{% endif %} />
             <label for="radio4">Naive</label>
         </div>
@@ -54,7 +53,7 @@
                 <br/><br/><br/>
                 <i>Suggested candidate searches:</i>
                 {% for cand in suggested_candidates %}
-                    <a href="?search={{cand}}&search_option=candidate">{{cand}}</a>{% if not forloop.last %}, {% endif %}
+                    <a href="?search={{cand}}&search_option=candidate&eval=ml">{{cand}}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
                 <br/><br/>
             {% elif search_option == 'term' and error_words %}
@@ -64,7 +63,7 @@
                     <br/>
                     <i>Suggested term searches:</i>
                     {% for term in suggested_terms %}
-                        <a href="?search={{term}}&search_option=term">{{term}}</a>{% if not forloop.last %}, {% endif %}
+                        <a href="?search={{term}}&search_option=term&eval=ml">{{term}}</a>{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                     <br/><br/><br/>
                 {% endif %}
@@ -72,12 +71,12 @@
             {% if check_homepage == 'yes' %}
                 <i>Suggested candidate searches:</i>
                 {% for cand in suggested_candidates %}
-                    <a href="?search={{cand}}&search_option=candidate">{{cand}}</a>{% if not forloop.last %}, {% endif %}
+                    <a href="?search={{cand}}&search_option=candidate&eval=ml">{{cand}}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
                 <br/><br/>
                 <i>Suggested term searches:</i>
                 {% for term in suggested_terms %}
-                    <a href="?search={{term}}&search_option=term">{{term}}</a>{% if not forloop.last %}, {% endif %}
+                    <a href="?search={{term}}&search_option=term&eval=ml">{{term}}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
                 <br/><br/><br/>
             {% endif %}

@@ -247,3 +247,8 @@ color: #4285F4;
 .wordcloud_text, .force_graph circle, .candidate_bars rect {
   cursor: pointer;
 }
+
+
+#ml_div{
+  margin-left: 200px;
+}

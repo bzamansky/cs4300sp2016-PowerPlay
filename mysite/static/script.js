@@ -509,8 +509,6 @@ function makeResponseGraph(candidate, names, counts) {
         .attr("y", 70)
         .style("text-anchor", "middle")
         .text("In a debate, the number of times the candidate speaks directly after another candidate");
-
-
 }
 
 
