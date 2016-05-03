@@ -309,13 +309,23 @@ function makeBarGraph(x_values, y_values, category, num_debates) {
     
     // set graph title
     if (category == 'candidate') {
+        var ml_text = '';
+        if (eval_type == "ml"){
+            ml_text = " (and related terms) ";
+        }
         svg.append("text")
             .attr("x", width / 2 )
             .attr("y", -5)
             .style("text-anchor", "middle")
             .style("text-decoration", "underline")
             .style("font-weight", "bold")
-            .text("Number of Times Each CANDIDATE Mentions " + query + " over the number of debates they attended");
+            .text("Number of Times Each CANDIDATE Mentions " + query + ml_text + " over the number of debates they attended");
+        svg.append("text")
+            .attr("x", width / 2 )
+            .attr("y", 15)
+            .style("text-anchor", "middle")
+            .style('font-style','italic')
+            .text("(also includes mentions in statements)");
     }
     else if (category == 'debate') {
         svg.append("text")

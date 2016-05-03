@@ -34,18 +34,22 @@
                     <label for="radio3"> Search by Term </label>
         </div> 
         <div id="ml_div">
-            <input type="radio" name="eval" value="naive" id="radio4" class="radio evaluation" {% if eval != 'ml' %}checked{% endif %} />
+            <input type="radio" name="eval" value="naive" id="radio4" class="radio evaluation" {% if eval_type != 'ml' %}checked{% endif %} />
             <label for="radio4">Naive</label>
         </div>
         <div>
-            <input type="radio" name="eval" value="ml" id="radio5" class="radio evaluation" {% if eval == "ml" %}checked{% endif %} />
+            <input type="radio" name="eval" value="ml" id="radio5" class="radio evaluation" {% if eval_type == "ml" %}checked{% endif %} />
             <label for="radio5">ML</label>
         </div>
             </div>
         </form>
         <div class="form-inline global-search">   
             {% if search_option %}
-                <h5>Searched in {{search_option}}s: "{{searched}}"</h5>
+                <h5>Searched in {{search_option}}s: "{{searched}}"
+                {% if eval_type == "ml" %}
+                    and related terms
+                {% endif %}
+                </h5>
                 <br/><br/>
             {% endif %}
             {% if search_option == 'candidate' and ten_words == '{}' %}
@@ -120,7 +124,10 @@
             var all_text_dict = {{all_debates|safe}};
 
             //Num Debates Candidate In
-            var num_debates = {{num_debates|safe}}
+            var num_debates = {{num_debates|safe}};
+
+            var eval_type = {{eval|safe}};
+            var closest_words = {{related_terms|safe}};
         </script>
         <script type="text/javascript" src="/static/script.js"></script>
         <script type="text/javascript">
