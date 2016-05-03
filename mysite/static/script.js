@@ -159,13 +159,13 @@ function makeBarGraph(x_values, y_values, category, num_debates) {
         for (var i = 0; i < x_values.length; i++) {
             var cand_name = x_values[i];
             // if dict not empty, then we want to normalize
-            var cand_norm = num_debates[cand_name].length;
-            var percent = +(y_values[i]/cand_norm).toFixed(1);
-            tmp.push([x_values[i],percent]);
+            var num_deb = num_debates[cand_name].length;
+            var percent = +(y_values[i]/num_deb).toFixed(1);
+            tmp.push([x_values[i],percent,y_values[i],num_deb]);
         }
         tmp.sort();
         for (var i = 0; i < tmp.length; i++) {
-            data.push({'x':tmp[i][0],'y':tmp[i][1]});
+            data.push({'x':tmp[i][0],'y':tmp[i][1], 'total':tmp[i][2], 'norm':tmp[i][3]});
         }
     }
     else{
@@ -221,6 +221,9 @@ function makeBarGraph(x_values, y_values, category, num_debates) {
                 var color = "red";
             }
             var tool_text = "<strong>" + d.x.toUpperCase() + "</strong><br><span style='color:" + color + "'>" + d.y + "</span>";
+            if (category == 'candidate'){
+                tool_text += "<br/><span>(" + d.total + " total mentions<br/>over "+ d.norm +" debates)</span>";
+            }
             return tool_text;
         });
 

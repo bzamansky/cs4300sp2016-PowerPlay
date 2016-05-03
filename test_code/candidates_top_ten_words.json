@@ -3,34 +3,34 @@
         "clinton": 45,
         "country": 80,
         "deal": 40,
+        "hillary": 40,
         "isis": 45,
         "obama": 41,
         "president": 76,
         "states": 54,
-        "sure": 42,
         "united": 41,
         "world": 51
     },
     "carson": {
         "america": 41,
+        "american": 20,
         "believe": 26,
         "country": 31,
         "everybody": 27,
         "fact": 30,
         "government": 24,
         "military": 22,
-        "thing": 23,
-        "things": 47,
-        "time": 23
+        "money": 21,
+        "nation": 21
     },
     "chafee": {
+        "american": 12,
         "americans": 15,
         "change": 15,
         "good": 13,
+        "happening": 12,
         "issues": 13,
-        "long": 19,
         "president": 19,
-        "time": 17,
         "united": 15,
         "war": 18,
         "world": 17
@@ -42,20 +42,20 @@
         "fact": 49,
         "hillary": 46,
         "jersey": 51,
-        "new": 58,
         "president": 93,
         "state": 49,
+        "states": 43,
         "years": 57
     },
     "clinton": {
         "care": 208,
         "country": 229,
         "good": 195,
-        "new": 221,
+        "hard": 192,
         "president": 418,
+        "sanders": 179,
         "senator": 260,
         "support": 228,
-        "time": 225,
         "try": 195,
         "work": 303
     },
@@ -80,7 +80,7 @@
         "hillary": 31,
         "nation": 45,
         "president": 30,
-        "time": 38,
+        "problem": 24,
         "years": 27
     },
     "graham": {
@@ -103,11 +103,12 @@
         "government": 58,
         "money": 25,
         "president": 44,
-        "sure": 26,
+        "social": 24,
         "tax": 32,
-        "time": 31
+        "work": 25
     },
     "jindal": {
+        "actually": 29,
         "america": 33,
         "american": 44,
         "cut": 41,
@@ -116,8 +117,7 @@
         "obamacare": 35,
         "plan": 36,
         "president": 67,
-        "republicans": 33,
-        "time": 31
+        "republicans": 33
     },
     "kasich": {
         "america": 81,
@@ -126,7 +126,7 @@
         "jobs": 61,
         "ohio": 79,
         "president": 75,
-        "time": 58,
+        "state": 52,
         "washington": 55,
         "work": 56,
         "world": 56
@@ -139,16 +139,16 @@
         "better": 35,
         "country": 60,
         "nation": 38,
-        "new": 62,
+        "secretary": 30,
         "state": 35,
-        "things": 43
+        "years": 32
     },
     "pataki": {
         "america": 43,
         "american": 19,
         "americans": 20,
+        "isis": 17,
         "law": 22,
-        "new": 30,
         "president": 18,
         "state": 26,
         "states": 19,
@@ -157,6 +157,7 @@
     },
     "paul": {
         "conservative": 27,
+        "country": 18,
         "federal": 20,
         "government": 27,
         "isis": 23,
@@ -164,7 +165,6 @@
         "president": 21,
         "security": 23,
         "tax": 32,
-        "thing": 26,
         "war": 40
     },
     "perry": {
@@ -207,23 +207,23 @@
         "america": 64,
         "american": 30,
         "country": 58,
+        "government": 28,
         "jobs": 46,
         "percent": 40,
         "president": 50,
         "tax": 30,
-        "things": 32,
         "world": 35,
         "years": 34
     },
     "trump": {
+        "believe": 61,
         "china": 84,
         "come": 76,
         "country": 211,
         "deal": 86,
         "doing": 65,
         "good": 77,
-        "thing": 65,
-        "time": 73,
+        "trade": 63,
         "world": 75,
         "years": 76
     },
@@ -240,14 +240,14 @@
         "state": 22
     },
     "webb": {
+        "american": 20,
         "country": 43,
+        "family": 20,
         "issue": 21,
         "political": 22,
         "power": 21,
         "senate": 25,
         "terms": 25,
-        "things": 27,
-        "time": 29,
         "vietnam": 21,
         "years": 32
     }
