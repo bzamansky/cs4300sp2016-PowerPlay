@@ -93,7 +93,6 @@ def format_candidate_name(query):
 			}
 	thename = query
 	for term in names.keys():
-		for alt in names[term]:
-			if query.lower() in alt:
-				thename = term
+		if query.lower() in names[term]:
+			thename = term
 	return thename
