@@ -158,6 +158,16 @@ function wordClickCand(word,candidate){
     context_words.style.visibility='visible';
 }
 
+function haveISeen(speaker,prev,outputs){
+    var seen = false;
+    for(var i = 0; i < outputs.length; i++){
+        if(outputs[i][1]['speaker'] == speaker && outputs[i][1]['prev'] == prev){
+            seen = true;
+        }
+    }
+    return seen;
+}
+
 function wordClickDeb(word,debate){
     my_close();
     
@@ -171,30 +181,34 @@ function wordClickDeb(word,debate){
     var outputs = [];
 
     for (var i = 0; i < debate_tran.length; i++) {
-        var loc = debate_tran[i]['speech'].search(word);
+        var loc = debate_tran[i]['speech'].search(" " + word + " ");
         if(loc > -1){
+            if(haveISeen(debate_tran[i]['speaker'],debate_tran[i]['prev'],outputs)){
+                continue;
+            }
             outputs.push([word,debate_tran[i]]);
         }
     }
     for(var i = 0; i < debate_tran.length; i++){
         for(var j = 0; j < closest_words.length; j++){
             var tmp_word = closest_words[j];
-            loc = debate_tran[i]['speech'].search(tmp_word);
+            loc = debate_tran[i]['speech'].search(" " + tmp_word + " ");
             if(loc > -1){
+                if(haveISeen(debate_tran[i]['speaker'],debate_tran[i]['prev'],outputs)){
+                    continue;
+                }
                 outputs.push([tmp_word,debate_tran[i]]);
             }
         }
     }
 
-    if(outputs.length > 4){
+    if(outputs.length > 3){
         // try to switch so different candidates are featured
-        outputs = outputs.splice(0,4);
+        outputs = [outputs[0],outputs[1],outputs[2]];
     }
 
     var all_words = closest_words;
     all_words.push(word);
-
-
 
     for(var i = 0; i < outputs.length; i++){
         var split_output = outputs[i][1]['speech'].split(".");
@@ -217,14 +231,13 @@ function wordClickDeb(word,debate){
             split_output[j] = split_sent.join(" ");
             if(has_word){has_word_ind.push(j);}
         }
-        console.log(has_word_ind + " " + i);
 
         var word_span = [];
-        if(has_word_ind[0] == 0){word_span = [0,3];}
+        if(has_word_ind[0] == 0){word_span = [0,2];}
         else if(has_word_ind[0] == split_output.length){word_span = [split_output.length - 3,split_output.length-1];}
         else{word_span = [has_word_ind[0] - 1,has_word_ind[0] + 1];}
-
-        outputs[i][1]['speech'] = split_output.splice(word_span[0],word_span[1]).join(".  ");
+        var segment = [split_output[word_span[0]],split_output[word_span[0] + 1], split_output[word_span[1]]];
+        outputs[i][1]['output_speech'] = segment.join(".  ") + ".";
     }
 
     var full_width = window.innerWidth - 100;
@@ -243,7 +256,7 @@ function wordClickDeb(word,debate){
     for (var i = 0; i < outputs.length; i++) {
         var spoken_word = outputs[i][0];
         var speaker = capitalizeFirstLetter(outputs[i][1]['speaker']);
-        var speech = outputs[i][1]['speech'];
+        var speech = outputs[i][1]['output_speech'];
 
         div_text += "<p class='snippit'>";
         div_text += "<b>Speaker: </b>" + speaker;
