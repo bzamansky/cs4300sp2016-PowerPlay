@@ -163,47 +163,137 @@ function wordClickDeb(word,debate){
     
     word = word.toLowerCase();
 
-    var debate_ind = debate_data.filter(function(obj){
+    var this_debate = debate_data.filter(function(obj){
         return obj.name === debate;
     })[0];
-    debate_ind['total_tran'] = '';
-    for (var i = 0; i < debate_ind['tran'].length; i++) {
-        debate_ind['total_tran'] += debate_ind['tran'][i]['speech'];
-    }
-    var text = debate_ind['total_tran'].split(" ");
-    console.log(text);
-    console.log(word);
-    var indices = getAllIndices(text, word, false);
-    if(indices.length < 4){
-        indices = indices.concat(getAllIndices(text,capitalizeFirstLetter(word),false));
-    }
-    var span = 15;
-    var outputs = [];
-    var l = indices.length;
-    if(l > 4){ l = 4; }
-    for (var i = 0; i < l; i++) {
-        if(indices[i]>span && indices[i] < text.length - span){
-            output_str = text.slice(indices[i] - span,indices[i] + span)
-            outputs.push("..." + output_str.join(" ") + "...");
-        }
-    }  
+    var debate_tran = this_debate['tran'];
 
-    var context_list = document.getElementById("context_list");
-    for (var i = 0; i < outputs.length; i++) {
-        var list = document.createElement("li");
-        var node = document.createTextNode(outputs[i]);
-        list.appendChild(node);
-        context_list.appendChild(list);
+    var outputs = [];
+
+    for (var i = 0; i < debate_tran.length; i++) {
+        var loc = debate_tran[i]['speech'].search(word);
+        if(loc > -1){
+            outputs.push([word,debate_tran[i]]);
+        }
     }
-    var context_words = document.getElementById("context_words");
-    context_words.style.visibility='visible';
+    for(var i = 0; i < debate_tran.length; i++){
+        for(var j = 0; j < closest_words.length; j++){
+            var tmp_word = closest_words[j];
+            loc = debate_tran[i]['speech'].search(tmp_word);
+            if(loc > -1){
+                outputs.push([tmp_word,debate_tran[i]]);
+            }
+        }
+    }
+
+    if(outputs.length > 4){
+        // try to switch so different candidates are featured
+        outputs = outputs.splice(0,4);
+    }
+
+    var all_words = closest_words;
+    all_words.push(word);
+
+
+
+    for(var i = 0; i < outputs.length; i++){
+        var split_output = outputs[i][1]['speech'].split(".");
+        var has_word_ind = []
+        for(var j = 0; j < split_output.length; j++){
+            var split_sent = split_output[j].split(" ");
+            var has_word = false;
+            for(var k = 0; k < all_words.length; k++){
+                var word_ind = split_sent.indexOf(all_words[k]);
+                var cap_word_ind = split_sent.indexOf(capitalizeFirstLetter(all_words[k]));
+                if(word_ind > -1){
+                    split_sent[word_ind] = "<span class='spoken'>" + split_sent[word_ind] + "</span>";
+                    has_word = true;
+                }
+                if(cap_word_ind > -1){
+                    split_sent[cap_word_ind] = "<span class='spoken'>" + split_sent[cap_word_ind] + "</span>";
+                    has_word = true;
+                }
+            }
+            split_output[j] = split_sent.join(" ");
+            if(has_word){has_word_ind.push(j);}
+        }
+        console.log(has_word_ind + " " + i);
+
+        var word_span = [];
+        if(has_word_ind[0] == 0){word_span = [0,3];}
+        else if(has_word_ind[0] == split_output.length){word_span = [split_output.length - 3,split_output.length-1];}
+        else{word_span = [has_word_ind[0] - 1,has_word_ind[0] + 1];}
+
+        outputs[i][1]['speech'] = split_output.splice(word_span[0],word_span[1]).join(".  ");
+    }
+
+    var full_width = window.innerWidth - 100;
+
+    var svg = d3.select('.svg_div.debates svg');
+    svg.transition()
+        .duration(500)
+        .attr('width',full_width);
+
+    var debate_svg_g = d3.select('.debate_svg_g').node().getBBox();
+    var graph_width = debate_svg_g.width;
+    var graph_height = debate_svg_g.height;
+
+    var div_text = "<div id='snippit'>";
+
+    for (var i = 0; i < outputs.length; i++) {
+        var spoken_word = outputs[i][0];
+        var speaker = capitalizeFirstLetter(outputs[i][1]['speaker']);
+        var speech = outputs[i][1]['speech'];
+
+        div_text += "<p class='snippit'>";
+        div_text += "<b>Speaker: </b>" + speaker;
+        div_text += "</br>" + speech;
+        div_text += "</p>";
+    }
+    svg.append('text')
+        .attr('class','snippit link_to_debate')
+        .attr('x',graph_width + 110)
+        .attr('y',15)
+        .text("Link to Debate")
+        .on('click',function(){
+            window.location.assign(this_debate['link'],'_blank');
+        });
+
+    svg.append('text')
+        .attr('class','snippit snip_title')
+        .attr('x',graph_width + 110)
+        .attr('y',35)
+        .text('Context of spoken words')
+        .style("text-decoration", "underline")
+        .style("font-weight", "bold");
+
+    svg.append('text')
+        .attr('class','close_words_text')
+        .attr('x',graph_width + 30)
+        .attr('y',20)
+        .text('>')
+        .on('click',my_close);
+    div_text += "</div>";
+
+    svg.append("foreignObject")
+        .attr('x',graph_width + 100)
+        .attr('y',40)
+        .attr('width',full_width - graph_width - 200)
+        .append('xhtml:body')
+        .html(div_text);
 }
 
 
 
+
 function my_close(){
-    context_words.style.visibility="hidden";
-    context_list.innerHTML="";
+    d3.selectAll('.snippit').remove();
+    d3.select('.close_words_text').remove();
+    d3.select('.svg_div.debates svg')
+        .transition()
+        .duration(400)
+        .attr('width',1000);
+
 }
 
 
@@ -239,6 +329,7 @@ function makeBarGraph(x_values, y_values, category, num_debates) {
     var norm_text = "";
     var cla = "svg_div";
     if (category == "candidate"){
+        cla += ' candidates';
         norm_text = " / Debates Attended";
         var tmp = [];
         for (var i = 0; i < x_values.length; i++) {
@@ -256,6 +347,7 @@ function makeBarGraph(x_values, y_values, category, num_debates) {
     else{
         var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
         var tmp = []
+        cla += ' debates'
         for (var i = 0; i < x_values.length; i++) {
             var date_parts = x_values[i].split(" ");
             var date = new Date(parseInt(date_parts[2]),months.indexOf(date_parts[0]),parseInt(date_parts[1].replace(/,/g, "")));
@@ -319,6 +411,7 @@ function makeBarGraph(x_values, y_values, category, num_debates) {
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
+        .attr('class','debate_svg_g')
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     svg.call(tip);

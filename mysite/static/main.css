@@ -275,7 +275,7 @@ color: #4285F4;
 }*/
 
 /* Mouse Pointer on clickable hover */
-.wordcloud_text, .force_graph circle, .svg_div rect {
+.wordcloud_text, .force_graph circle, .svg_div rect, .link_to_debate {
   cursor: pointer;
 }
 
@@ -285,26 +285,17 @@ color: #4285F4;
 }
 
 /*context_words context div*/
-#context_words{
-  visibility: hidden;
-  background-color: white;
-  width: 70%;
-  position:fixed;
-  right:0;
-  left:0;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
+#snippit{
+  text-align: left;
 }
-#context_words ul{
-  list-style-type: none;
+.link_to_debate{
+  fill: #337ab7;
 }
-#context_words li{
-  margin-top: 5px;
-  margin-bottom: 5px;
+.link_to_debate:hover{
+  fill: #2756B7;
+  text-decoration: underline;
 }
-#context_words #close{
-  position:absolute;
-  top:0;
-  right:4px;
+
+#snippit .spoken{
+  color: purple;
 }
