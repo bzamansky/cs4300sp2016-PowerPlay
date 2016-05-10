@@ -50,21 +50,32 @@
     ],
     "huckabee": [
         "January 28, 2016 in Des Moines, Iowa U R",
+        "January 28, 2016 in Des Moines, Iowa R",
+        "December 15, 2015 in Las Vegas, Nevada R",
         "December 15, 2015 in Las Vegas, Nevada U R",
         "January 14, 2016 in North Charleston, South Carolina U R",
         "August 6, 2015 Cleveland, Ohio R",
         "November 10, 2015 in Milwaukee, Wisconsin U R",
+        "November 10, 2015 in Milwaukee, Wisconsin R",
         "October 28, 2015 Boulder, Colorado R",
+        "January 14, 2016 in North Charleston, South Carolina R",
         "September 16, 2015 Simi Valley, California R"
     ],
     "santorum": [
         "January 28, 2016 in Des Moines, Iowa U R",
+        "September 16, 2015 in Simi Valley, California R",
+        "January 28, 2016 in Des Moines, Iowa R",
         "August 6, 2015 in Cleveland, Ohio U R",
+        "October 28, 2015 in Boulder, Colorado R",
+        "December 15, 2015 in Las Vegas, Nevada R",
         "December 15, 2015 in Las Vegas, Nevada U R",
         "September 16, 2015 in Simi Valley, California U R",
         "January 14, 2016 in North Charleston, South Carolina U R",
         "October 28, 2015 in Boulder, Colorado U R",
-        "November 10, 2015 in Milwaukee, Wisconsin U R"
+        "November 10, 2015 in Milwaukee, Wisconsin U R",
+        "November 10, 2015 in Milwaukee, Wisconsin R",
+        "January 14, 2016 in North Charleston, South Carolina R",
+        "August 6, 2015 in Cleveland, Ohio R"
     ],
     "chafee": [
         "October 13, 2015 Las Vegas, Nevada D"
@@ -89,6 +100,7 @@
         "November 10, 2015 in Milwaukee, Wisconsin U R",
         "January 28, 2016 Des Moines, Iowa R",
         "February 6, 2016 Manchester, New Hampshire R",
+        "November 10, 2015 in Milwaukee, Wisconsin R",
         "December 15, 2015 Las Vegas, Nevada R",
         "October 28, 2015 Boulder, Colorado R",
         "September 16, 2015 Simi Valley, California R"
@@ -108,12 +120,15 @@
     "fiorina": [
         "January 28, 2016 in Des Moines, Iowa U R",
         "November 10, 2015 Milwaukee, Wisconsin R",
+        "January 28, 2016 in Des Moines, Iowa R",
         "August 6, 2015 in Cleveland, Ohio U R",
         "January 14, 2016 in North Charleston, South Carolina U R",
         "August 6, 2015 Cleveland, Ohio R",
         "December 15, 2015 Las Vegas, Nevada R",
         "October 28, 2015 Boulder, Colorado R",
-        "September 16, 2015 Simi Valley, California R"
+        "January 14, 2016 in North Charleston, South Carolina R",
+        "September 16, 2015 Simi Valley, California R",
+        "August 6, 2015 in Cleveland, Ohio R"
     ],
     "cruz": [
         "November 10, 2015 Milwaukee, Wisconsin R",
@@ -131,7 +146,8 @@
     ],
     "perry": [
         "August 6, 2015 in Cleveland, Ohio U R",
-        "August 6, 2015 Cleveland, Ohio R"
+        "August 6, 2015 Cleveland, Ohio R",
+        "August 6, 2015 in Cleveland, Ohio R"
     ],
     "kasich": [
         "November 10, 2015 Milwaukee, Wisconsin R",
@@ -160,22 +176,34 @@
         "September 16, 2015 Simi Valley, California R"
     ],
     "jindal": [
+        "September 16, 2015 in Simi Valley, California R",
         "August 6, 2015 in Cleveland, Ohio U R",
+        "October 28, 2015 in Boulder, Colorado R",
         "September 16, 2015 in Simi Valley, California U R",
         "October 28, 2015 in Boulder, Colorado U R",
-        "November 10, 2015 in Milwaukee, Wisconsin U R"
+        "November 10, 2015 in Milwaukee, Wisconsin U R",
+        "November 10, 2015 in Milwaukee, Wisconsin R",
+        "August 6, 2015 in Cleveland, Ohio R"
     ],
     "graham": [
+        "September 16, 2015 in Simi Valley, California R",
         "August 6, 2015 in Cleveland, Ohio U R",
+        "October 28, 2015 in Boulder, Colorado R",
+        "December 15, 2015 in Las Vegas, Nevada R",
         "December 15, 2015 in Las Vegas, Nevada U R",
         "September 16, 2015 in Simi Valley, California U R",
-        "October 28, 2015 in Boulder, Colorado U R"
+        "October 28, 2015 in Boulder, Colorado U R",
+        "August 6, 2015 in Cleveland, Ohio R"
     ],
     "pataki": [
+        "September 16, 2015 in Simi Valley, California R",
         "August 6, 2015 in Cleveland, Ohio U R",
+        "October 28, 2015 in Boulder, Colorado R",
+        "December 15, 2015 in Las Vegas, Nevada R",
         "December 15, 2015 in Las Vegas, Nevada U R",
         "September 16, 2015 in Simi Valley, California U R",
-        "October 28, 2015 in Boulder, Colorado U R"
+        "October 28, 2015 in Boulder, Colorado U R",
+        "August 6, 2015 in Cleveland, Ohio R"
     ],
     "o'malley": [
         "November 14, 2015 Des Moines, Iowa D",

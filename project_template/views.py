@@ -61,15 +61,16 @@ def index(request):
             
         else: #if search_option == 'term'
             thequery = search
-            total_mentions_debate, total_mentions_candidate, candidate_num_debates = search_term(search)
+            total_mentions_debate, total_mentions_candidate, candidate_num_debates,debate_data = search_term(search)
             num_debates = candidate_num_debates
+            all_debate_text = debate_data
             
             if eval_type == 'ml':
                 our_svd = OurSVD()  # default params passed to constructor
                 closest_words, error_words = our_svd.closest_words(search)
                 
                 for word in closest_words:
-                  (tmp_total_debates,tmp_total_mentions,_) = search_term(word)
+                  (tmp_total_debates,tmp_total_mentions,_,_) = search_term(word)
                   for k in tmp_total_mentions.keys():
                     total_mentions_candidate[k] += tmp_total_mentions[k]
                   for k in tmp_total_debates.keys():
@@ -111,6 +112,7 @@ def index(request):
                            'suggested_terms': ['immigration', 'health', 'education'],
 						   'candidate_info': json.dumps(candidate_info),
                            'topics': topics,
+                           'debate_data':json.dumps(debate_data)
                            })
     # suggest terms/candidates to search for on the homepage
     else:

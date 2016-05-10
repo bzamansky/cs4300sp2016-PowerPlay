@@ -115,9 +115,95 @@ function wordHover(word,candidate){
     used_words.style.visibility='visible';
 }
 
+function getAllIndices(arr, val) {
+    var indexes = [], i = -1;
+    while ((i = arr.indexOf(val, i+1)) != -1){
+        indexes.push(i);
+    }
+    return indexes;
+}
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+
+function wordClickCand(word,candidate){
+    console.log("WORDCLICKCAND");
+    my_close();
+    //found on stack overflow
+    var text = all_text_dict[candidate].split(" ");
+    var indices = getAllIndices(text, word, false);
+    if(indices.length < 4){
+        indices = indices.concat(getAllIndices(text,capitalizeFirstLetter(word),false));
+    }
+    var span = 15;
+    var outputs = [];
+    var l = indices.length;
+    if(l > 4){ l = 4; }
+    for (var i = 0; i < l; i++) {
+        if(indices[i]>span && indices[i] < text.length - span){
+            output_str = text.slice(indices[i] - span,indices[i] + span)
+            outputs.push("..." + output_str.join(" ") + "...");
+        }
+    }  
+
+    var context_list = document.getElementById("context_list");
+    for (var i = 0; i < outputs.length; i++) {
+        var list = document.createElement("li");
+        var node = document.createTextNode(outputs[i]);
+        list.appendChild(node);
+        context_list.appendChild(list);
+    }
+    var context_words = document.getElementById("context_words");
+    context_words.style.visibility='visible';
+}
+
+function wordClickDeb(word,debate){
+    my_close();
+    
+    word = word.toLowerCase();
+
+    var debate_ind = debate_data.filter(function(obj){
+        return obj.name === debate;
+    })[0];
+    debate_ind['total_tran'] = '';
+    for (var i = 0; i < debate_ind['tran'].length; i++) {
+        debate_ind['total_tran'] += debate_ind['tran'][i]['speech'];
+    }
+    var text = debate_ind['total_tran'].split(" ");
+    console.log(text);
+    console.log(word);
+    var indices = getAllIndices(text, word, false);
+    if(indices.length < 4){
+        indices = indices.concat(getAllIndices(text,capitalizeFirstLetter(word),false));
+    }
+    var span = 15;
+    var outputs = [];
+    var l = indices.length;
+    if(l > 4){ l = 4; }
+    for (var i = 0; i < l; i++) {
+        if(indices[i]>span && indices[i] < text.length - span){
+            output_str = text.slice(indices[i] - span,indices[i] + span)
+            outputs.push("..." + output_str.join(" ") + "...");
+        }
+    }  
+
+    var context_list = document.getElementById("context_list");
+    for (var i = 0; i < outputs.length; i++) {
+        var list = document.createElement("li");
+        var node = document.createTextNode(outputs[i]);
+        list.appendChild(node);
+        context_list.appendChild(list);
+    }
+    var context_words = document.getElementById("context_words");
+    context_words.style.visibility='visible';
+}
+
+
+
 function my_close(){
-    used_words.style.visibility="hidden";
-    used_words_list.innerHTML="";
+    context_words.style.visibility="hidden";
+    context_list.innerHTML="";
 }
 
 
@@ -154,7 +240,6 @@ function makeBarGraph(x_values, y_values, category, num_debates) {
     var cla = "svg_div";
     if (category == "candidate"){
         norm_text = " / Debates Attended";
-        cla += " candidate_bars";
         var tmp = [];
         for (var i = 0; i < x_values.length; i++) {
             var cand_name = x_values[i];
@@ -257,6 +342,10 @@ function makeBarGraph(x_values, y_values, category, num_debates) {
         .style("text-anchor", "end")
         .text("Mentions" + norm_text);
 
+    // get query
+    var q = document.getElementsByTagName('h5')[0].innerText.split(" ")[3];
+    var query = q.substring(1, q.length-1).toUpperCase();
+
     svg.selectAll(".bar")
         .data(data)
         .enter().append("rect")
@@ -298,14 +387,14 @@ function makeBarGraph(x_values, y_values, category, num_debates) {
         // bring to candidate page when bar is clicked
         .on("click",function(d){
             if (category == 'candidate') {
-                var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.x + "&search_option=candidate&eval=ml";
-                window.location.href = (destination);
+                wordClickCand(query,d.x);
+                //var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.x + "&search_option=candidate&eval=ml";
+                //window.location.href = (destination);
+            }
+            else if (category == 'debate'){
+                wordClickDeb(query,d.x);
             }
         });
-
-    // get query
-    var q = document.getElementsByTagName('h5')[0].innerText.split(" ")[3];
-    var query = q.substring(1, q.length-1).toUpperCase();
     
     var ml_text = '';
     if (eval_type == "ml"){

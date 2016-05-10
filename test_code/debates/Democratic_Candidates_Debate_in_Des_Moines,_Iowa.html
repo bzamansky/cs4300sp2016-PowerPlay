@@ -1015,7 +1015,7 @@ function getCookie(name) {
   return unescape(dc.substring(begin + prefix.length, end));
 }
 if (getCookie('fontsize') == null) {
-	var fontsize = 11;
+	var fontsize = 14;
 } else {
 	var fontsize = getCookie('fontsize');
 }
@@ -1082,13 +1082,6 @@ document.write('<\/style>');
 	<tr><td class="ver10" align="center" style="padding-top:2px;">Font Size:</td></tr>
 	<tr><td align="center" style="padding:3px"><SCRIPT language=JavaScript type=text/javascript>
 			document.write('<!-- fontsize=' + fontsize + '-->')
-			if (fontsize == 12) {
-				document.write('<a href="#" onClick="changeFontSize(10); return false;"><img src="http://www.presidency.ucsb.edu/images/text_small.gif" alt="small" width="16" height="16" hspace="1" vspace="1" border="0" \/><\/a>');
-			} else {
-
-				document.write('<a href="#" onClick="changeFontSize(10); return false;"><img src="http://www.presidency.ucsb.edu/images/text_small.gif" alt="small" width="16" height="16" hspace="1" vspace="1" border="0" \/><\/a>');
-			}
-
 			if (fontsize == 15) {
 				document.write('<a href="#" onClick="changeFontSize(12); return false;"><img src="http://www.presidency.ucsb.edu/images/text_medium.gif" alt="medium" width="16" height="16" hspace="1" vspace="1" border="0" \/><\/a>');
 			} else {
@@ -1106,7 +1099,14 @@ document.write('<\/style>');
 			} else {
 				document.write('<a href="#" onClick="changeFontSize(20); return false;"><img src="http://www.presidency.ucsb.edu/images/text_largest.gif" alt="maximum" width="16" height="16" hspace="1" vspace="1" border="0" \/><\/a>');
 			}
-		</SCRIPT></td></tr>
+		</SCRIPT>
+        <!-- 			if (fontsize == 12) {
+				document.write('<a href="#" onClick="changeFontSize(10); return false;"><img src="http://www.presidency.ucsb.edu/images/text_small.gif" alt="small" width="16" height="16" hspace="1" vspace="1" border="0" \/><\/a>');
+			} else {
+
+				document.write('<a href="#" onClick="changeFontSize(10); return false;"><img src="http://www.presidency.ucsb.edu/images/text_small.gif" alt="small" width="16" height="16" hspace="1" vspace="1" border="0" \/><\/a>');
+			} -->
+        </td></tr>
 	<tr><td class="ver10" bgcolor="#999999"><img src="../images/spacer.gif" height="1" width="1"></td></tr>
 	<tr><td class="ver10" style="padding-left:2px; padding-top:2px;"><a href="print.php?pid=110910"><img src="../images/icons/print.gif" width="44" height="19" alt="Print" border="0"></a></td>
 	</tr>

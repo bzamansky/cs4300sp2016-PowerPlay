@@ -1,13 +1,14 @@
 import bs4
 import re
-#import requests
+import urllib3
 import time
 import os
 import json
 
 #This is the scraping data!
+# debate_names_links = {}
 
-# File containing all the links to the debates
+# # File containing all the links to the debates
 # all_debates_filename = "Presidential_Debates.html"
 # with open(all_debates_filename) as f:
 #   all_debates = bs4.BeautifulSoup(f)
@@ -53,6 +54,7 @@ import json
 #   spl = name_spl.index('in')
 #   place = "_".join(name_spl[spl:])
 #   name = os.path.join('debates',("_".join(name_spl) + ".html"))
+#   debate_names_links[name.replace('"','')] = d['link']
 #   #Writing the debate to a new file to keep from scraping the website too many times
 #   fo = open(name,"wb")
 #   fo.write(r.data)
@@ -121,6 +123,8 @@ for file in os.listdir('debates'):
 
   transcript['name'] = name
 
+  transcript['link'] = debate_names_links[transcript_filename.replace('"','')]
+
   #Getting each line of the debate
   pars = tran[0].find_all('p')
 
@@ -174,7 +178,7 @@ actual_transcripts = []
 # all_words = []
 # x = 0
 for tran in transcripts:
-  actual_tran = {'date':tran['date'],'file':tran['file'],'name':tran['name'],'tran':[]}
+  actual_tran = {'date':tran['date'],'file':tran['file'],'name':tran['name'],'tran':[],'link':tran['link']}
   for file in tran['tran']:
     # words = file['speech'].split(" ")
     # x += len(words)

@@ -275,11 +275,36 @@ color: #4285F4;
 }*/
 
 /* Mouse Pointer on clickable hover */
-.wordcloud_text, .force_graph circle, .candidate_bars rect {
+.wordcloud_text, .force_graph circle, .svg_div rect {
   cursor: pointer;
 }
 
 
 #ml_div{
   margin-left: 200px;
+}
+
+/*context_words context div*/
+#context_words{
+  visibility: hidden;
+  background-color: white;
+  width: 70%;
+  position:fixed;
+  right:0;
+  left:0;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+#context_words ul{
+  list-style-type: none;
+}
+#context_words li{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+#context_words #close{
+  position:absolute;
+  top:0;
+  right:4px;
 }

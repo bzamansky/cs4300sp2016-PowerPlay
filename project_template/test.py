@@ -33,6 +33,9 @@ with open("./test_code/candidate_responses.json") as candidate_response_file:
 with open("./test_code/candidates_which_debates.json") as candidate_which_debates:
     candidate_num_debates = json.load(candidate_which_debates)
     candidate_which_debates.close()
+with open('./test_code/debate_data.json') as debate_data_file:
+    debate_data = json.load(debate_data_file)
+    debate_data_file.close()
 
 def search_candidate(query):
     try:
@@ -62,9 +65,9 @@ def search_term(query):
     if any(total_mentions_debate.values()):
         # get Arguments and Interactions
         interactions = {}
-        return total_mentions_debate, total_mentions_candidate, candidate_num_debates  # interactions
+        return total_mentions_debate, total_mentions_candidate, candidate_num_debates, debate_data  # interactions
     else:
-        return {}, {}, {}
+        return {}, {}, {},{}
 
 		
 def format_candidate_name(query):

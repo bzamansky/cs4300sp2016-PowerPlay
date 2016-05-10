@@ -46,6 +46,10 @@
         </form>
 		<br/>
 		</div>
+        <div id="context_words">
+            <ul id="context_list"></ul>
+            <input value="x" type="button" id="close" onclick="my_close()"/>
+        </div>
         <div class="form-inline global-search">   
             {% if search_option %}
                 <h5>Searched in {{search_option}}s: "{{searched}}"
@@ -155,6 +159,9 @@
 
             var eval_type = {{eval|safe}};
             var closest_words = {{related_terms|safe}};
+
+            //all debates
+            var debate_data = {{debate_data|safe}}
         </script>
         <script type="text/javascript" src="/static/script.js"></script>
         <script type="text/javascript">
