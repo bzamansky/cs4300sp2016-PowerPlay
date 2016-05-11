@@ -244,7 +244,7 @@ function wordClickCand(word,candidate){
        var speech = outputs[i][1]['output_speech'];
 
        div_text += "<p class='snippit'>";
-       div_text += "<a href='" + link + "'>Link to Debate or Statement</a>";
+       div_text += "<a href='" + link + "' target='_blank'>Link to Debate or Statement</a>";
        div_text += "</br>" + speech;
        div_text += "</p>";
    }
