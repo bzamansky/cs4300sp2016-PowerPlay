@@ -77,6 +77,7 @@ for d in campaign_speech_pages:
   date = file.find_all('span',{'class':'docdate'})[0].text
   title = file.find_all('span',{'class':'paperstitle'})[0].text
   text = file.find_all("span",{"class":"displaytext"})[0]
+  link = d[0]
 
 
   all_lines = text.contents
@@ -101,7 +102,7 @@ for d in campaign_speech_pages:
       line = line.replace(speaker.title() + ":","")
       line = line.replace(speaker.upper() + ": ", "")
       line = line.replace(speaker.upper() + ":", "")
-      candidate_data[speaker].append(line)
+      candidate_data[speaker].append([link,line])
 
 
 for d in statements:
@@ -127,6 +128,7 @@ for d in statement_pages:
   date = file.find_all('span',{'class':'docdate'})[0].text
   title = file.find_all('span',{'class':'paperstitle'})[0].text
   text = file.find_all("span",{"class":"displaytext"})[0]
+  link = d[0]
 
   all_lines = text.contents
   all_lines[:2] = []
@@ -137,7 +139,7 @@ for d in statement_pages:
       line = re.sub('\[.*\]','',line)
     else:
       line = re.sub('\[.*\]','',line.text)
-    candidate_data[candidate].append(line)
+    candidate_data[candidate].append([link,line])
 
 with open('candidate_statements.json','w') as outfile:
   json.dump(candidate_data, outfile, sort_keys=True, indent=4,separators=(',', ': '))

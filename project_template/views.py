@@ -34,6 +34,7 @@ def index(request):
     thequery = ''
     num_debates = None  # this is where the normalization begins
     topics = None
+    statements = None
     
     
     if 'search' in request.GET:
@@ -83,6 +84,10 @@ def index(request):
             values_by_candidate = total_mentions_candidate.values()
             values_by_debate = total_mentions_debate.values()
             debate_titles = total_mentions_debate.keys()
+
+            with open('./test_code/candidate_statements.json') as statements_file:
+              statements = json.load(statements_file)
+              statements_file.close()
         
         with open("./test_code/cand_top_ten_snippits.json") as snippits_file:
             snippits = json.load(snippits_file)
@@ -112,7 +117,8 @@ def index(request):
                            'suggested_terms': ['immigration', 'health', 'education'],
 						   'candidate_info': json.dumps(candidate_info),
                            'topics': topics,
-                           'debate_data':json.dumps(debate_data)
+                           'debate_data':json.dumps(debate_data),
+                           'statements':json.dumps(statements)
                            })
     # suggest terms/candidates to search for on the homepage
     else:

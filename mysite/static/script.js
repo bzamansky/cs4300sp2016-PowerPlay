@@ -126,38 +126,6 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-
-function wordClickCand(word,candidate){
-    console.log("WORDCLICKCAND");
-    my_close();
-    //found on stack overflow
-    var text = all_text_dict[candidate].split(" ");
-    var indices = getAllIndices(text, word, false);
-    if(indices.length < 4){
-        indices = indices.concat(getAllIndices(text,capitalizeFirstLetter(word),false));
-    }
-    var span = 15;
-    var outputs = [];
-    var l = indices.length;
-    if(l > 4){ l = 4; }
-    for (var i = 0; i < l; i++) {
-        if(indices[i]>span && indices[i] < text.length - span){
-            output_str = text.slice(indices[i] - span,indices[i] + span)
-            outputs.push("..." + output_str.join(" ") + "...");
-        }
-    }  
-
-    var context_list = document.getElementById("context_list");
-    for (var i = 0; i < outputs.length; i++) {
-        var list = document.createElement("li");
-        var node = document.createTextNode(outputs[i]);
-        list.appendChild(node);
-        context_list.appendChild(list);
-    }
-    var context_words = document.getElementById("context_words");
-    context_words.style.visibility='visible';
-}
-
 function haveISeen(speaker,prev,outputs){
     var seen = false;
     for(var i = 0; i < outputs.length; i++){
@@ -166,6 +134,143 @@ function haveISeen(speaker,prev,outputs){
         }
     }
     return seen;
+}
+
+function wordClickCand(word,candidate){
+    my_close();
+
+    word = word.toLowerCase();
+
+   var outputs = [];
+
+   for(var i = 0; i < debate_data.length; i++){
+        var link = debate_data[i]['link'];
+        var deb = debate_data[i]['tran'];
+        for(var j = 0; j < deb.length; j++){
+            var speaker = deb[j]['speaker'];
+            if(speaker == candidate){
+                var loc = deb[j]['speech'].search(" "+word+" ");
+                if(loc > -1){
+                    if(haveISeen(speaker,deb[j]['prev'],outputs)){
+                        continue;
+                    }
+                    outputs.push([link,deb[j]]);
+                }
+                for(var k = 0; k < closest_words.length; k++){
+                    var loc = deb[j]['speech'].search(' ' + closest_words[i] + " ");
+                    if(loc > -1){
+                        if(haveISeen(speaker,deb[j]['prev'],outputs)){
+                            continue;
+                        }
+                        outputs.push([link,deb[j]]);
+                    }
+                }
+            }
+        }
+   }
+
+
+    //this is when we check the statements
+    if(Object.keys(statements).indexOf(candidate) != -1 && outputs.length < 3){
+        for(var i = 0; i < statements[candidate].length; i++){
+            var link = statements[candidate][i][0];
+            var state = statements[candidate][i][1];
+            var loc = state.search(' ' + word + ' ');
+            if(loc > -1){
+                outputs.push([link,{'speaker':candidate,'prev':Math.random(),'speech':state}]);
+            }
+            for(var k = 0; k < closest_words.length; k++){
+                var loc = state.search(' ' + closest_words[k] + ' ');
+                if(loc > -1){
+                    outputs.push([link,{'speaker':candidate,'prev':Math.random(),'speech':state}]);
+                }
+            }
+        }
+    }
+    
+    if(outputs.length > 3){
+       outputs = [outputs[0],outputs[1],outputs[2]];
+    }
+   
+   var all_words = closest_words;
+   all_words.push(word);
+
+   for(var i = 0; i < outputs.length; i++){
+       var split_output = outputs[i][1]['speech'].split(".");
+       var has_word_ind = []
+       for(var j = 0; j < split_output.length; j++){
+           var split_sent = split_output[j].split(" ");
+           var has_word = false;
+           for(var k = 0; k < all_words.length; k++){
+               var word_ind = split_sent.indexOf(all_words[k]);
+               var cap_word_ind = split_sent.indexOf(capitalizeFirstLetter(all_words[k]));
+               if(word_ind > -1){
+                   split_sent[word_ind] = "<span class='spoken'>" + split_sent[word_ind] + "</span>";
+                   has_word = true;
+               }
+               if(cap_word_ind > -1){
+                   split_sent[cap_word_ind] = "<span class='spoken'>" + split_sent[cap_word_ind] + "</span>";
+                   has_word = true;
+               }
+           }
+           split_output[j] = split_sent.join(" ");
+           if(has_word){has_word_ind.push(j);}
+       }
+
+       var word_span = [];
+       if(has_word_ind[0] == 0){word_span = [0,2];}
+       else if(has_word_ind[0] == split_output.length){word_span = [split_output.length - 3,split_output.length-1];}
+       else{word_span = [has_word_ind[0] - 1,has_word_ind[0] + 1];}
+       var segment = [split_output[word_span[0]],split_output[word_span[0] + 1], split_output[word_span[1]]];
+       outputs[i][1]['output_speech'] = segment.join(".  ") + ".";
+   }
+
+   var full_width = window.innerWidth - 100;
+
+   var svg = d3.select('.svg_div.candidates svg');
+   svg.transition()
+       .duration(500)
+       .attr('width',full_width);
+
+   var debate_svg_g = d3.select('.candidate_svg_g').node().getBBox();
+   var graph_width = debate_svg_g.width;
+   var graph_height = debate_svg_g.height;
+
+   var div_text = "<div id='snippit'>";
+
+   for (var i = 0; i < outputs.length; i++) {
+       var link = outputs[i][0];
+       var speaker = capitalizeFirstLetter(outputs[i][1]['speaker']);
+       var speech = outputs[i][1]['output_speech'];
+
+       div_text += "<p class='snippit'>";
+       div_text += "<a href='" + link + "'>Link to Debate or Statement</a>";
+       div_text += "</br>" + speech;
+       div_text += "</p>";
+   }
+
+   svg.append('text')
+       .attr('class','snippit snip_title')
+       .attr('x',graph_width + 110)
+       .attr('y',35)
+       .text('Context of spoken words, Speaker: ' + speaker)
+       .style("text-decoration", "underline")
+       .style("font-weight", "bold");
+
+   svg.append('text')
+       .attr('class','close_words_text')
+       .attr('x',graph_width + 30)
+       .attr('y',20)
+       .text('>')
+       .on('click',my_close);
+   div_text += "</div>";
+
+   svg.append("foreignObject")
+       .attr('x',graph_width + 100)
+       .attr('y',40)
+       .attr('width',full_width - graph_width - 200)
+       .append('xhtml:body')
+       .html(div_text);
 }
 
 function wordClickDeb(word,debate){
@@ -254,7 +359,7 @@ function wordClickDeb(word,debate){
     var div_text = "<div id='snippit'>";
 
     for (var i = 0; i < outputs.length; i++) {
-        var spoken_word = outputs[i][0];
+        var spoken_word = outputs[i][1][0];
         var speaker = capitalizeFirstLetter(outputs[i][1]['speaker']);
         var speech = outputs[i][1]['output_speech'];
 
@@ -303,6 +408,10 @@ function my_close(){
     d3.selectAll('.snippit').remove();
     d3.select('.close_words_text').remove();
     d3.select('.svg_div.debates svg')
+        .transition()
+        .duration(400)
+        .attr('width',1000);
+    d3.select('.svg_div.candidates svg')
         .transition()
         .duration(400)
         .attr('width',1000);
@@ -424,7 +533,7 @@ function makeBarGraph(x_values, y_values, category, num_debates) {
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
-        .attr('class','debate_svg_g')
+        .attr('class',category+'_svg_g')
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     svg.call(tip);
