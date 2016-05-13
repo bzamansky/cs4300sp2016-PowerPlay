@@ -7,6 +7,7 @@ from .form import QueryForm
 from .test import search_candidate
 from .test import search_term
 from .test import format_candidate_name
+from .test import fighting_words_candidate
 from django.contrib.staticfiles.templatetags.staticfiles import static
 import json
 from .svd import OurSVD
@@ -32,10 +33,11 @@ def index(request):
     closest_words, error_words = None, None
     adjusted = ''
     thequery = ''
-    num_debates = None  # this is where the normalization begins
+    fighting_words = None
+    #this is where the normalization begins
+    num_debates = None
     topics = None
     statements = None
-    
     
     if 'search' in request.GET:
         search = request.GET['search'].lower().strip()  # make case insensitive
@@ -59,6 +61,10 @@ def index(request):
             if eval_type == 'ml' and top_ten:
                 this_candidates_svd = OurSVD(adjusted, k=10)
                 topics = this_candidates_svd.get_topics_readable()
+                our_svd = OurSVD()
+                closest_words, error_words = our_svd.closest_words(adjusted)
+                
+                fighting_words = fighting_words_candidate(thequery)
             
         else: #if search_option == 'term'
             thequery = search
@@ -115,10 +121,11 @@ def index(request):
                            'eval':json.dumps(eval_type),
                            'suggested_candidates': ['clinton', 'sanders', 'trump', 'cruz', 'kasich'],
                            'suggested_terms': ['immigration', 'health', 'education'],
-						   'candidate_info': json.dumps(candidate_info),
+            						   'candidate_info': json.dumps(candidate_info),
                            'topics': topics,
                            'debate_data':json.dumps(debate_data),
-                           'statements':json.dumps(statements)
+                           'statements':json.dumps(statements),
+                           'fighting_words': json.dumps(fighting_words)
                            })
     # suggest terms/candidates to search for on the homepage
     else:

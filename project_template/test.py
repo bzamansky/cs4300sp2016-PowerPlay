@@ -37,6 +37,14 @@ with open('./test_code/debate_data.json') as debate_data_file:
     debate_data = json.load(debate_data_file)
     debate_data_file.close()
 
+# read word avoidance file
+with open("./test_code/fighting_words.json") as f:
+    fighting_words = json.load(f)
+    f.close()
+
+def fighting_words_candidate(query):
+    return fighting_words[query]
+
 def search_candidate(query):
     try:
         top_ten_words = candidate_top_ten_data[query]
