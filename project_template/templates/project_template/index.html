@@ -36,20 +36,17 @@
         </div> 
         <div id="ml_div">
             <input type="radio" name="eval" value="naive" id="radio4" class="radio evaluation" {% if eval_type == 'naive' %}checked{% endif %} />
-            <label for="radio4">Naive</label>
+            <label for="radio4">Simple</label>
         </div>
         <div>
             <input type="radio" name="eval" value="ml" id="radio5" class="radio evaluation" {% if eval_type != "naive" %}checked{% endif %} />
-            <label for="radio5">ML</label>
+            <label for="radio5">Advanced</label>
         </div>
             </div>
         </form>
 		<br/>
 		</div>
-        <!-- <div id="context_words">
-            <ul id="context_list"></ul>
-            <input value="x" type="button" id="close" onclick="my_close()"/>
-        </div> -->
+
         <div class="form-inline global-search">   
             {% if search_option %}
                 <h5>Searched in {{search_option}}s: "{{searched}}"
