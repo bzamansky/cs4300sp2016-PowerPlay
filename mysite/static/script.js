@@ -8,7 +8,22 @@ var rep_names = ["cruz", "kasich", "trump", "rubio", "bush", "christie", "fiorin
 
 // MAKE WORD CLOUD
 /* w is top words by that candidate, frequencies is number of times each word in w is used by candidate */
-function makeWordCloud(candidate, w) {
+function makeWordCloud(candidate, w, tfidf) {
+    var on_page = "#word_cloud";
+    if(!tfidf){
+        //format data
+        var cand_words = w.slice(0,10);
+        var output_cand_words = {};
+        for(var i = 0; i < cand_words.length; i++){
+            output_cand_words[cand_words[i][0]] = cand_words[i][1];
+        }
+        w = output_cand_words;
+        //name div loc
+        on_page += "_avoid";
+    }
+
+    var frequencies = [];
+
     var frequency_list = []; 
     var w_keys = Object.keys(w);
     for (var i=0; i<w_keys.length; i++) {
@@ -16,29 +31,33 @@ function makeWordCloud(candidate, w) {
             'text': w_keys[i],
             'size': w[w_keys[i]]
         });
+        frequencies.push(w[w_keys[i]]);
     }
 
     frequency_list.sort(function(a,b){
         return b.size - a.size;
     });
-    wordHover(frequency_list[0]['text'],candidate);
+    if(tfidf){
+        wordHover(frequency_list[0]['text'],candidate);
+    }
+
+    var scale = d3.scale.linear()
+        .domain([Math.min.apply(null,frequencies),Math.max.apply(null,frequencies)])
+        .range([15,35]);
 
     var scale_value = 150; // make size of words smaller
-
+    
     d3.layout.cloud().size([850, 350])
-            .words(frequency_list)
-            //.rotate(function() { return ~~(Math.random()*2) * 90;}) // 0 or 90deg - from https://www.pubnub.com/blog/2014-10-09-quick-word-cloud-from-a-chatroom-with-d3js/
-            .rotate(0)
-            //.fontSize(function(d) { return d.size; })
-            .fontSize(function(d) { return d.size*scale_value; }) // need to make text bigger
-            .on("end", draw)
-            .start();
-
+        .words(frequency_list)
+        .rotate(0)
+        .fontSize(function(d) { return scale(d.size); })
+        .on("end", draw)
+        .start();
 
     function draw(words) {
         var width = 700,
             height = 350;
-        var svg = d3.select("#word_cloud").append("svg")
+        var svg = d3.select(on_page).append("svg")
                 .attr("width", width)
                 .attr("height", height)
                 .attr("class", "wordcloud");
@@ -50,10 +69,8 @@ function makeWordCloud(candidate, w) {
                 .data(words)
                 .enter().append("text").attr("class", "wordcloud_text")
                 .style("font-size", function(d) { return d.size + "px"; })
-                //.style("fill", function(d, i) { return color(i); })
-                //.style("fill", function(d, i) { return color(i); }) // COLOR SCALE
                 .style("fill", function(d){
-                    if(d.text==frequency_list[0]['text']){
+                    if(d.text==frequency_list[0]['text'] && tfidf){
                         return 'purple';
                     }
                     else{
@@ -71,7 +88,9 @@ function makeWordCloud(candidate, w) {
                     d3.select(this).style("fill", "purple")
                         .style("font-size", "50px")
                         .style("opacity",1);
-                    wordHover(d.text,candidate);
+                    if(tfidf){
+                        wordHover(d.text,candidate);
+                    }
                 })
                 .on("mouseout", function() {
                     text.style("fill","black")
@@ -84,13 +103,28 @@ function makeWordCloud(candidate, w) {
                     var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.text + "&search_option=term&eval=ml"
                     window.location.href = (destination);
                 });
+        var the_text = "";
+        if(tfidf){
+            the_text = "Top Words Used by ";
+        }
+        else{
+            the_text = "Terms Avoided by ";
+        }
         svg.append("text")
             .attr("x", width / 2 )
             .attr("y", 50)
             .style("text-anchor", "middle")
             .style("text-decoration", "underline")
             .style("font-weight", "bold")
-            .text("Top Words Used by " + candidate.toUpperCase());
+            .text(the_text + candidate.toUpperCase());
+        if(!tfidf){
+            svg.append("text")
+                .attr("x",width / 2)
+                .attr("y",65)
+                .style("text-anchor","middle")
+                .style("font-style","italic")
+                .text("Largest words are the most avoided.");
+        }
 
     }
 }
