@@ -126,10 +126,10 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function haveISeen(speaker,prev,outputs){
+function haveISeen(speaker,prev,speech,outputs){
     var seen = false;
     for(var i = 0; i < outputs.length; i++){
-        if(outputs[i][1]['speaker'] == speaker && outputs[i][1]['prev'] == prev){
+        if(outputs[i][1]['speaker'] == speaker && outputs[i][1]['prev'] == prev && outputs[i][1]['speech'] == speech){
             seen = true;
         }
     }
@@ -151,18 +151,18 @@ function wordClickCand(word,candidate){
             if(speaker == candidate){
                 var loc = deb[j]['speech'].search(" "+word+" ");
                 if(loc > -1){
-                    if(haveISeen(speaker,deb[j]['prev'],outputs)){
+                    if(haveISeen(speaker,deb[j]['prev'],deb[j]['speech'],outputs)){
                         continue;
                     }
-                    outputs.push([link,deb[j]]);
+                    outputs.push([link,deb[j],"debate"]);
                 }
                 for(var k = 0; k < closest_words.length; k++){
                     var loc = deb[j]['speech'].search(' ' + closest_words[k] + " ");
                     if(loc > -1){
-                        if(haveISeen(speaker,deb[j]['prev'],outputs)){
+                        if(haveISeen(speaker,deb[j]['prev'],deb[j]['speech'],outputs)){
                             continue;
                         }
-                        outputs.push([link,deb[j]]);
+                        outputs.push([link,deb[j],"debate"]);
                     }
                 }
             }
@@ -177,12 +177,12 @@ function wordClickCand(word,candidate){
             var state = statements[candidate][i][1];
             var loc = state.search(' ' + word + ' ');
             if(loc > -1){
-                outputs.push([link,{'speaker':candidate,'prev':Math.random(),'speech':state}]);
+                outputs.push([link,{'speaker':candidate,'prev':Math.random(),'speech':state},"statement"]);
             }
             for(var k = 0; k < closest_words.length; k++){
                 var loc = state.search(' ' + closest_words[k] + ' ');
                 if(loc > -1){
-                    outputs.push([link,{'speaker':candidate,'prev':Math.random(),'speech':state}]);
+                    outputs.push([link,{'speaker':candidate,'prev':Math.random(),'speech':state},"statement"]);
                 }
             }
         }
@@ -237,6 +237,8 @@ function wordClickCand(word,candidate){
    var graph_height = debate_svg_g.height;
 
    var div_text = "<div id='snippit'>";
+   div_text += "<a href='" + "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + candidate + "&search_option=candidate&eval=ml" + "'>";
+   div_text += capitalizeFirstLetter(candidate) + "</a>";
 
    for (var i = 0; i < outputs.length; i++) {
        var link = outputs[i][0];
@@ -244,7 +246,7 @@ function wordClickCand(word,candidate){
        var speech = outputs[i][1]['output_speech'];
 
        div_text += "<p class='snippit'>";
-       div_text += "<a href='" + link + "' target='_blank'>Link to Debate or Statement</a>";
+       div_text += "<a href='" + link + "' target='_blank'>Link to " + outputs[i][2] + "</a>";
        div_text += "</br>" + speech;
        div_text += "</p>";
    }
@@ -288,7 +290,7 @@ function wordClickDeb(word,debate){
     for (var i = 0; i < debate_tran.length; i++) {
         var loc = debate_tran[i]['speech'].search(" " + word + " ");
         if(loc > -1){
-            if(haveISeen(debate_tran[i]['speaker'],debate_tran[i]['prev'],outputs)){
+            if(haveISeen(debate_tran[i]['speaker'],debate_tran[i]['prev'],debate_tran[i]['speech'],outputs)){
                 continue;
             }
             outputs.push([word,debate_tran[i]]);
@@ -299,7 +301,7 @@ function wordClickDeb(word,debate){
             var tmp_word = closest_words[j];
             loc = debate_tran[i]['speech'].search(" " + tmp_word + " ");
             if(loc > -1){
-                if(haveISeen(debate_tran[i]['speaker'],debate_tran[i]['prev'],outputs)){
+                if(haveISeen(debate_tran[i]['speaker'],debate_tran[i]['prev'],debate_tran[i]['speech'],outputs)){
                     continue;
                 }
                 outputs.push([tmp_word,debate_tran[i]]);
@@ -307,10 +309,10 @@ function wordClickDeb(word,debate){
         }
     }
 
-    if(outputs.length > 3){
-        // try to switch so different candidates are featured
-        outputs = [outputs[0],outputs[1],outputs[2]];
-    }
+    // if(outputs.length > 3){
+    //     // try to switch so different candidates are featured
+    //     outputs = [outputs[0],outputs[1],outputs[2]];
+    // }
 
     var all_words = closest_words;
     all_words.push(word);

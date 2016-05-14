@@ -238,6 +238,14 @@ color: #4285F4;
   text-align: center;
 }
 
+.svg_div g text{
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+}
+
 /*used_words context div*/
 #used_words ul{
   list-style-type: none;
