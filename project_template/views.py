@@ -38,6 +38,7 @@ def index(request):
     num_debates = None
     topics = None
     statements = None
+    debate_data = None
     
     if 'search' in request.GET:
         search = request.GET['search'].lower().strip()  # make case insensitive

@@ -157,7 +157,7 @@ function wordClickCand(word,candidate){
                     outputs.push([link,deb[j]]);
                 }
                 for(var k = 0; k < closest_words.length; k++){
-                    var loc = deb[j]['speech'].search(' ' + closest_words[i] + " ");
+                    var loc = deb[j]['speech'].search(' ' + closest_words[k] + " ");
                     if(loc > -1){
                         if(haveISeen(speaker,deb[j]['prev'],outputs)){
                             continue;
@@ -188,9 +188,9 @@ function wordClickCand(word,candidate){
         }
     }
     
-    if(outputs.length > 3){
-       outputs = [outputs[0],outputs[1],outputs[2]];
-    }
+    // if(outputs.length > 3){
+    //    outputs = [outputs[0],outputs[1],outputs[2]];
+    // }
    
    var all_words = closest_words;
    all_words.push(word);
@@ -415,7 +415,7 @@ function my_close(){
         .transition()
         .duration(400)
         .attr('width',1000);
-
+    d3.select('#used_words_list').html("");
 }
 
 

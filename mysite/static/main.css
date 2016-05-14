@@ -287,6 +287,8 @@ color: #4285F4;
 /*context_words context div*/
 #snippit{
   text-align: left;
+  max-height: 450px;
+  overflow: scroll;
 }
 .link_to_debate{
   fill: #337ab7;
