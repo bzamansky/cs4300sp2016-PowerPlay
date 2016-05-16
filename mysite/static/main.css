@@ -296,7 +296,7 @@ color: #4285F4;
 #snippit{
   text-align: left;
   max-height: 450px;
-  overflow: scroll;
+  overflow: auto;
 }
 .link_to_debate{
   fill: #337ab7;

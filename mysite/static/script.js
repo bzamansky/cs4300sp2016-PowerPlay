@@ -101,7 +101,7 @@ function makeWordCloud(candidate, w, tfidf) {
                 })
                 .on("click",function(d){   
                     var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.text + "&search_option=term&eval=ml"
-                    window.location.href = (destination);
+                    window.open(destination).focus();
                 });
         var the_text = "";
         if(tfidf){
@@ -171,12 +171,12 @@ function haveISeen(speaker,prev,speech,outputs){
 }
 
 function wordClickCand(word,candidate){
-    my_close();
-
-    word = word.toLowerCase();
-
+   my_close();
+   
+   word = word.toLowerCase();
+   
    var outputs = [];
-
+   
    for(var i = 0; i < debate_data.length; i++){
         var link = debate_data[i]['link'];
         var deb = debate_data[i]['tran'];
@@ -262,18 +262,22 @@ function wordClickCand(word,candidate){
    var full_width = window.innerWidth - 100;
 
    var svg = d3.select('.svg_div.candidates svg');
-   svg.transition()
-       .duration(500)
-       .attr('width',full_width);
+   //svg.transition()
+   //    .duration(500)
+   //    .attr('width',full_width);
 
    var debate_svg_g = d3.select('.candidate_svg_g').node().getBBox();
    var graph_width = debate_svg_g.width;
    var graph_height = debate_svg_g.height;
-
-   var div_text = "<div id='snippit'>";
+   
+   var div_text = "<div id='snippit' style='";
+   div_text += "max-height:" + graph_height + "; ";
+   div_text += "max-width:" + (graph_width - 200) + "; "
+   div_text += "margin: auto;'>";  // center the div on the page
+   
    div_text += "<a href='" + "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + candidate + "&search_option=candidate&eval=ml" + "'>";
    div_text += capitalizeFirstLetter(candidate) + "</a>";
-
+   
    for (var i = 0; i < outputs.length; i++) {
        var link = outputs[i][0];
        var speaker = capitalizeFirstLetter(outputs[i][1]['speaker']);
@@ -284,7 +288,12 @@ function wordClickCand(word,candidate){
        div_text += "</br>" + speech;
        div_text += "</p>";
    }
-
+   
+   append1 = '<br/><span class="snippit snip_title"';
+   append1 += 'style="text-decoration:underline; font-weight:bold;">';
+   append1 += 'Context of spoken words, Speaker: ' + speaker;
+   append1 += '</span>';
+   /*
    svg.append('text')
        .attr('class','snippit snip_title')
        .attr('x',graph_width + 110)
@@ -292,21 +301,36 @@ function wordClickCand(word,candidate){
        .text('Context of spoken words, Speaker: ' + speaker)
        .style("text-decoration", "underline")
        .style("font-weight", "bold");
-
+   */
+   
+   append2 = '<span class="close_words_text"';
+   append2 += 'onclick="my_close()" style="cursor:pointer;">';
+   append2 += ' (close)</span>';
+   /*
    svg.append('text')
        .attr('class','close_words_text')
        .attr('x',graph_width + 30)
        .attr('y',20)
        .text('>')
        .on('click',my_close);
+   */
    div_text += "</div>";
-
+   
+   append3 = div_text;
+   /*
    svg.append("foreignObject")
        .attr('x',graph_width + 100)
        .attr('y',40)
        .attr('width',full_width - graph_width - 200)
        .append('xhtml:body')
        .html(div_text);
+   */
+   
+   var outer_div = document.getElementsByClassName('candidates')[0];
+   var new_div = document.createElement("div");
+   new_div.id = "candidates_new_div";
+   new_div.innerHTML = append1 + append2 + append3;
+   outer_div.appendChild(new_div);
 }
 
 function wordClickDeb(word,debate){
@@ -384,16 +408,19 @@ function wordClickDeb(word,debate){
     var full_width = window.innerWidth - 100;
 
     var svg = d3.select('.svg_div.debates svg');
-    svg.transition()
-        .duration(500)
-        .attr('width',full_width);
+    //svg.transition()
+    //    .duration(500)
+    //    .attr('width',full_width);
 
     var debate_svg_g = d3.select('.debate_svg_g').node().getBBox();
     var graph_width = debate_svg_g.width;
     var graph_height = debate_svg_g.height;
 
-    var div_text = "<div id='snippit'>";
-
+    var div_text = "<div id='snippit' style='";
+    div_text += "max-height:" + graph_height + "; ";
+    div_text += "max-width:" + (graph_width - 200) + "; "
+    div_text += "margin: auto;'>";  // center the div on the page
+    
     for (var i = 0; i < outputs.length; i++) {
         var spoken_word = outputs[i][1][0];
         var speaker = capitalizeFirstLetter(outputs[i][1]['speaker']);
@@ -404,15 +431,25 @@ function wordClickDeb(word,debate){
         div_text += "</br>" + speech;
         div_text += "</p>";
     }
+    
+    append1 = '<br/><span class="snippit link_to_debate">';
+    append1 += '<a href="' + this_debate['link'] + '">Link to Debate</a>';
+    append1 += '</span><br/>';
+    /*
     svg.append('text')
         .attr('class','snippit link_to_debate')
         .attr('x',graph_width + 110)
         .attr('y',15)
         .text("Link to Debate")
         .on('click',function(){
-            window.location.assign(this_debate['link'],'_blank');
+            window.open(this_debate['link']).focus();
         });
-
+    */
+    
+    append1 += '<span class="snippit snip_title"';
+    append1 += 'style="text-decoration:underline; font-weight:bold;">';
+    append1 += 'Context of spoken words</span>';
+    /*
     svg.append('text')
         .attr('class','snippit snip_title')
         .attr('x',graph_width + 110)
@@ -420,29 +457,43 @@ function wordClickDeb(word,debate){
         .text('Context of spoken words')
         .style("text-decoration", "underline")
         .style("font-weight", "bold");
-
+    */
+    
+    append2 = '<span class="close_words_text"';
+    append2 += 'onclick="my_close()" style="cursor:pointer;">';
+    append2 += ' (close)</span>';
+    /*
     svg.append('text')
         .attr('class','close_words_text')
         .attr('x',graph_width + 30)
         .attr('y',20)
         .text('>')
         .on('click',my_close);
+    */
     div_text += "</div>";
-
+    
+    append3 = div_text;
+    /*
     svg.append("foreignObject")
-        .attr('x',graph_width + 100)
-        .attr('y',40)
-        .attr('width',full_width - graph_width - 200)
-        .append('xhtml:body')
-        .html(div_text);
+       .attr('x',graph_width + 100)
+       .attr('y',40)
+       .attr('width',full_width - graph_width - 200)
+       .append('xhtml:body')
+       .html(div_text);
+    */
+    
+    var outer_div = document.getElementsByClassName('debates')[0];
+    var new_div = document.createElement("div");
+    new_div.id = "debates_new_div";
+    new_div.innerHTML = append1 + append2 + append3;
+    outer_div.appendChild(new_div);
 }
 
 
-
-
-function my_close(){
+function my_close() {
     d3.selectAll('.snippit').remove();
     d3.select('.close_words_text').remove();
+    /*
     d3.select('.svg_div.debates svg')
         .transition()
         .duration(400)
@@ -451,7 +502,13 @@ function my_close(){
         .transition()
         .duration(400)
         .attr('width',1000);
+    */
     d3.select('#used_words_list').html("");
+    
+    var candidates_new_div = document.getElementById("candidates_new_div");
+    if (candidates_new_div) candidates_new_div.parentNode.removeChild(candidates_new_div);
+    var debates_new_div = document.getElementById("debates_new_div");
+    if (debates_new_div) debates_new_div.parentNode.removeChild(debates_new_div);
 }
 
 
@@ -640,7 +697,7 @@ function makeBarGraph(x_values, y_values, category, num_debates) {
             if (category == 'candidate') {
                 wordClickCand(query,d.x);
                 //var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.x + "&search_option=candidate&eval=ml";
-                //window.location.href = (destination);
+                //window.open(destination).focus();
             }
             else if (category == 'debate'){
                 wordClickDeb(query,d.x);
@@ -831,7 +888,7 @@ function makeResponseGraph(candidate, names, counts) {
             // don't reload page if click center node
             if (d.name != candidate) {
                 var destination = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname + "?search=" + d.name + "&search_option=candidate&eval=ml";
-                window.location.href = (destination);
+                window.open(destination).focus();
             }
         });
     link.on('mouseover', tip_link.show)
