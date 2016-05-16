@@ -65,7 +65,7 @@ def index(request):
                 our_svd = OurSVD()
                 closest_words, error_words = our_svd.closest_words(adjusted)
                 
-                fighting_words = fighting_words_candidate(thequery)
+                fighting_words = fighting_words_candidate(adjusted)
             
         else: #if search_option == 'term'
             thequery = search
